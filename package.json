@@ -1,0 +1,9 @@
+{
+    "name": "gpii-nexus-examples",
+    "version": "0.1.0",
+    "author": "GPII",
+    "license": "BSD-3-Clause",
+    "dependencies": {
+        "node-static": "^0.7.7"
+    }
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Nexus Example</title>
+    </head>
+    <body>
+        <h1>Log /example1/a</h1>
+        <script type="text/javascript">
+            var websocket = new WebSocket("ws://localhost:9081/bindModel/example1/a");
+            websocket.onmessage = function (evt) {
+                console.log(evt.data);
+            };
+        </script>
+    </body>
+</html>
