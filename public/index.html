@@ -7,12 +7,14 @@
     </head>
     <body>
         <script type="text/javascript">
-            var x = 0;
+            var astericsA = 0;
+            var astericsB = 0;
 
-            var websocket = new WebSocket("ws://localhost:9081/bindModel/example1/a");
+            var websocket = new WebSocket("ws://localhost:9081/bindModel/asterics/inputs");
             websocket.onmessage = function (evt) {
-                x = parseFloat(evt.data);
-                // console.log(x);
+                var inputs = JSON.parse(evt.data);
+                astericsA = inputs.a;
+                astericsB = inputs.b;
             };
 
             function setup () {
@@ -23,8 +25,8 @@
             }
 
             function draw () {
-                var size = constrain(360 + x, 2, 720);
-                var color = constrain(mouseY/2, 0, 359);
+                var size = constrain(360 + astericsA/2, 2, 720);
+                var color = constrain(180 + astericsB/4, 0, 359);
                 var complement = color > 180 ? color - 180 : color + 180;
                 background(color, 55, 80);
                 fill(complement, 55, 80);

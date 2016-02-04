@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="E:\nexus-examples\AsTeRICS\AsTeRICS Face Tracker.acs_2016_2_3_17_3" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="E:\nexus-examples\AsTeRICS\AsTeRICS Face Tracker.acs_2016_2_4_14_15" version="20130320">
   <components>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -90,7 +90,10 @@
     <component id="NexusConnector.1" type_id="asterics.NexusConnector">
       <description>Nexus Connector</description>
       <ports>
-        <inputPort portTypeID="myInPort">
+        <inputPort portTypeID="A">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="B">
           <properties />
         </inputPort>
       </ports>
@@ -133,6 +136,27 @@
         <height>1500</height>
       </gui>
     </component>
+    <component id="Integrate.2" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="0" />
+        <property name="upperLimit" value="50000" />
+        <property name="lowerLimit" value="-50000" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>303</posX>
+        <posY>241</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.2">
@@ -147,12 +171,32 @@
     </channel>
     <channel id="binding.1">
       <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Integrate.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
         <component id="Integrate.1" />
         <port id="out" />
       </source>
       <target>
         <component id="NexusConnector.1" />
-        <port id="myInPort" />
+        <port id="A" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Integrate.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="B" />
       </target>
     </channel>
   </channels>
@@ -168,6 +212,21 @@
       <targets>
         <target>
           <component id="Integrate.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Integrate.2" />
           <eventPort id="reset" />
         </target>
       </targets>
