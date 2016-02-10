@@ -2,35 +2,14 @@
 
 <html lang="en">
     <head>
-        <title>Nexus AsTeRICS Example</title>
-        <script src="p5.js"></script>
+        <title>Nexus Examples</title>
     </head>
     <body>
-        <script type="text/javascript">
-            var astericsA = 0;
-            var astericsB = 0;
+        <h1>Nexus Examples</h1>
 
-            var websocket = new WebSocket("ws://localhost:9081/bindModel/asterics/inputs");
-            websocket.onmessage = function (evt) {
-                var inputs = JSON.parse(evt.data);
-                astericsA = inputs.a;
-                astericsB = inputs.b;
-            };
-
-            function setup () {
-                createCanvas(720, 720);
-                colorMode(RGB, 100);
-                rectMode(CENTER);
-                noStroke();
-            }
-
-            function draw () {
-                var xPos = constrain(width/2 + astericsA, 0, width);
-                var size = constrain(width/2 + astericsB/2, 10, width-10);
-                background(20);
-                fill(80);
-                rect(xPos, height/2, size, size);
-            }
-        </script>
+        <ul>
+            <li><a href="webcomponent.html">WebComponent square</a></li>
+            <li><a href="head-tracker-synth/">Flocking synth</a></li>
+        </ul>
     </body>
 </html>
