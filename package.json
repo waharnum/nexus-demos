@@ -4,6 +4,7 @@
     "author": "GPII",
     "license": "BSD-3-Clause",
     "dependencies": {
-        "node-static": "^0.7.7"
+        "node-static": "^0.7.7",
+        "headtracker-synth": "colinbdclark/flocking-nexus-headtracker-synth"
     }
 }
