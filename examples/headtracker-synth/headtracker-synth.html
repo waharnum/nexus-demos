@@ -10,12 +10,13 @@
         <script src="/node_modules/headtracker-synth/src/js/mouse-tracker.js"></script>
         <script src="/node_modules/headtracker-synth/src/js/mouse-pointer.js"></script>
         <script src="/node_modules/headtracker-synth/src/js/zone-controller.js"></script>
+        <script src="/node_modules/headtracker-synth/src/js/bonang-synth.js"></script>
         <script src="/node_modules/headtracker-synth/src/js/head-tracker-synth.js"></script>
         <script src="js/head-tracker.js"></script>
     </head>
     <body>
         <main>
-           <div class="controller">
+            <div class="controller">
                 <div class="zone-row">
                     <span class="zone" id="1"></span>
                     <span class="zone" id="2"></span>
@@ -48,6 +49,12 @@
                 components: {
                     tracker: {
                         type: "fluid.nexusAstericsHeadTracker"
+                    }
+                },
+                distributeOptions: {
+                    bonangSrc: {
+                        record: "/node_modules/headtracker-synth/audio/bonang-pelog-6.mp3",
+                        target: "{that fluid.trackerSynth.bonang.bufferLoader}.options.bufferDefs.0.src"
                     }
                 }
             });

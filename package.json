@@ -5,6 +5,6 @@
     "license": "BSD-3-Clause",
     "dependencies": {
         "node-static": "^0.7.7",
-        "headtracker-synth": "colinbdclark/flocking-nexus-headtracker-synth"
+        "headtracker-synth": "colinbdclark/flocking-nexus-headtracker-synth#3ce05ebee87672283cde53b64ea4513a3d25647c"
     }
 }
