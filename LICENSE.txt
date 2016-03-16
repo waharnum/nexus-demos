@@ -1,12 +1,4 @@
-All modules are Copyright 2016 OCAD University except
-where noted otherwise in the code itself, or if the modules reside in a
-separate directory, they may contain explicit declarations of copyright
-in both the LICENSE file in the directory in which they reside and in the
-code itself. No external contributions are allowed under licenses which are
-fundamentally incompatible with the BSD or Apache licenses that the GPII is
-distributed under.
-
-All rights reserved.
+Copyright (c) 2016 OCAD University. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
