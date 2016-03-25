@@ -13,4 +13,4 @@ var bonangPeerOptions = {
     }
 };
 
-gpii.constructNexusPeer(nexusHost, nexusPort, "/bonang", bonangPeerOptions);
+gpii.constructNexusPeer(nexusHost, nexusPort, "bonang", bonangPeerOptions);

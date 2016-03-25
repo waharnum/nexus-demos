@@ -7,7 +7,7 @@ gpii.constructNexusPeer = function (host, port, componentPath, componentOptions)
         host: host,
         port: port,
         method: "POST",
-        path: "/components" + componentPath,
+        path: "/components/" + componentPath,
         headers: {
             "Content-Type": "application/json"
         }

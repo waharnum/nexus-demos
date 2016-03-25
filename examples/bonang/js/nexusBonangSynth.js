@@ -1,40 +1,25 @@
-// TODO: Extract gpii.nexusWebSocketBoundComponent grade
-
 (function () {
     "use strict";
 
     fluid.defaults("gpii.nexusBonangSynth", {
-        gradeNames: "fluid.modelComponent",
+        gradeNames: "gpii.nexusWebSocketBoundComponent",
+        members: {
+            nexusPeerComponentPath: "bonang",
+            nexusBoundModelPath: "activeNote"
+        },
+        model: {
+            activeNote: -1
+        },
         components: {
             bonang: {
-                type: "fluid.trackerSynth.bonang"
-            }
-        },
-        invokers: {
-            nexusMessageListener: {
-                funcName: "gpii.nexusBonangSynth.nexusMessageListener",
-                args: [
-                    "{arguments}.0",
-                    "{that}.bonang.applier"
-                ]
-            }
-        },
-        listeners: {
-            "onCreate.bindNexusModel": {
-                funcName: "gpii.nexusBonangSynth.bindNexusModel",
-                args: [ "{that}", "{that}.nexusMessageListener" ]
+                type: "fluid.trackerSynth.bonang",
+                options: {
+                    model: {
+                        activeNote: "{gpii.nexusBonangSynth}.model.activeNote"
+                    }
+                }
             }
         }
     });
-
-    gpii.nexusBonangSynth.bindNexusModel = function (that, messageListener) {
-        that.websocket = new WebSocket("ws://localhost:9081/bindModel/bonang/activeNote");
-        that.websocket.onmessage = messageListener;
-    };
-
-    gpii.nexusBonangSynth.nexusMessageListener = function (evt, applier) {
-        var activeNote = JSON.parse(evt.data);
-        applier.change("activeNote", activeNote);
-    };
 
 }());

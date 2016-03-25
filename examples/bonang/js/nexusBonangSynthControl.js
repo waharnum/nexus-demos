@@ -1,4 +1,4 @@
-// TODO: Extract gpii.nexusWebSocketBoundComponent grade
+// TODO: Use the gpii.nexusWebSocketBoundComponent grade
 
 (function () {
     "use strict";
@@ -36,7 +36,7 @@
     };
 
     gpii.nexusBonangSynthControl.sendButtonHandler = function (websocket, noteInput) {
-        var noteVal = parseInt(noteInput.val());
+        var noteVal = fluid.parseInteger(noteInput.val());
         websocket.send(JSON.stringify({
             path: "",
             value: noteVal
