@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Bonang Synth</title>
+
+        <script src="../../node_modules/headtracker-synth/node_modules/flocking/dist/flocking-all.js"></script>
+        <script src="../../node_modules/headtracker-synth/src/js/bonang-synth.js"></script>
+        <script src="js/nexus-bonang-synth.js"></script>
+    </head>
+    <body>
+        <h1>Bonang Synth</h1>
+
+        <script>
+            window.bonangSynth = gpii.nexusBonangSynth({
+                distributeOptions: {
+                    bonangSrc: {
+                        record: "../../node_modules/headtracker-synth/audio/bonang-pelog-6.mp3",
+                        target: "{that fluid.trackerSynth.bonang.bufferLoader}.options.bufferDefs.0.src"
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

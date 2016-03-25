@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Bonang Synth Control</title>
+
+        <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="js/bonang-synth-control.js"></script>
+    </head>
+    <body>
+        <h1>Bonang Synth Control</h1>
+
+        <div id="gpiic-bonang-synth-control">
+            <label>Note: <input class="gpiic-bonang-synth-note" type="number" value="0"></label>
+            <button class="gpiic-bonang-synth-send" type="button">Send</button>
+        </div>
+
+        <script>
+            window.bonangSynthControl = gpii.nexusBonangSynthControl("#gpiic-bonang-synth-control");
+        </script>
+    </body>
+</html>
