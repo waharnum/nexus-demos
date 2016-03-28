@@ -1,28 +1,30 @@
-// TODO: Use the gpii.nexusWebSocketBoundComponent grade
-
 (function () {
     "use strict";
 
     fluid.defaults("gpii.nexusBonangSynthControl", {
-        gradeNames: "fluid.viewComponent",
+        gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
         selectors: {
             noteInput: ".gpiic-bonang-synth-note",
             sendButton: ".gpiic-bonang-synth-send"
         },
         members: {
-            websocket: null // Will be set at onCreate
+            nexusPeerComponentPath: "bonang",
+            nexusBoundModelPath: "activeNote"
+        },
+        model: {
+            activeNote: -1
         },
         invokers: {
             sendButtonHandler: {
                 funcName: "gpii.nexusBonangSynthControl.sendButtonHandler",
-                args: ["{that}.websocket", "{that}.dom.noteInput"]
+                args: [
+                    "{that}.applier",
+                    "{that}.nexusBoundModelPath",
+                    "{that}.dom.noteInput"
+                ]
             }
         },
         listeners: {
-            "onCreate.bindNexusModel": {
-                funcName: "gpii.nexusBonangSynthControl.bindNexusModel",
-                args: ["{that}"]
-            },
             "onCreate.registerSendButtonHandler": {
                 "this": "{that}.dom.sendButton",
                 method: "click",
@@ -31,16 +33,9 @@
         }
     });
 
-    gpii.nexusBonangSynthControl.bindNexusModel = function (that) {
-        that.websocket = new WebSocket("ws://localhost:9081/bindModel/bonang/activeNote");
-    };
-
-    gpii.nexusBonangSynthControl.sendButtonHandler = function (websocket, noteInput) {
+    gpii.nexusBonangSynthControl.sendButtonHandler = function (applier, modelPath, noteInput) {
         var noteVal = fluid.parseInteger(noteInput.val());
-        websocket.send(JSON.stringify({
-            path: "",
-            value: noteVal
-        }));
+        applier.change(modelPath, noteVal);
     };
 
 }());

@@ -18,6 +18,13 @@
                     "{that}.nexusBoundModelPath",
                     "{that}.applier"
                 ]
+            },
+            sendModelChangeToNexus: {
+                funcName: "gpii.nexusWebSocketBoundComponent.sendModelChangeToNexus",
+                args: [
+                    "{that}.websocket",
+                    "{arguments}.0" // value
+                ]
             }
         },
         listeners: {
@@ -26,6 +33,14 @@
                 args: [
                     "{that}",
                     "{that}.nexusMessageListener"
+                ]
+            },
+            "onCreate.registerModelListenerForNexus": {
+                funcName: "gpii.nexusWebSocketBoundComponent.registerModelListener",
+                args: [
+                    "{that}.applier",
+                    "{that}.nexusBoundModelPath",
+                    "{that}.sendModelChangeToNexus"
                 ]
             }
         }
@@ -42,9 +57,21 @@
         that.websocket.onmessage = messageListener;
     };
 
+    gpii.nexusWebSocketBoundComponent.registerModelListener = function (applier, modelPath, modelChangeListener) {
+        // TODO segs here?
+        applier.modelChanged.addListener(modelPath, modelChangeListener);
+    };
+
     gpii.nexusWebSocketBoundComponent.messageListener = function (evt, modelPath, applier) {
         var value = JSON.parse(evt.data);
         applier.change(modelPath, value);
+    };
+
+    gpii.nexusWebSocketBoundComponent.sendModelChangeToNexus =  function (websocket, value) {
+        websocket.send(JSON.stringify({
+            path: "",
+            value: value
+        }));
     };
 
 }());
