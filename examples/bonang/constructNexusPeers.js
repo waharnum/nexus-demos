@@ -32,14 +32,18 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "bonang.synth", {
             target: "activeNote",
             singleTransform: {
                 type: "fluid.transforms.identity"
-            }
+            },
+            forward: "always",
+            backward: "never"
         },
         {
             source: "{zoneController}.model.activeZoneIdx",
             target: "activeNote",
             singleTransform: {
                 type: "fluid.transforms.identity"
-            }
+            },
+            forward: "always",
+            backward: "never"
         }
     ]
 });
