@@ -5,7 +5,9 @@
         gradeNames: "gpii.nexusWebSocketBoundComponent",
         members: {
             nexusPeerComponentPath: "bonang.synth",
-            nexusBoundModelPath: "activeNote"
+            nexusBoundModelPath: "activeNote",
+            sendsChangesToNexus: false,
+            receivesChangesFromNexus: true
         },
         model: {
             activeNote: -1

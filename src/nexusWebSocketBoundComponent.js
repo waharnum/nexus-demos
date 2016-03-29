@@ -8,6 +8,8 @@
             nexusPort: 9081,
             nexusPeerComponentPath: "", // To be supplied by users of the grade
             nexusBoundModelPath: "",
+            sendsChangesToNexus: false,
+            receivesChangesFromNexus: false,
             websocket: null // Will be set at onCreate
         },
         invokers: {
@@ -32,12 +34,14 @@
                 funcName: "gpii.nexusWebSocketBoundComponent.bindModel",
                 args: [
                     "{that}",
+                    "{that}.receivesChangesFromNexus",
                     "{that}.nexusMessageListener"
                 ]
             },
             "onCreate.registerModelListenerForNexus": {
                 funcName: "gpii.nexusWebSocketBoundComponent.registerModelListener",
                 args: [
+                    "{that}.sendsChangesToNexus",
                     "{that}.applier",
                     "{that}.nexusBoundModelPath",
                     "{that}.sendModelChangeToNexus"
@@ -46,7 +50,7 @@
         }
     });
 
-    gpii.nexusWebSocketBoundComponent.bindModel = function (that, messageListener) {
+    gpii.nexusWebSocketBoundComponent.bindModel = function (that, shouldRegisterMessageListener, messageListener) {
         var bindModelUrl = fluid.stringTemplate("ws://%host:%port/bindModel/%componentPath/%modelPath", {
             host: that.nexusHost,
             port: that.nexusPort,
@@ -54,12 +58,16 @@
             modelPath: that.nexusBoundModelPath
         });
         that.websocket = new WebSocket(bindModelUrl);
-        that.websocket.onmessage = messageListener;
+        if (shouldRegisterMessageListener) {
+            that.websocket.onmessage = messageListener;
+        }
     };
 
-    gpii.nexusWebSocketBoundComponent.registerModelListener = function (applier, modelPath, modelChangeListener) {
-        // TODO segs here?
-        applier.modelChanged.addListener(modelPath, modelChangeListener);
+    gpii.nexusWebSocketBoundComponent.registerModelListener = function (shouldRegisterModelChangeListener, applier, modelPath, modelChangeListener) {
+        if (shouldRegisterModelChangeListener) {
+            // TODO segs here?
+            applier.modelChanged.addListener(modelPath, modelChangeListener);
+        }
     };
 
     gpii.nexusWebSocketBoundComponent.messageListener = function (evt, modelPath, applier) {

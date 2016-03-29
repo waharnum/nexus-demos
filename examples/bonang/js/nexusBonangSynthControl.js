@@ -9,7 +9,9 @@
         },
         members: {
             nexusPeerComponentPath: "bonang.control",
-            nexusBoundModelPath: "activeNote"
+            nexusBoundModelPath: "activeNote",
+            sendsChangesToNexus: true,
+            receivesChangesFromNexus: false
         },
         model: {
             activeNote: -1

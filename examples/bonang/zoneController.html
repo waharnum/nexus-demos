@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Zone Controller</title>
+
+        <link rel="stylesheet" type="text/css" href="../../node_modules/headtracker-synth/src/css/head-tracker-synth.css" />
+
+        <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+
+        <script type="text/javascript" src="../../node_modules/headtracker-synth/src/js/mouse-tracker.js"></script>
+        <script type="text/javascript" src="../../node_modules/headtracker-synth/src/js/mouse-pointer.js"></script>
+        <script type="text/javascript" src="../../node_modules/headtracker-synth/src/js/zone-controller.js"></script>
+        <script type="text/javascript" src="../../node_modules/headtracker-synth/src/js/head-tracker-synth.js"></script>
+        <script type="text/javascript" src="../../src/nexusWebSocketBoundComponent.js"></script>
+        <script type="text/javascript" src="js/nexusZoneController.js"></script>
+    </head>
+    <body>
+        <main>
+            <div class="controller">
+                <div class="zone-row">
+                    <span class="zone" id="1"></span>
+                    <span class="zone" id="2"></span>
+                    <span class="zone" id="3"></span>
+                    <span class="zone" id="4"></span>
+                    <span class="zone" id="5"></span>
+                </div>
+
+                <div class="zone-row">
+                    <span class="zone" id="6"></span>
+                    <span class="zone" id="7"></span>
+                    <span class="zone" id="8"></span>
+                    <span class="zone" id="9"></span>
+                    <span class="zone" id="10"></span>
+                </div>
+
+                <div class="zone-row">
+                    <span class="zone" id="11"></span>
+                    <span class="zone" id="12"></span>
+                    <span class="zone" id="13"></span>
+                    <span class="zone" id="14"></span>
+                    <span class="zone" id="15"></span>
+                </div>
+            </div>
+            <div id="pointer" />
+        </main>
+
+        <script>
+            window.zoneController = gpii.nexusZoneController("body");
+        </script>
+    </body>
+</html>
