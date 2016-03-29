@@ -26,13 +26,20 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "bonang.zoneController", {
 
 gpii.constructNexusPeer(nexusHost, nexusPort, "bonang.synth", {
     type: "fluid.modelComponent",
-    modelRelay: {
-        source: "{zoneController}.model.activeZoneIdx",
-        target: "activeNote",
-        singleTransform: {
-            type: "fluid.transforms.linearScale",
-            factor: 1,
-            offset: 0
+    modelRelay: [
+        {
+            source: "{control}.model.activeNote",
+            target: "activeNote",
+            singleTransform: {
+                type: "fluid.transforms.identity"
+            }
+        },
+        {
+            source: "{zoneController}.model.activeZoneIdx",
+            target: "activeNote",
+            singleTransform: {
+                type: "fluid.transforms.identity"
+            }
         }
-    }
+    ]
 });
