@@ -8,7 +8,7 @@
             sendButton: ".gpiic-bonang-synth-send"
         },
         members: {
-            nexusPeerComponentPath: "bonang.control",
+            nexusPeerComponentPath: "nexus.bonang.control",
             nexusBoundModelPath: "activeNote",
             sendsChangesToNexus: true,
             receivesChangesFromNexus: false

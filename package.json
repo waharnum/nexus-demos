@@ -1,11 +1,16 @@
 {
     "name": "gpii-nexus-examples",
     "version": "0.1.0",
-    "author": "GPII",
     "license": "BSD-3-Clause",
+    "author": "GPII",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/simonbates/nexus-examples.git"
+    },
     "dependencies": {
         "headtracker-synth": "colinbdclark/flocking-nexus-headtracker-synth#bb895a2eb20b9e8832b9bff1456b6448f733582f",
         "infusion": "2.0.0-dev.20160309T145652Z.9f515ec",
-        "node-static": "^0.7.7"
+        "node-static": "0.7.7",
+        "sensorapijs": "simonbates/p4a-sensorAPI"
     }
 }

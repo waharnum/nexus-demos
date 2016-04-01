@@ -4,7 +4,7 @@
     fluid.defaults("gpii.nexusBonangSynth", {
         gradeNames: "gpii.nexusWebSocketBoundComponent",
         members: {
-            nexusPeerComponentPath: "bonang.synth",
+            nexusPeerComponentPath: "nexus.bonang.synth",
             nexusBoundModelPath: "activeNote",
             sendsChangesToNexus: false,
             receivesChangesFromNexus: true

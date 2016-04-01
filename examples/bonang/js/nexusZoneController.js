@@ -4,7 +4,7 @@
     fluid.defaults("gpii.nexusZoneController", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
         members: {
-            nexusPeerComponentPath: "bonang.zoneController",
+            nexusPeerComponentPath: "nexus.bonang.zoneController",
             nexusBoundModelPath: "activeZoneIdx",
             sendsChangesToNexus: true,
             receivesChangesFromNexus: false

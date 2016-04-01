@@ -1,30 +1,34 @@
 var fluid = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 
-require("../../src/nexusUtils.js");
+require("../src/nexusUtils.js");
 
 var nexusHost = "localhost";
 var nexusPort = 9081;
 
-gpii.constructNexusPeer(nexusHost, nexusPort, "bonang", {
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus", {
     type: "fluid.modelComponent"
 });
 
-gpii.constructNexusPeer(nexusHost, nexusPort, "bonang.control", {
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang", {
+    type: "fluid.modelComponent"
+});
+
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.control", {
     type: "fluid.modelComponent",
     model: {
         activeNote: -1
     }
 });
 
-gpii.constructNexusPeer(nexusHost, nexusPort, "bonang.zoneController", {
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.zoneController", {
     type: "fluid.modelComponent",
     model: {
         activeZoneIdx: -1
     }
 });
 
-gpii.constructNexusPeer(nexusHost, nexusPort, "bonang.synth", {
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.synth", {
     type: "fluid.modelComponent",
     modelRelay: [
         {
@@ -46,4 +50,11 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "bonang.synth", {
             backward: "never"
         }
     ]
+});
+
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.sensors", {
+    type: "fluid.modelComponent",
+    model: {
+        orientation: { }
+    }
 });
