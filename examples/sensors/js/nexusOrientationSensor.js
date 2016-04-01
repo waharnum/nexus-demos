@@ -1,3 +1,5 @@
+/* global SensorAPI */
+
 (function () {
     "use strict";
 

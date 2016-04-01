@@ -1,3 +1,5 @@
+"use strict";
+
 document.registerElement("nexus-square", {
     prototype: Object.create(HTMLElement.prototype, {
         createdCallback: {
@@ -12,7 +14,7 @@ document.registerElement("nexus-square", {
                     astericsB = inputs.b;
                 };
 
-                new p5(function (p) {
+                new p5(function (p) { // jshint ignore:line
                     p.setup = function () {
                         p.createCanvas(720, 720);
                         p.colorMode(p.RGB, 100);

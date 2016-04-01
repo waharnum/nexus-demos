@@ -8,6 +8,9 @@
         "url": "https://github.com/simonbates/nexus-examples.git"
     },
     "dependencies": {
+        "grunt": "0.4.5",
+        "grunt-contrib-jshint": "1.0.0",
+        "grunt-jsonlint": "1.0.7",
         "headtracker-synth": "colinbdclark/flocking-nexus-headtracker-synth#bb895a2eb20b9e8832b9bff1456b6448f733582f",
         "infusion": "2.0.0-dev.20160309T145652Z.9f515ec",
         "node-static": "0.7.7",

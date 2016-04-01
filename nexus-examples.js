@@ -1,8 +1,10 @@
-var static = require("node-static");
+"use strict";
+
+var nodeStatic = require("node-static");
 
 var port = 8080;
 
-var files = new static.Server(__dirname);
+var files = new nodeStatic.Server(__dirname);
 
 require("http").createServer(function (request, response) {
     request.addListener("end", function () {

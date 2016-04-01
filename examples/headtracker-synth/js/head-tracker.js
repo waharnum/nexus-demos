@@ -1,4 +1,6 @@
 (function () {
+    "use strict";
+
     fluid.defaults("fluid.nexusAstericsHeadTracker", {
         gradeNames: "fluid.viewComponent",
         model: {
