@@ -33,7 +33,7 @@
     });
 
     fluid.nexusAstericsHeadTracker.bindModel = function (that, messageListener) {
-        that.websocket = new WebSocket("ws://localhost:9081/bindModel/asterics/inputs");
+        that.websocket = new WebSocket("ws://localhost:9081/bindModel/nexus.asterics/inputs");
         that.websocket.onmessage = messageListener;
     };
 

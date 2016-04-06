@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="E:\nexus-examples\AsTeRICS\AsTeRICS Face Tracker.acs_2016_2_4_14_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="E:\nexus-examples\examples\AsTeRICS\Facetracker to NexusConnector.acs_2016_4_4_16_47" version="20130320">
   <components>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -87,22 +87,6 @@
         <posY>58</posY>
       </layout>
     </component>
-    <component id="NexusConnector.1" type_id="asterics.NexusConnector">
-      <description>Nexus Connector</description>
-      <ports>
-        <inputPort portTypeID="A">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="B">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties />
-      <layout>
-        <posX>455</posX>
-        <posY>70</posY>
-      </layout>
-    </component>
     <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
       <description>Webcamera-based face tracking sensor</description>
       <ports>
@@ -157,6 +141,28 @@
         <posY>241</posY>
       </layout>
     </component>
+    <component id="NexusConnector.2" type_id="asterics.NexusConnector">
+      <description>Nexus Connector</description>
+      <ports>
+        <inputPort portTypeID="A">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="B">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="C">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="D">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>521</posX>
+        <posY>74</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.2">
@@ -179,24 +185,24 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.3">
-      <source>
-        <component id="Integrate.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="NexusConnector.1" />
-        <port id="A" />
-      </target>
-    </channel>
     <channel id="binding.4">
       <source>
         <component id="Integrate.2" />
         <port id="out" />
       </source>
       <target>
-        <component id="NexusConnector.1" />
+        <component id="NexusConnector.2" />
         <port id="B" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="NexusConnector.2" />
+        <port id="A" />
       </target>
     </channel>
   </channels>

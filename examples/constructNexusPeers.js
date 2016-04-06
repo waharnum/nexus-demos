@@ -10,6 +10,18 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "nexus", {
     type: "fluid.modelComponent"
 });
 
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.asterics", {
+    type: "fluid.modelComponent",
+    model: {
+        inputs: {
+            a: 0,
+            b: 0,
+            c: 0,
+            d: 0
+        }
+    }
+});
+
 gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang", {
     type: "fluid.modelComponent"
 });
