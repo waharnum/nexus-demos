@@ -11,7 +11,7 @@
         "grunt": "0.4.5",
         "grunt-contrib-jshint": "1.0.0",
         "grunt-jsonlint": "1.0.7",
-        "headtracker-synth": "simonbates/flocking-nexus-headtracker-synth",
+        "headtracker-synth": "colinbdclark/flocking-nexus-headtracker-synth#review-example",
         "infusion": "2.0.0-dev.20160309T145652Z.9f515ec",
         "node-static": "0.7.7",
         "sensorapijs": "simonbates/p4a-sensorAPI"
