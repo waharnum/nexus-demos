@@ -5,19 +5,27 @@
         gradeNames: "gpii.nexusWebSocketBoundComponent",
         members: {
             nexusPeerComponentPath: "nexus.bonang.synth",
-            nexusBoundModelPath: "activeNote",
+            nexusBoundModelPath: "controls",
             sendsChangesToNexus: false,
             receivesChangesFromNexus: true
         },
         model: {
-            activeNote: -1
+            controls: {
+                activeNote: -1,
+                tremoloFreq: 1
+            }
         },
         components: {
             bonang: {
                 type: "fluid.trackerSynth.bonang",
                 options: {
                     model: {
-                        activeNote: "{gpii.nexusBonangSynth}.model.activeNote"
+                        activeNote: "{gpii.nexusBonangSynth}.model.controls.activeNote",
+                        inputs: {
+                            tremolo: {
+                                freq: "{gpii.nexusBonangSynth}.model.controls.tremoloFreq"
+                            }
+                        }
                     }
                 }
             }

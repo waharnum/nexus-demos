@@ -13,7 +13,9 @@
             nexusPeerComponentPath: "nexus.sensors",
             nexusBoundModelPath: "orientation",
             sendsChangesToNexus: true,
-            receivesChangesFromNexus: false
+            receivesChangesFromNexus: false,
+            lastUpdated: 0,
+            minimumUpdatePeriodMs: 100
         },
         model: {
             orientation: {}
@@ -24,25 +26,39 @@
                 args: ["{change}.value", "{that}.dom.displayOrientationValues"]
             }
         },
+        invokers: {
+            handleSensorEvent: {
+                funcName: "gpii.nexusOrientationSensor.handleSensorEvent",
+                args: [
+                    "{that}",
+                    "{that}.applier",
+                    "{that}.nexusBoundModelPath",
+                    "{arguments}.0" // data
+                ]
+            }
+        },
         listeners: {
             "onCreate.loadSensorDriver": {
                 funcName: "gpii.nexusOrientationSensor.loadSensorDriver",
-                args: [
-                    "{that}.applier",
-                    "{that}.nexusBoundModelPath"
-                ]
+                args: ["{that}.handleSensorEvent"]
             }
         }
     });
 
-    gpii.nexusOrientationSensor.loadSensorDriver = function (applier, modelPath) {
+    gpii.nexusOrientationSensor.loadSensorDriver = function (eventHandler) {
         var app = new SensorAPI();
         app.loadDriver("../../node_modules/sensorapijs/driver/deviceOrientation.js");
         app.onDeviceAdded(function(device) {
-            device.sensors.orientation.subscribe(function(data) {
-                applier.change(modelPath, data);
-            });
+            device.sensors.orientation.subscribe(eventHandler);
         });
+    };
+
+    gpii.nexusOrientationSensor.handleSensorEvent = function (that, applier, modelPath, data) {
+        var now = Date.now();
+        if (now > that.lastUpdated + that.minimumUpdatePeriodMs) {
+            that.lastUpdated = now;
+            applier.change(modelPath, data);
+        }
     };
 
     gpii.nexusOrientationSensor.displayValues = function (data, elem) {
