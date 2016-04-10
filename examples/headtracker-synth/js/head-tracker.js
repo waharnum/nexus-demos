@@ -3,6 +3,10 @@
 
     fluid.defaults("fluid.nexusAstericsHeadTracker", {
         gradeNames: "fluid.viewComponent",
+        members: {
+            nexusHost: "localhost",
+            nexusPort: 9081
+        },
         model: {
             // Normalized to 0 .. 1.0.
             position: {
@@ -10,8 +14,8 @@
                 y: 0
             },
             incomingRange: {
-                start: -400,
-                stop: 400
+                start: -500,
+                stop: 500
             }
         },
         invokers: {
@@ -33,7 +37,11 @@
     });
 
     fluid.nexusAstericsHeadTracker.bindModel = function (that, messageListener) {
-        that.websocket = new WebSocket("ws://localhost:9081/bindModel/nexus.asterics/inputs");
+        var bindModelUrl = fluid.stringTemplate("ws://%host:%port/bindModel/nexus.asterics/inputs", {
+            host: that.nexusHost,
+            port: that.nexusPort
+        });
+        that.websocket = new WebSocket(bindModelUrl);
         that.websocket.onmessage = messageListener;
     };
 
