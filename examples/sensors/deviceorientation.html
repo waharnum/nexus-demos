@@ -22,7 +22,11 @@
         </p>
 
         <script>
-            window.nexusOrientationSensor = gpii.nexusOrientationSensor("#gpiic-nexusOrientationSensor");
+            window.nexusOrientationSensor = gpii.nexusOrientationSensor("#gpiic-nexusOrientationSensor", {
+                members: {
+                    nexusHost: window.location.hostname
+                }
+            });
         </script>
     </body>
 </html>
