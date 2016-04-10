@@ -7,7 +7,7 @@ document.registerElement("nexus-square", {
                 var astericsA = 0;
                 var astericsB = 0;
 
-                var websocket = new WebSocket("ws://localhost:9081/bindModel/asterics/inputs");
+                var websocket = new WebSocket("ws://localhost:9081/bindModel/nexus.asterics/inputs");
                 websocket.onmessage = function (evt) {
                     var inputs = JSON.parse(evt.data);
                     astericsA = inputs.a;
