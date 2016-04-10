@@ -26,7 +26,7 @@ Run the Nexus.
 > node examples/constructNexusPeers.js
 ```
 
-### 4. Serve and visit the examples web pages
+### 3. Serve and visit the examples web pages
 
 This repo contains a simple static webserver configuration, or you can
 use a webserver that you've already got set up.
@@ -44,7 +44,7 @@ Then, point your web browser to:
 
 - [http://localhost:8080/](http://localhost:8080/)
 
-### 3. Run AsTeRICS ACS and ARE, and load the model
+### 4. Run AsTeRICS ACS and ARE, and load the model
 
 - Use the AsTeRICS fork with the NexusConnector component at https://github.com/simonbates/AsTeRICS/tree/GPII-1543
 - Run ACS
