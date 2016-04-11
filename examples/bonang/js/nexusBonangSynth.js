@@ -12,7 +12,8 @@
         model: {
             controls: {
                 activeNote: -1,
-                tremoloFreq: 1
+                tremoloFreq: 1,
+                pitchFactor: 1
             }
         },
         components: {
@@ -25,6 +26,10 @@
                             tremolo: {
                                 freq: "{gpii.nexusBonangSynth}.model.controls.tremoloFreq"
                             }
+                            /*,
+                            pitchFactor: {
+                                value: "{gpii.nexusBonangSynth}.model.controls.pitchFactor"
+                            }*/
                         }
                     }
                 }
