@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>Piano</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../node_modules/headtracker-synth/src/css/head-tracker-synth.css" />
+        <link rel="stylesheet" type="text/css" href="css/pianoController.css" />
+
+        <script type="text/javascript" src="../../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+        <script type="text/javascript" src="../../../node_modules/flocking/src/core.js"></script>
+        <script src="../../../node_modules/qwerty-hancock/dist/qwerty-hancock.js"></script>
+
+        <script type="text/javascript" src="../../../src/nexusWebSocketBoundComponent.js"></script>
+        <script src="js/pianoController.js"></script>
+    </head>
+    <body>
+        <main>
+            <div id="piano"></div>
+        </main>
+        <script>
+            window.piano = gpii.nexusPianoController("#piano", {
+                members: {
+                    nexusHost: window.location.hostname
+                },
+                qwertyHancockOptions: {
+                    width: 1024,
+                    height: 600,
+                    octaves: 1
+                }
+            });
+        </script>
+    </body>
+</html>

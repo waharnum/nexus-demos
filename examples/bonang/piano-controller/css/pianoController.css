@@ -1,0 +1,13 @@
+#piano li.flock-keyboard-whiteKey {
+    border-bottom-width: 20px !important;
+    border-bottom-color: white !important;
+}
+
+#piano li.flock-keyboard-blackKey {
+    border-bottom-width: 20px !important;
+    border-bottom-color: black !important;
+}
+
+#piano li.gpii-nexusPianoController-highlighted-key {
+    border-bottom-color: rgb(255, 220, 0) !important;
+}
