@@ -37,7 +37,7 @@
     });
 
     fluid.nexusAstericsHeadTracker.bindModel = function (that, messageListener) {
-        var bindModelUrl = fluid.stringTemplate("ws://%host:%port/bindModel/nexus.asterics/inputs", {
+        var bindModelUrl = fluid.stringTemplate("ws://%host:%port/bindModel/nexus.asterics/connector.inputs", {
             host: that.nexusHost,
             port: that.nexusPort
         });

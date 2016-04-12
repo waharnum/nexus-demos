@@ -27,11 +27,16 @@ fluid.promise.sequence([
         return gpii.constructNexusPeerReturnPromise(nexusHost, nexusPort, "nexus.asterics", {
             type: "fluid.modelComponent",
             model: {
-                inputs: {
-                    a: 0,
-                    b: 0,
-                    c: 0,
-                    d: 0
+                connector: {
+                    inputs: {
+                        a: 0,
+                        b: 0,
+                        c: 0,
+                        d: 0
+                    },
+                    outputs: {
+                        outStrOne: ""
+                    }
                 }
             }
         });
