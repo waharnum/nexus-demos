@@ -58,6 +58,14 @@ fluid.promise.sequence([
         });
     },
     function () {
+        return gpii.constructNexusPeerReturnPromise(nexusHost, nexusPort, "nexus.bonang.pianoController", {
+            type: "fluid.modelComponent",
+            model: {
+                activeNote: -1
+            }
+        });
+    },
+    function () {
         return gpii.constructNexusPeerReturnPromise(nexusHost, nexusPort, "nexus.sensors", {
             type: "fluid.modelComponent",
             model: {
@@ -78,6 +86,15 @@ fluid.promise.sequence([
             modelRelay: [
                 {
                     source: "{control}.model.activeNote",
+                    target: "controls.activeNote",
+                    singleTransform: {
+                        type: "fluid.transforms.identity"
+                    },
+                    forward: "always",
+                    backward: "never"
+                },
+                {
+                    source: "{pianoController}.model.activeNote",
                     target: "controls.activeNote",
                     singleTransform: {
                         type: "fluid.transforms.identity"
@@ -121,6 +138,17 @@ fluid.promise.sequence([
                         factor: 0.2
                     },
                     forward: "always",
+                    backward: "never"
+                },
+                {
+                    source: "{asterics}.model.inputs.c",
+                    target: "controls.pitchFactor",
+                    singleTransform: {
+                        type: "fluid.transforms.linearScale",
+                        factor: 1/100,
+                        offset: -128/100
+                    },
+                    forward: "liveOnly",
                     backward: "never"
                 }
             ]

@@ -27,8 +27,10 @@
                                 freq: "{gpii.nexusBonangSynth}.model.controls.tremoloFreq"
                             }
                             /*,
-                            pitchFactor: {
-                                value: "{gpii.nexusBonangSynth}.model.controls.pitchFactor"
+                            player: {
+                                speed: {
+                                    source: "{gpii.nexusBonangSynth}.model.controls.pitchFactor"
+                                }
                             }*/
                         }
                     }
