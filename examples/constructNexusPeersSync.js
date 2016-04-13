@@ -17,6 +17,9 @@ var midiLima = [
     9   // A 105/64
 ];
 
+var joystickPitchBase = 72;
+var joystickQuantizeSteps = 32; // Number of notes = this / 2 (with entries of -1 inserted between notes)
+
 fluid.promise.sequence([
     function () {
         return gpii.constructNexusPeerReturnPromise(nexusHost, nexusPort, "nexus", {
@@ -33,7 +36,24 @@ fluid.promise.sequence([
                     c: 0,
                     d: 0
                 }
-            }
+            },
+            modelRelay: [
+                {
+                    source: "{that}.model.inputs.c",
+                    target: "derived.cDivided",
+                    singleTransform: {
+                        type: "fluid.transforms.linearScale",
+                        factor: joystickQuantizeSteps/256
+                    }
+                },
+                {
+                    source: "{that}.model.derived.cDivided",
+                    target: "derived.cQuantized",
+                    singleTransform: {
+                        type: "Math.floor"
+                    }
+                }
+            ]
         });
     },
     function () {
@@ -114,6 +134,51 @@ fluid.promise.sequence([
                     backward: "never"
                 },
                 {
+                    source: "{asterics}.model.derived.cQuantized",
+                    target: "controls.activeNote",
+                    singleTransform: {
+                        type: "fluid.transforms.valueMapper",
+                        inputPath: "",
+                        options: [
+                            { inputValue: 0, outputValue: joystickPitchBase + 0 },
+                            { inputValue: 1, outputValue: -1 },
+                            { inputValue: 2, outputValue: joystickPitchBase + 2 },
+                            { inputValue: 3, outputValue: -1 },
+                            { inputValue: 4, outputValue: joystickPitchBase + 4 },
+                            { inputValue: 5, outputValue: -1 },
+                            { inputValue: 6, outputValue: joystickPitchBase + 5 },
+                            { inputValue: 7, outputValue: -1 },
+                            { inputValue: 8, outputValue: joystickPitchBase + 7 },
+                            { inputValue: 9, outputValue: -1 },
+                            { inputValue: 10, outputValue: joystickPitchBase + 9 },
+                            { inputValue: 11, outputValue: -1 },
+                            { inputValue: 12, outputValue: joystickPitchBase + 10 },
+                            { inputValue: 13, outputValue: -1 },
+                            { inputValue: 14, outputValue: joystickPitchBase + 12 + 0 },
+                            { inputValue: 15, outputValue: -1 },
+                            { inputValue: 16, outputValue: joystickPitchBase + 12 + 2 },
+                            { inputValue: 17, outputValue: -1 },
+                            { inputValue: 18, outputValue: joystickPitchBase + 12 + 4 },
+                            { inputValue: 19, outputValue: -1 },
+                            { inputValue: 20, outputValue: joystickPitchBase + 12 + 5 },
+                            { inputValue: 21, outputValue: -1 },
+                            { inputValue: 22, outputValue: joystickPitchBase + 12 + 7 },
+                            { inputValue: 23, outputValue: -1 },
+                            { inputValue: 24, outputValue: joystickPitchBase + 12 + 9 },
+                            { inputValue: 25, outputValue: -1 },
+                            { inputValue: 26, outputValue: joystickPitchBase + 12 + 10 },
+                            { inputValue: 27, outputValue: -1 },
+                            { inputValue: 28, outputValue: joystickPitchBase + 24 + 0 },
+                            { inputValue: 29, outputValue: -1 },
+                            { inputValue: 30, outputValue: joystickPitchBase + 24 + 2 },
+                            { inputValue: 31, outputValue: -1 },
+                            { inputValue: 32, outputValue: -1 }
+                        ]
+                    },
+                    forward: "liveOnly",
+                    backward: "never"
+                },
+                {
                     source: "{sensors}.model.orientation.gammaAbs",
                     target: "controls.tremoloFreq",
                     singleTransform: {
@@ -121,6 +186,17 @@ fluid.promise.sequence([
                         factor: 0.2
                     },
                     forward: "always",
+                    backward: "never"
+                },
+                {
+                    source: "{asterics}.model.inputs.c",
+                    target: "controls.pitchFactor",
+                    singleTransform: {
+                        type: "fluid.transforms.linearScale",
+                        factor: 1/100,
+                        offset: -128/100
+                    },
+                    forward: "liveOnly",
                     backward: "never"
                 }
             ]
