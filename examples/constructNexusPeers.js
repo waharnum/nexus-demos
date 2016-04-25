@@ -49,6 +49,13 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.zoneController", {
     }
 });
 
+gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.pianoController", {
+    type: "fluid.modelComponent",
+    model: {
+        activeNote: -1
+    }
+});
+
 gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.sensors", {
     type: "fluid.modelComponent",
     model: {
@@ -68,6 +75,15 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.synth", {
     modelRelay: [
         {
             source: "{control}.model.activeNote",
+            target: "controls.activeNote",
+            singleTransform: {
+                type: "fluid.transforms.identity"
+            },
+            forward: "always",
+            backward: "never"
+        },
+        {
+            source: "{pianoController}.model.activeNote",
             target: "controls.activeNote",
             singleTransform: {
                 type: "fluid.transforms.identity"
@@ -110,7 +126,7 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.synth", {
                 type: "fluid.transforms.linearScale",
                 factor: 0.2
             },
-            forward: "always",
+            forward: "liveOnly",
             backward: "never"
         }
     ]

@@ -14,6 +14,8 @@
         "headtracker-synth": "colinbdclark/flocking-nexus-headtracker-synth#review-example",
         "infusion": "2.0.0-dev.20160309T145652Z.9f515ec",
         "node-static": "0.7.7",
-        "sensorapijs": "simonbates/p4a-sensorAPI"
+        "sensorapijs": "simonbates/p4a-sensorAPI",
+        "qwerty-hancock": "0.5.1",
+        "flocking": "colinbdclark/flocking"
     }
 }
