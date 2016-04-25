@@ -15,23 +15,6 @@ gpii.constructNexusPeer = function (host, port, componentPath, componentOptions)
         }
     };
 
-    var req = http.request(postOptions);
-
-    req.write(JSON.stringify(componentOptions));
-    req.end();
-};
-
-gpii.constructNexusPeerReturnPromise = function (host, port, componentPath, componentOptions) {
-    var postOptions = {
-        host: host,
-        port: port,
-        method: "POST",
-        path: "/components/" + componentPath,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    };
-
     var promise = fluid.promise();
 
     var req = http.request(postOptions, function () {
