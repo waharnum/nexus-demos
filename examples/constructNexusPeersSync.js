@@ -18,7 +18,7 @@ var midiLima = [
 ];
 
 var joystickPitchBase = 72;
-var joystickQuantizeSteps = 32; // Number of notes = this / 2 (with entries of -1 inserted between notes)
+var joystickQuantizeSteps = 16; // Number of notes = joystickQuantizeSteps / 2 (entries of -1 between notes)
 
 fluid.promise.sequence([
     function () {
