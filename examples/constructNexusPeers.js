@@ -128,17 +128,6 @@ gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.synth", {
             },
             forward: "liveOnly",
             backward: "never"
-        },
-        {
-            source: "{asterics}.model.inputs.c",
-            target: "controls.pitchFactor",
-            singleTransform: {
-                type: "fluid.transforms.linearScale",
-                factor: 1/100,
-                offset: -128/100
-            },
-            forward: "liveOnly",
-            backward: "never"
         }
     ]
 });
