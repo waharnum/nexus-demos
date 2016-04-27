@@ -54,7 +54,11 @@
         </main>
 
         <script>
-            window.zoneController = gpii.nexusZoneController("body");
+            window.zoneController = gpii.nexusZoneController("body", {
+                members: {
+                    nexusHost: window.location.hostname
+                }
+            });
         </script>
     </body>
 </html>
