@@ -1,11 +1,11 @@
 {
-    "name": "gpii-nexus-examples",
+    "name": "gpii-nexus-demos",
     "version": "0.1.0",
     "license": "BSD-3-Clause",
     "author": "GPII",
     "repository": {
         "type": "git",
-        "url": "https://github.com/simonbates/nexus-examples.git"
+        "url": "https://github.com/simonbates/nexus-demos.git"
     },
     "dependencies": {
         "grunt": "0.4.5",

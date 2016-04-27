@@ -1,20 +1,20 @@
-Nexus Examples
-==============
+Nexus Demos
+===========
 
-This repository contains some examples of using the GPII Nexus
-integration technology.
+This repository contains some demos showing the GPII Nexus integration
+technology.
 
-Getting the examples and installing dependencies
-------------------------------------------------
+Getting the demos and installing dependencies
+---------------------------------------------
 
 ```
-$ git clone https://github.com/simonbates/nexus-examples.git
-$ cd nexus-examples
+$ git clone https://github.com/simonbates/nexus-demos.git
+$ cd nexus-demos
 $ npm install
 ```
 
-Running the examples
---------------------
+Running the demos
+-----------------
 
 ### 1. Run the Nexus
 
@@ -23,33 +23,33 @@ Run the Nexus.
 ### 2. Construct the Nexus peers
 
 ```
-> node examples/constructNexusPeers.js
+> node demos/constructNexusPeers.js
 ```
 
-### 3. Serve and visit the examples web pages
+### 3. Serve and visit the demo web pages
 
 This repo contains a simple static webserver configuration, or you can
 use a webserver that you've already got set up.
 
 There is a top level `index.html` with links to the individual
-examples.
+demos.
 
-To use the webserver configured in `nexus-examples`:
+To use the webserver configured in `nexus-demos`:
 
 ```
-$ node nexus-examples.js
+$ node nexus-demos.js
 ```
 
 Then, point your web browser to:
 
 - [http://localhost:8080/](http://localhost:8080/)
 
-### 4. Run AsTeRICS ACS and ARE, and load the model
+### 4. Run AsTeRICS ACS and ARE, and load a model
 
 - Use the AsTeRICS fork with the NexusConnector component at https://github.com/simonbates/AsTeRICS/tree/GPII-1543
 - Run ACS
 - Run ARE
-- Upload and run the `examples/AsTeRICS/Facetracker to NexusConnector.acs` model
+- Upload and run one of the models in `demos/AsTeRICS` such as `Facetracker to NexusConnector.acs`
 
 Instructions for building the ARE can be found here:
 https://github.com/simonbates/AsTeRICS/blob/GPII-1543/ReadMe.md
