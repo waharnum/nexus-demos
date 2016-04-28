@@ -28,8 +28,9 @@
     "node": true,
 
     "globals": {
-        "fluid": true,
+        "flock": false,
+        "fluid": false,
         "gpii": true,
-        "JSON": true
+        "JSON": false
     }
 }
