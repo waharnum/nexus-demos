@@ -8,9 +8,9 @@ Getting the demos and installing dependencies
 ---------------------------------------------
 
 ```
-$ git clone https://github.com/simonbates/nexus-demos.git
-$ cd nexus-demos
-$ npm install
+> git clone https://github.com/simonbates/nexus-demos.git
+> cd nexus-demos
+> npm install
 ```
 
 Running the demos
@@ -37,7 +37,7 @@ demos.
 To use the webserver configured in `nexus-demos`:
 
 ```
-$ node nexus-demos.js
+> node nexus-demos.js
 ```
 
 Then, point your web browser to:
