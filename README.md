@@ -1,8 +1,8 @@
 Nexus Demos
 ===========
 
-This repository contains some demos showing the GPII Nexus integration
-technology.
+This repository contains some demos showing usage of the GPII Nexus
+integration technology.
 
 Getting the demos and installing dependencies
 ---------------------------------------------
@@ -49,7 +49,7 @@ Then, point your web browser to:
 - Use the AsTeRICS fork with the NexusConnector component at https://github.com/simonbates/AsTeRICS/tree/GPII-1543
 - Run ACS
 - Run ARE
-- Upload and run one of the models in `demos/AsTeRICS` such as `Facetracker to NexusConnector.acs`
+- Upload and run one of the models in `asterics-models` such as `Facetracker to NexusConnector.acs`
 
 Instructions for building the ARE can be found here:
 https://github.com/simonbates/AsTeRICS/blob/GPII-1543/ReadMe.md
