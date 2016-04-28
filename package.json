@@ -15,6 +15,7 @@
         "node-static": "0.7.7",
         "sensorapijs": "simonbates/p4a-sensorAPI",
         "qwerty-hancock": "0.5.1",
-        "flocking": "colinbdclark/flocking"
+        "flocking": "colinbdclark/flocking",
+        "p5": "0.4.24"
     }
 }
