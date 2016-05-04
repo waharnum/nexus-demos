@@ -10,7 +10,7 @@ document.registerElement("nexus-square", {
                 var nexusHost = window.location.hostname;
                 var nexusPort = 9081;
 
-                var websocket = new WebSocket("ws://" + nexusHost + ":" + nexusPort + "/bindModel/nexus.asterics/inputs");
+                var websocket = new WebSocket("ws://" + nexusHost + ":" + nexusPort + "/bindModel/nexus.asterics/connector.inputs");
                 websocket.onmessage = function (evt) {
                     var inputs = JSON.parse(evt.data);
                     astericsA = inputs.a;

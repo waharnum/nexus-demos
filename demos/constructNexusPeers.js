@@ -30,25 +30,30 @@ fluid.promise.sequence([
         return gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.asterics", {
             type: "fluid.modelComponent",
             model: {
-                inputs: {
-                    a: 0,
-                    b: 0,
-                    c: 0,
-                    d: 0
+                connector: {
+                    inputs: {
+                        a: 0,
+                        b: 0,
+                        c: 0,
+                        d: 0
+                    },
+                    outputs: {
+                        outStrOne: ""
+                    }
                 }
             },
             modelRelay: [
                 {
-                    source: "{that}.model.inputs.c",
-                    target: "derived.cDivided",
+                    source: "{that}.model.connector.inputs.c",
+                    target: "derived.inputs.cDivided",
                     singleTransform: {
                         type: "fluid.transforms.linearScale",
                         factor: joystickQuantizeSteps/256
                     }
                 },
                 {
-                    source: "{that}.model.derived.cDivided",
-                    target: "derived.cQuantized",
+                    source: "{that}.model.derived.inputs.cDivided",
+                    target: "derived.inputs.cQuantized",
                     singleTransform: {
                         type: "Math.floor"
                     }
@@ -151,7 +156,7 @@ fluid.promise.sequence([
                     backward: "never"
                 },
                 {
-                    source: "{asterics}.model.derived.cQuantized",
+                    source: "{asterics}.model.derived.inputs.cQuantized",
                     target: "controls.activeNote",
                     singleTransform: {
                         type: "fluid.transforms.valueMapper",
