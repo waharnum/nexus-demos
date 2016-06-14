@@ -32,13 +32,24 @@ fluid.promise.sequence([
             model: {
                 connector: {
                     inputs: {
-                        a: 0,
-                        b: 0,
-                        c: 0,
-                        d: 0
+                        in1d: 0,
+                        in2d: 0,
+                        in3d: 0,
+                        in4d: 0,
+                        in5s: "",
+                        in6s: "",
+                        in7s: "",
+                        in8s: ""
                     },
                     outputs: {
-                        outStrOne: ""
+                        out1d: 0,
+                        out2d: 0,
+                        out3d: 0,
+                        out4d: 0,
+                        out5s: "",
+                        out6s: "",
+                        out7s: "",
+                        out8s: ""
                     }
                 }
             },

@@ -1,0 +1,812 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="E:\nexus-demos\asterics-models\NexusConnector Test.acs_2016_6_14_12_46" version="20130320">
+  <components>
+    <component id="NexusConnector.1" type_id="asterics.NexusConnector">
+      <description>Nexus Connector</description>
+      <ports>
+        <inputPort portTypeID="in1d">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in2d">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in3d">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in4d">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in5s">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in6s">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in7s">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in8s">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5s">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6s">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7s">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8s">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>603</posX>
+        <posY>33</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="1000" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="0.01" />
+        <property name="amplitude" value="10" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>23</posX>
+        <posY>29</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+1" />
+      </properties>
+      <layout>
+        <posX>207</posX>
+        <posY>116</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+2" />
+      </properties>
+      <layout>
+        <posX>165</posX>
+        <posY>263</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.3" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+3" />
+      </properties>
+      <layout>
+        <posX>126</posX>
+        <posY>410</posY>
+      </layout>
+    </component>
+    <component id="EditBox.3" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="in7s" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="0" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>460</posX>
+        <posY>264</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2889</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="EditBox.2" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="in6s" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="0" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>345</posX>
+        <posY>364</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1667</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="EditBox.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="in5s" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="0" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>348</posX>
+        <posY>200</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="EditBox.4" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="in8s" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="0" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>461</posX>
+        <posY>420</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>4111</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Send" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Send" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>685</posX>
+        <posY>302</posY>
+      </layout>
+      <gui>
+        <posX>1062</posX>
+        <posY>5333</posY>
+        <width>1125</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out1d" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>827</posX>
+        <posY>7</posY>
+      </layout>
+      <gui>
+        <posX>2375</posX>
+        <posY>444</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out2d" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>828</posX>
+        <posY>173</posY>
+      </layout>
+      <gui>
+        <posX>2375</posX>
+        <posY>1667</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.3" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out3d" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>829</posX>
+        <posY>330</posY>
+      </layout>
+      <gui>
+        <posX>2375</posX>
+        <posY>2889</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.4" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out4d" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>827</posX>
+        <posY>485</posY>
+      </layout>
+      <gui>
+        <posX>2385</posX>
+        <posY>4121</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.5" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out5s" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>954</posX>
+        <posY>13</posY>
+      </layout>
+      <gui>
+        <posX>4750</posX>
+        <posY>333</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.6" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out6s" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>954</posX>
+        <posY>169</posY>
+      </layout>
+      <gui>
+        <posX>4750</posX>
+        <posY>1667</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.7" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out7s" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>955</posX>
+        <posY>329</posY>
+      </layout>
+      <gui>
+        <posX>4760</posX>
+        <posY>2898</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.8" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="out8s" />
+        <property name="default" value="" />
+        <property name="textPosition" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>954</posX>
+        <posY>490</posY>
+      </layout>
+      <gui>
+        <posX>4760</posX>
+        <posY>4121</posY>
+        <width>2188</width>
+        <height>1000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in1d" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in2d" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.3" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="MathEvaluator.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in3d" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="MathEvaluator.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in4d" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="EditBox.4" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in8s" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="EditBox.3" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in7s" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="EditBox.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in6s" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="NexusConnector.1" />
+        <port id="in5s" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out1d" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out2d" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out3d" />
+      </source>
+      <target>
+        <component id="TextDisplay.3" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out4d" />
+      </source>
+      <target>
+        <component id="TextDisplay.4" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out5s" />
+      </source>
+      <target>
+        <component id="TextDisplay.5" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out6s" />
+      </source>
+      <target>
+        <component id="TextDisplay.6" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out7s" />
+      </source>
+      <target>
+        <component id="TextDisplay.7" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="NexusConnector.1" />
+        <port id="out8s" />
+      </source>
+      <target>
+        <component id="TextDisplay.8" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_send">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EditBox.4" />
+          <eventPort id="send" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_send">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EditBox.3" />
+          <eventPort id="send" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_send">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EditBox.1" />
+          <eventPort id="send" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_send">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EditBox.2" />
+          <eventPort id="send" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>25</posX>
+      <posY>67</posY>
+      <width>7625</width>
+      <height>6667</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
