@@ -48,8 +48,8 @@
     fluid.nexusAstericsHeadTracker.messageListener = function (evt, incomingRange, applier) {
         var inputs = JSON.parse(evt.data);
         var newPosition = {
-            x: fluid.nexusAstericsHeadTracker.normalizeAndClamp(incomingRange.start, incomingRange.stop, inputs.a),
-            y: fluid.nexusAstericsHeadTracker.normalizeAndClamp(incomingRange.start, incomingRange.stop, inputs.b)
+            x: fluid.nexusAstericsHeadTracker.normalizeAndClamp(incomingRange.start, incomingRange.stop, inputs.in1d),
+            y: fluid.nexusAstericsHeadTracker.normalizeAndClamp(incomingRange.start, incomingRange.stop, inputs.in2d)
         };
         applier.change("position", newPosition);
     };

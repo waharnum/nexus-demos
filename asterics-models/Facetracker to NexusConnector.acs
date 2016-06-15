@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="E:\nexus-examples\examples\AsTeRICS\Facetracker to NexusConnector.acs_2016_4_4_16_47" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="E:\nexus-demos\asterics-models\Facetracker to NexusConnector.acs_2016_6_15_13_59" version="20130320">
   <components>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -144,18 +144,54 @@
     <component id="NexusConnector.2" type_id="asterics.NexusConnector">
       <description>Nexus Connector</description>
       <ports>
-        <inputPort portTypeID="A">
+        <inputPort portTypeID="in1d">
           <properties />
         </inputPort>
-        <inputPort portTypeID="B">
+        <inputPort portTypeID="in2d">
           <properties />
         </inputPort>
-        <inputPort portTypeID="C">
+        <inputPort portTypeID="in3d">
           <properties />
         </inputPort>
-        <inputPort portTypeID="D">
+        <inputPort portTypeID="in4d">
           <properties />
         </inputPort>
+        <inputPort portTypeID="in5s">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in6s">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in7s">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in8s">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4d">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5s">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6s">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7s">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8s">
+          <properties />
+        </outputPort>
       </ports>
       <properties />
       <layout>
@@ -185,16 +221,6 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.4">
-      <source>
-        <component id="Integrate.2" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="NexusConnector.2" />
-        <port id="B" />
-      </target>
-    </channel>
     <channel id="binding.3">
       <source>
         <component id="Integrate.1" />
@@ -202,7 +228,17 @@
       </source>
       <target>
         <component id="NexusConnector.2" />
-        <port id="A" />
+        <port id="in1d" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Integrate.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="NexusConnector.2" />
+        <port id="in2d" />
       </target>
     </channel>
   </channels>

@@ -55,16 +55,16 @@ fluid.promise.sequence([
             },
             modelRelay: [
                 {
-                    source: "{that}.model.connector.inputs.c",
-                    target: "derived.inputs.cDivided",
+                    source: "{that}.model.connector.inputs.in3d",
+                    target: "derived.inputs.joystickXScaled",
                     singleTransform: {
                         type: "fluid.transforms.linearScale",
                         factor: joystickQuantizeSteps/256
                     }
                 },
                 {
-                    source: "{that}.model.derived.inputs.cDivided",
-                    target: "derived.inputs.cQuantized",
+                    source: "{that}.model.derived.inputs.joystickXScaled",
+                    target: "derived.inputs.joystickXQuantized",
                     singleTransform: {
                         type: "Math.floor"
                     }
@@ -167,7 +167,7 @@ fluid.promise.sequence([
                     backward: "never"
                 },
                 {
-                    source: "{asterics}.model.derived.inputs.cQuantized",
+                    source: "{asterics}.model.derived.inputs.joystickXQuantized",
                     target: "controls.activeNote",
                     singleTransform: {
                         type: "fluid.transforms.valueMapper",
