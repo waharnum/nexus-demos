@@ -78,8 +78,8 @@
                 id: "tremolo",
                 ugen: "flock.ugen.sinOsc",
                 freq: 1,
-                add: 0.5,
-                mul: 0.5
+                add: 0.1,
+                mul: 0.1
             }
         },
 
@@ -136,7 +136,11 @@
             speed: activeNote >= 0 ? that.model.speeds[activeNote] : 0.0
         };
 
-        that.applier.change("inputs.player", changeSpec);
+        // Only trigger a change when source > 0 (and therefore, speed > 0)
+        // Sending a change with speed == 0 causes the Flocking active voices array to fill up
+        if (changeSpec.trigger.source > 0) {
+            that.applier.change("inputs.player", changeSpec);
+        }
     };
 
     fluid.defaults("fluid.trackerSynth.bonang.bufferLoader", {
