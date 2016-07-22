@@ -307,7 +307,7 @@ fluid.promise.sequence([
             },
             modelRelay: [
                 {
-                    source: "{sensors}.model.orientation.gamma",
+                    source: "{sensors}.model.orientation.alpha",
                     target: "position.armPosition",
                     singleTransform: {
                         type: "fluid.transforms.linearScale",
