@@ -17,6 +17,10 @@ var midiLima = [
     9   // A 105/64
 ];
 
+var degreesToRadians = function (degrees) {
+    return degrees * Math.PI / 180;
+};
+
 var joystickPitchBase = 72;
 var joystickQuantizeSteps = 16; // Number of notes = joystickQuantizeSteps / 2 (entries of -1 between notes)
 
@@ -107,13 +111,26 @@ fluid.promise.sequence([
             model: {
                 orientation: { }
             },
-            modelRelay: {
-                source: "{that}.model.orientation.gamma",
-                target: "orientation.gammaAbs",
-                singleTransform: {
-                    type: "Math.abs"
-                }
-            }
+            modelRelay: [{
+                    source: "{that}.model.orientation.gamma",
+                    target: "orientation.gammaAbs",
+                    singleTransform: {
+                        type: "Math.abs"
+                    }
+                },
+                {
+                    source: "{that}.model.orientation.alpha",
+                    target: "orientation.alphaAbs",
+                    singleTransform: {
+                        type: "Math.abs"
+                    }
+                },{
+                    source: "{that}.model.orientation.beta",
+                    target: "orientation.betaAbs",
+                    singleTransform: {
+                        type: "Math.abs"
+                    }
+                }]
         });
     },
     function () {
@@ -217,6 +234,84 @@ fluid.promise.sequence([
                     singleTransform: {
                         type: "fluid.transforms.linearScale",
                         factor: 0.2
+                    },
+                    forward: "always",
+                    backward: "never"
+                }
+            ]
+        });
+    },
+    function () {
+        return gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.bonang.johnTravoltage", {
+            type: "fluid.modelComponent",
+            model: {
+                // In degrees, full 360
+                position: {
+                    armPosition: 90,
+                    // In degrees, 0-180
+                    legPosition: 270
+                }
+            },
+            modelRelay: [
+                {
+                    source: "{zoneController}.model.activeZoneIdx",
+                    target: "position.armPosition",
+                    singleTransform: {
+                        type: "fluid.transforms.valueMapper",
+                        inputPath: "",
+                        options: [
+                            { inputValue: 0, outputValue: 225 },
+                            { inputValue: 1, outputValue: 270 },
+                            { inputValue: 2, outputValue: 315 },
+                            { inputValue: 5, outputValue: 180 },
+                            { inputValue: 7, outputValue: 0 },
+                            { inputValue: 10, outputValue: 135 },
+                            { inputValue: 11, outputValue: 90 },
+                            { inputValue: 12, outputValue: 45 }
+                        ]
+                    },
+                    forward: "always",
+                    backward: "never"
+                },
+                {
+                    source: "{zoneController}.model.activeZoneIdx",
+                    target: "position.legPosition",
+                    singleTransform: {
+                        type: "fluid.transforms.valueMapper",
+                        inputPath: "",
+                        options: [
+                            // { inputValue: 3, outputValue: 135 },
+                            // { inputValue: 4, outputValue: 90 },
+                            { inputValue: 8, outputValue: 120 },
+                            { inputValue: 9, outputValue: 60 },
+                            { inputValue: 13, outputValue: 100 },
+                            { inputValue: 14, outputValue: 80 }
+                        ]
+                    },
+                    forward: "always",
+                    backward: "never"
+                }
+            ]
+        });
+    },
+    function () {
+        return gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.sensors.johnTravoltage", {
+            type: "fluid.modelComponent",
+            model: {
+                // In degrees, full 360
+                position: {
+                    armPosition: 90,
+                    // In degrees, 0-180
+                    legPosition: 270
+                }
+            },
+            modelRelay: [
+                {
+                    source: "{sensors}.model.orientation.gamma",
+                    target: "position.armPosition",
+                    singleTransform: {
+                        type: "fluid.transforms.linearScale",
+                        factor: 1
                     },
                     forward: "always",
                     backward: "never"
