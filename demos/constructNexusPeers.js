@@ -307,11 +307,13 @@ fluid.promise.sequence([
             },
             modelRelay: [
                 {
-                    source: "{sensors}.model.orientation.alpha",
+                    source: "{sensors}.model.orientation.beta",
                     target: "position.armPosition",
                     singleTransform: {
-                        type: "fluid.transforms.linearScale",
-                        factor: 1
+                        type: "fluid.transforms.binaryOp",
+                        leftPath: "",
+                        right: 180,
+                        operator: "+"
                     },
                     forward: "always",
                     backward: "never"
