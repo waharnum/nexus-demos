@@ -27,14 +27,24 @@ body {
     border-radius: 1.2em;
     background-color: #333;
     margin: 0.5em;
+    line-height: 10em;
+    text-align: center;    
 }
 
 .zone.arm {
     background-color: #555;
 }
 
+.zone.arm:before {
+    content: "Arm "
+}
+
 .zone.leg {
     background-color: #777;
+}
+
+.zone.leg:before {
+    content: "Leg "
 }
 
 .null {
