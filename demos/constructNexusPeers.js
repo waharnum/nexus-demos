@@ -3,7 +3,7 @@
 var fluid = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 
-require("../src/nexusUtils.js");
+require("gpii-nexus-client");
 
 var nexusHost = "localhost";
 var nexusPort = 9081;
