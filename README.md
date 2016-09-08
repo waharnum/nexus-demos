@@ -54,13 +54,10 @@ Then, point your web browser to:
 Instructions for building the ARE can be found here:
 https://github.com/simonbates/AsTeRICS/blob/GPII-1543/ReadMe.md
 
-If you are running AsTeRICS on a different machine from the Nexus, you
-will need to tell the NexusConnector AsTeRICS component where to
-connect to. At this point in development, the URL is hardcoded in the
-NexusConnector source code and you will need to edit the source and
-rebuild the component. The source code for the NexusConnector
-component can be found at this point in the source tree:
+The AsTeRICS NexusConnector component has properties for configuring
+the address of the Nexus instance to connect to and the component path
+to bind to. It has the following properties:
 
-- https://github.com/simonbates/AsTeRICS/blob/GPII-1543/ARE/components/processor.nexusconnector/src/main/java/eu/asterics/component/processor/nexusconnector/NexusConnectorInstance.java
-
-Look for `ws://localhost:9081/bindModel/nexus.asterics/inputs`
+- nexusHostname
+- nexusPort
+- nexusComponentPath
