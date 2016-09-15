@@ -143,8 +143,8 @@ fluid.promise.sequence([
                     target: "controls.activeNote",
                     singleTransform: {
                         type: "fluid.transforms.valueMapper",
-                        inputPath: "",
-                        options: [
+                        defaultInputPath: "",
+                        match: [
                             { inputValue: -1, outputValue: -1 },
                             { inputValue: 0, outputValue: zoneControllerMidiBase + midiLima[0] },
                             { inputValue: 1, outputValue: zoneControllerMidiBase + midiLima[1] },
@@ -171,8 +171,8 @@ fluid.promise.sequence([
                     target: "controls.activeNote",
                     singleTransform: {
                         type: "fluid.transforms.valueMapper",
-                        inputPath: "",
-                        options: [
+                        defaultInputPath: "",
+                        match: [
                             { inputValue: 0, outputValue: joystickPitchBase + 0 },
                             { inputValue: 1, outputValue: -1 },
                             { inputValue: 2, outputValue: joystickPitchBase + 2 },
