@@ -33,7 +33,7 @@
                     "{that}",
                     "{that}.applier",
                     "{that}.nexusBoundModelPath",
-                    "{arguments}.0" // data
+                    "{arguments}.0" // event data
                 ]
             }
         },
@@ -53,11 +53,17 @@
         });
     };
 
-    gpii.nexusOrientationSensor.handleSensorEvent = function (that, applier, modelPath, data) {
+    gpii.nexusOrientationSensor.handleSensorEvent = function (that, applier, modelPath, eventData) {
         var now = Date.now();
         if (now > that.lastUpdated + that.minimumUpdatePeriodMs) {
             that.lastUpdated = now;
-            applier.change(modelPath, data);
+            // Update the model with the orientation info from eventData
+            applier.change(modelPath, {
+                alpha: eventData.alpha,
+                beta: eventData.beta,
+                gamma: eventData.gamma,
+                absolute: eventData.absolute
+            });
         }
     };
 
