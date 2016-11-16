@@ -1,15 +1,15 @@
 Running Nexus on a C.H.I.P.
 ===========================
 
-Flash CHIP with headless OS image
----------------------------------
+Flash the CHIP with the headless OS image
+-----------------------------------------
 
 See: http://docs.getchip.com/chip.html#flash-chip-with-an-os
 
 Put the CHIP into FEL mode:
 
 - Use a jumper wire to connect the GND and FEL pins
-- Connect CHIP to computer with USB cable
+- Connect the CHIP to a computer using a USB cable
 
 On Linux, we can check that CHIP is in FEL mode with lsusb:
 
@@ -37,10 +37,10 @@ $ picocom -b 115200 /dev/ttyACM0
 
 To quit picocom: C-a C-x
 
-See http://docs.getchip.com/chip.html#headless-chip
+See:
 
+- http://docs.getchip.com/chip.html#headless-chip
 - http://blog.nextthing.co/secure-a-chip/
-
 - https://bbs.nextthing.co/t/setting-up-chip-as-a-headless-server-with-minimal-tools/1505
 
 Change the password for the chip user:
@@ -81,7 +81,7 @@ I used a Nintendo Wii USB ethernet adapter with an ASIX AX88772 chipset (powered
 
 ```
 $ sudo apt update
-$ sudp apt full-upgrade
+$ sudo apt full-upgrade
 ```
 
 Configure a wireless network
