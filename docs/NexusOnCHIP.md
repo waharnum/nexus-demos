@@ -6,6 +6,10 @@ Flash the CHIP with the headless OS image
 
 See: http://docs.getchip.com/chip.html#flash-chip-with-an-os
 
+First, do any operating system specific set up for the flasher:
+
+- http://docs.getchip.com/chip.html#web-flasher-os-specific-issues
+
 Put the CHIP into FEL mode:
 
 - Use a jumper wire to connect the GND and FEL pins
@@ -18,13 +22,7 @@ $ lsusb | grep -e 1f3a -e 18d1 -e 067b
 Bus 003 Device 005: ID 1f3a:efe8 Onda (unverified) V972 tablet in flashing mode
 ```
 
-Now we can install the OS image using the Chrome flasher.
-
-First, do any operating system specific set up for the flasher:
-
-- http://docs.getchip.com/chip.html#web-flasher-os-specific-issues
-
-The flasher is at:
+Now we can install the OS image using the Chrome flasher:
 
 - http://flash.getchip.com/
 
@@ -84,8 +82,8 @@ $ sudo apt update
 $ sudo apt full-upgrade
 ```
 
-Configure a wireless network
-----------------------------
+Configure the wireless interface and access point
+-------------------------------------------------
 
 See: https://bbs.nextthing.co/t/create-a-very-basic-wifi-access-point/1727
 
