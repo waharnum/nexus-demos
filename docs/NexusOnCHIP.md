@@ -145,6 +145,28 @@ Start the access point:
 $ sudo hostapd /etc/hostapd.conf
 ```
 
+Configure the access point to start when wlan1 comes up (at boot)
+-----------------------------------------------------------------
+
+Add the following line to the wlan1 entry in `/etc/network/interfaces`:
+
+```
+hostapd /etc/hostapd.conf
+```
+
+My complete `/etc/network/interfaces` file is:
+
+```
+source-directory /etc/network/interfaces.d
+
+auto wlan1
+
+iface wlan1 inet static
+  hostapd /etc/hostapd.conf
+  address 172.20.0.1
+  netmask 255.255.255.0
+```
+
 Install Node.js
 ---------------
 
