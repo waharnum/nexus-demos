@@ -223,5 +223,13 @@ fluid.promise.sequence([
                 }
             ]
         });
+    },
+    function () {
+        return gpii.constructNexusPeer(nexusHost, nexusPort, "nexus.brailleDisplay", {
+            type: "fluid.modelComponent",
+            model: {
+                displayText: ""
+            }
+        });
     }
 ]);
