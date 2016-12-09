@@ -10,7 +10,7 @@ Test with python3:
     >>> brl.enterTtyMode(1)
     >>> brl.writeText('hello, world')
 
-Create a systemd service at `/lib/systemd/system/nexus_braille_display.service`:
+Create a systemd service at `/etc/systemd/system/nexus_braille_display.service`:
 
     [Unit]
     Description=Nexus Braille display driver
@@ -23,6 +23,10 @@ Create a systemd service at `/lib/systemd/system/nexus_braille_display.service`:
 
     [Install]
     WantedBy=multi-user.target
+
+Enable the service:
+
+    $ sudo systemctl enable nexus_braille_display.service
 
 Connect to the `nexusnet` network:
 

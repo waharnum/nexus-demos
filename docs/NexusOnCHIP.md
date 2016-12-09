@@ -17,10 +17,8 @@ Put the CHIP into FEL mode:
 
 On Linux, we can check that CHIP is in FEL mode with lsusb:
 
-```
-$ lsusb | grep -e 1f3a -e 18d1 -e 067b
-Bus 003 Device 005: ID 1f3a:efe8 Onda (unverified) V972 tablet in flashing mode
-```
+    $ lsusb | grep -e 1f3a -e 18d1 -e 067b
+    Bus 003 Device 005: ID 1f3a:efe8 Onda (unverified) V972 tablet in flashing mode
 
 Now we can install the OS image using the Chrome flasher:
 
@@ -29,9 +27,7 @@ Now we can install the OS image using the Chrome flasher:
 Log in over serial and secure the CHIP
 --------------------------------------
 
-```
-$ picocom -b 115200 /dev/ttyACM0
-```
+    $ picocom -b 115200 /dev/ttyACM0
 
 To quit picocom: C-a C-x
 
@@ -43,29 +39,21 @@ See:
 
 Change the password for the chip user:
 
-```
-$ passwd
-```
+    $ passwd
 
 Disable root ssh login:
 
 Edit `/etc/ssh/sshd_config` and set
 
-```
-PermitRootLogin no
-```
+    PermitRootLogin no
 
 Restart sshd:
 
-```
-$ sudo service ssh restart
-```
+    $ sudo service ssh restart
 
 Disable the root user password:
 
-```
-$ sudo passwd -l root
-```
+    $ sudo passwd -l root
 
 Change the hostname:
 
@@ -77,10 +65,8 @@ Connect to the internet and update the OS
 
 I used a Nintendo Wii USB ethernet adapter with an ASIX AX88772 chipset (powered USB hub needed as the CHIP cannot power the ethernet adapter directly).
 
-```
-$ sudo apt update
-$ sudo apt full-upgrade
-```
+    $ sudo apt update
+    $ sudo apt full-upgrade
 
 Configure the wireless interface and access point
 -------------------------------------------------
@@ -89,112 +75,106 @@ See: https://bbs.nextthing.co/t/create-a-very-basic-wifi-access-point/1727
 
 Install dnsmasq:
 
-```
-$ sudo apt install dnsmasq
-```
+    $ sudo apt install dnsmasq
 
 Create `/etc/dnsmasq.d/access_point.conf` with contents:
 
-```
-interface=wlan1
-dhcp-range=172.20.0.100,172.20.0.250,1h
-```
+    interface=wlan1
+    dhcp-range=172.20.0.100,172.20.0.250,1h
 
 Edit `/etc/network/interfaces` and add:
 
-```
-auto wlan1
+    auto wlan1
 
-iface wlan1 inet static
-  address 172.20.0.1
-  netmask 255.255.255.0
-```
+    iface wlan1 inet static
+      address 172.20.0.1
+      netmask 255.255.255.0
 
 Bring up the `wlan1` interface:
 
-```
-$ sudo ifup wlan1
-```
+    $ sudo ifup wlan1
 
 And verify that we have the assigned static address:
 
-```
-$ /sbin/ifconfig
-$ ip addr show wlan1
-```
+    $ /sbin/ifconfig
+    $ ip addr show wlan1
 
 Restart `dnsmasq`:
 
-```
-$ sudo /etc/init.d/dnsmasq restart
-```
+    $ sudo /etc/init.d/dnsmasq restart
 
 Create `/etc/hostapd.conf` with contents:
 
-```
-interface=wlan1
-driver=nl80211
-ssid=nexusnet
-channel=1
-ctrl_interface=/var/run/hostapd
-```
+    interface=wlan1
+    driver=nl80211
+    ssid=nexusnet
+    channel=1
+    ctrl_interface=/var/run/hostapd
 
 Start the access point:
 
-```
-$ sudo hostapd /etc/hostapd.conf
-```
+    $ sudo hostapd /etc/hostapd.conf
 
 Configure the access point to start when wlan1 comes up (at boot)
 -----------------------------------------------------------------
 
 Add the following line to the wlan1 entry in `/etc/network/interfaces`:
 
-```
-hostapd /etc/hostapd.conf
-```
+    hostapd /etc/hostapd.conf
 
 My complete `/etc/network/interfaces` file is:
 
-```
-source-directory /etc/network/interfaces.d
+    source-directory /etc/network/interfaces.d
 
-auto wlan1
+    auto wlan1
 
-iface wlan1 inet static
-  hostapd /etc/hostapd.conf
-  address 172.20.0.1
-  netmask 255.255.255.0
-```
+    iface wlan1 inet static
+      hostapd /etc/hostapd.conf
+      address 172.20.0.1
+      netmask 255.255.255.0
 
 Install Node.js
 ---------------
 
 The CHIP has an ARM7 processor.
 
-```
-$ wget https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-armv7l.tar.xz
-$ cd /opt
-$ sudo tar xf /home/chip/Downloads/node-v6.9.1-linux-armv7l.tar.xz
-```
+    $ wget https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-armv7l.tar.xz
+    $ cd /opt
+    $ sudo tar xf /home/chip/Downloads/node-v6.9.1-linux-armv7l.tar.xz
 
 Add the Node.js bin directory to the chip user `PATH` in `.profile`:
 
-```
-PATH=$PATH:/opt/node-v6.9.1-linux-armv7l/bin
-```
+    PATH=$PATH:/opt/node-v6.9.1-linux-armv7l/bin
 
 Install git
 -----------
 
-```
-$ sudo apt install git
-```
+    $ sudo apt install git
 
 Get Nexus and Nexus Demos
 -------------------------
 
-```
-$ git clone https://github.com/GPII/nexus.git
-$ git clone https://github.com/simonbates/nexus-demos.git
-```
+    $ git clone https://github.com/GPII/nexus.git
+    $ git clone https://github.com/simonbates/nexus-demos.git
+
+Start Nexus at boot with systemd
+--------------------------------
+
+Create a systemd service at `/etc/systemd/system/nexus.service`:
+
+    [Unit]
+    Description=Nexus
+
+    [Service]
+    WorkingDirectory=/home/chip/projects/gpii/nexus
+    ExecStart=/opt/node-v6.9.1-linux-armv7l/bin/node nexus.js
+    User=chip
+    Group=chip
+    Restart=on-failure
+
+    [Install]
+    WantedBy=multi-user.target
+
+And enable the service:
+
+    $ sudo systemctl enable nexus.service
