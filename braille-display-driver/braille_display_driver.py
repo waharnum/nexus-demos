@@ -6,10 +6,15 @@ import json
 import brlapi
 from ws4py.client.threadedclient import WebSocketClient
 
+nexus_host = 'nexuschip.local'
+nexus_port = 9081
+nexus_peer = 'nexus.brailleDisplay'
+tty = 1
+
 class BrailleDisplayClient(WebSocketClient):
-    def init_braille_display(self):
+    def init_braille_display(self, tty):
         self.brl = brlapi.Connection()
-        self.brl.enterTtyMode()
+        self.brl.enterTtyMode(tty)
 
     def received_message(self, m):
         # TODO: Do I have to deal with multi-part messages?
@@ -19,7 +24,8 @@ class BrailleDisplayClient(WebSocketClient):
                 self.brl.writeText(text)
 
 if __name__ == '__main__':
-    client = BrailleDisplayClient('ws://127.0.0.1:9081/bindModel/nexus.brailleDisplay/displayText')
-    client.init_braille_display()
+    nexus_peer_endpoint = 'ws://%s:%d/bindModel/%s/displayText' % (nexus_host, nexus_port, nexus_peer)
+    client = BrailleDisplayClient(nexus_peer_endpoint)
+    client.init_braille_display(tty)
     client.connect()
     client.run_forever()

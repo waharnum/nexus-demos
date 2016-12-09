@@ -23,3 +23,16 @@ Create a systemd service at `/lib/systemd/system/nexus_braille_display.service`:
 
     [Install]
     WantedBy=multi-user.target
+
+Connect to the `nexusnet` network:
+
+    $ sudo nmcli device wifi connect nexusnet ifname wlan0
+
+Check connection status:
+
+    $ nmcli device status
+    $ /sbin/ifconfig
+
+(The NetworkManager configuration files are stored in `/etc/NetworkManager`)
+
+See: http://docs.getchip.com/chip.html#wifi-connection
