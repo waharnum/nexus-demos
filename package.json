@@ -17,6 +17,8 @@
         "qwerty-hancock": "0.5.1",
         "flocking": "colinbdclark/flocking",
         "p5": "0.4.24",
-        "nexus-client": "simonbates/nexus-client"
-    }
+        "nexus-client": "simonbates/nexus-client",
+        "serialport": "4.0.7"
+    },
+    "private": true
 }
