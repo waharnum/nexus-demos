@@ -42,11 +42,11 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
     },
 
     listeners: {
-        onData: {
+        "onData.parseResponse": {
             listener: "gpii.nexus.atlasScientificDriver.parseResponse",
             args: [
                 "{that}",
-                "{arguments}.0" // response
+                "{arguments}.0" // Response
             ]
         }
     }
@@ -71,19 +71,8 @@ gpii.nexus.atlasScientificDriver.constructSerialPort = function (devicePath, ser
 };
 
 gpii.nexus.atlasScientificDriver.parseResponse = function (that, response) {
-    // TODO: Parse response
-    that.events.onReading.fire(response);
-};
-
-// **********
-
-var driver = gpii.nexus.atlasScientificDriver({
-    devicePath: "/dev/ttyUSB0",
-    listeners: {
-        "onReading.log": function (data) {
-            console.log("Reading: " + data);
-        }
+    // If the response starts with a digit, parse as a reading
+    if (/^\d/.test(response)) {
+        that.events.onReading.fire(fluid.transform(response.split(","), parseFloat));
     }
-});
-
-driver.start();
+};
