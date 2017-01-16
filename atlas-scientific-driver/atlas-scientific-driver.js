@@ -32,13 +32,29 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
     invokers: {
         start: {
             "this": "{that}.serialPort",
-            method: "open"
+            method: "open",
+            args: ["{that}.openCallback"]
+        },
+        openCallback: {
+            funcName: "gpii.nexus.atlasScientificDriver.openCallback",
+            args: [
+                "{arguments}.0", // Error
+                "{that}.events.onStarted"
+            ]
+        },
+        sendDeviceInformationRequest: {
+            "this": "{that}.serialPort",
+            method: "write",
+            // TODO: Provide callback for error notification
+            args: ["I\r"]
         }
     },
 
     events: {
-        onData: null,
-        onReading: null
+        onStarted: null,
+        onData: null, // Response data string
+        onReading: null, // Array of numbers
+        onDeviceInformation: null // Device Information data
     },
 
     listeners: {
@@ -70,9 +86,25 @@ gpii.nexus.atlasScientificDriver.constructSerialPort = function (devicePath, ser
     return port;
 };
 
+gpii.nexus.atlasScientificDriver.openCallback = function (error, event) {
+    // TODO: Handle error from SerialPort open
+    if (!error) {
+        event.fire();
+    }
+};
+
 gpii.nexus.atlasScientificDriver.parseResponse = function (that, response) {
-    // If the response starts with a digit, parse as a reading
     if (/^\d/.test(response)) {
+        // Response starts with a digit, parse as a reading
         that.events.onReading.fire(fluid.transform(response.split(","), parseFloat));
+    } else if (response.startsWith("?I")) {
+        // Device information
+        var deviceInfoData = response.split(",");
+        if (deviceInfoData.length === 3) {
+            that.events.onDeviceInformation.fire({
+                deviceType: deviceInfoData[1],
+                firmwareVersion: deviceInfoData[2]
+            });
+        }
     }
 };
