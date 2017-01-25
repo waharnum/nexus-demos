@@ -133,6 +133,11 @@ My complete `/etc/network/interfaces` file is:
       address 172.20.0.1
       netmask 255.255.255.0
 
+Disable any existing hostapd service startup (with our configuration,
+hostapd will be started when wlan1 is brought up):
+
+    $ sudo update-rc.d hostapd disable
+
 Install Node.js
 ---------------
 
