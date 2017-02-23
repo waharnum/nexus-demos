@@ -84,7 +84,7 @@ Create `/etc/dnsmasq.d/access_point.conf` with contents:
 
 Edit `/etc/network/interfaces` and add:
 
-    auto wlan1
+    allow-hotplug wlan1
 
     iface wlan1 inet static
       address 172.20.0.1
@@ -115,28 +115,32 @@ Start the access point:
 
     $ sudo hostapd /etc/hostapd.conf
 
-Configure the access point to start when wlan1 comes up (at boot)
------------------------------------------------------------------
+Configure the access point to start at boot
+-------------------------------------------
 
-Add the following line to the wlan1 entry in `/etc/network/interfaces`:
-
-    hostapd /etc/hostapd.conf
-
-My complete `/etc/network/interfaces` file is:
-
-    source-directory /etc/network/interfaces.d
-
-    auto wlan1
-
-    iface wlan1 inet static
-      hostapd /etc/hostapd.conf
-      address 172.20.0.1
-      netmask 255.255.255.0
-
-Disable any existing hostapd service startup (with our configuration,
-hostapd will be started when wlan1 is brought up):
+Disable any existing hostapd service startup:
 
     $ sudo update-rc.d hostapd disable
+
+Create a new systemd service at `/etc/systemd/system/hostapd-nexus.service`:
+
+    [Unit]
+    Description=hostapd Nexus service
+    Wants=network-manager.service
+    After=network-manager.service
+    Wants=module-init-tools.service
+    After=module-init-tools.service
+    ConditionPathExists=/etc/hostapd.conf
+
+    [Service]
+    ExecStart=/usr/sbin/hostapd /etc/hostapd.conf
+
+    [Install]
+    WantedBy=multi-user.target
+
+And enable the service:
+
+    $ sudo systemctl enable hostapd-nexus.service
 
 Install Node.js
 ---------------
