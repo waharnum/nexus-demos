@@ -115,7 +115,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
     devicePath: null, // To be provided by user
     nexusHost: "localhost",
     nexusPort: 9081,
-    nexusPeerPath: null, // To be provided by user
+    nexusPeerComponentPath: null, // To be provided by user
 
     components: {
         atlasScientificConnection: {
@@ -144,9 +144,18 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                 members: {
                     nexusHost: "{atlasScientificDriver}.options.nexusHost",
                     nexusPort: "{atlasScientificDriver}.options.nexusPort",
-                    nexusPeerComponentPath: "{atlasScientificDriver}.options.nexusPeerPath",
+                    nexusPeerComponentPath: "{atlasScientificDriver}.options.nexusPeerComponentPath",
                     nexusBoundModelPath: "sensorValue",
-                    sendsChangesToNexus: true
+                    sendsChangesToNexus: true,
+                    managesPeer: true,
+                    nexusPeerComponentOptions: {
+                        type: "fluid.modelComponent",
+                        options: {
+                            model: {
+                                sensorValue: 0
+                            }
+                        }
+                    }
                 },
                 model: {
                     sensorValue: 0
