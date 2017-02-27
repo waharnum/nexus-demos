@@ -149,12 +149,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     sendsChangesToNexus: true,
                     managesPeer: true,
                     nexusPeerComponentOptions: {
-                        type: "fluid.modelComponent",
-                        options: {
-                            model: {
-                                sensorValue: 0
-                            }
-                        }
+                        type: "gpii.nexus.atlasScientificDriver.phSensor"
                     }
                 },
                 model: {

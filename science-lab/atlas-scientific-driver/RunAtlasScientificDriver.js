@@ -10,7 +10,6 @@ var nexusPort = 9081;
 var nexusPeerComponentPath = "phSensor";
 
 // TODO: Read parameters from command line (such as devicePath)
-// TODO: Make new grade type for ph sensor peer
 // TODO: Query sensor for its type and create peer with appropriate name and grade
 
 gpii.nexus.atlasScientificDriver.exitProcess = function () {
