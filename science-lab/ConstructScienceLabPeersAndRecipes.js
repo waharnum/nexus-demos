@@ -76,7 +76,7 @@ fluid.promise.sequence([
                 listeners: {
                     "onDestroy.removePhSensorValue": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.phValue", undefined ]
+                        args: [ "sensorValues.phValue", null, "DELETE" ]
                     }
                 }
             }
@@ -110,7 +110,7 @@ fluid.promise.sequence([
                 listeners: {
                     "onDestroy.removeConductivitySensorValue": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.conductivityValue", undefined ]
+                        args: [ "sensorValues.conductivityValue", null, "DELETE" ]
                     }
                 }
             }
