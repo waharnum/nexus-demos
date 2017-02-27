@@ -26,6 +26,19 @@ fluid.promise.sequence([
         return gpii.writeNexusDefaults(
             nexusHost,
             nexusPort,
+            "gpii.nexus.atlasScientificDriver.conductivitySensor",
+            {
+                gradeNames: [ "fluid.modelComponent" ],
+                model: {
+                    sensorValue: 0
+                }
+            }
+        );
+    },
+    function () {
+        return gpii.writeNexusDefaults(
+            nexusHost,
+            nexusPort,
             "gpii.nexus.scienceLab.collector",
             {
                 gradeNames: [ "fluid.modelComponent" ],
@@ -70,6 +83,40 @@ fluid.promise.sequence([
         );
     },
     function () {
+        return gpii.writeNexusDefaults(
+            nexusHost,
+            nexusPort,
+            "gpii.nexus.scienceLab.sendConductivitySensor",
+            {
+                gradeNames: [ "gpii.nexus.recipeProduct" ],
+                componentPaths: {
+                    conductivitySensor: null,
+                    collector: null
+                },
+                components: {
+                    conductivitySensor: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.conductivitySensor)",
+                    collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
+                },
+                modelRelay: {
+                    source: "{conductivitySensor}.model.sensorValue",
+                    target: "{collector}.model.sensorValues.conductivityValue",
+                    forward: {
+                        excludeSource: "init"
+                    },
+                    singleTransform: {
+                        type: "fluid.identity"
+                    }
+                },
+                listeners: {
+                    "onDestroy.removeConductivitySensorValue": {
+                        listener: "{collector}.applier.change",
+                        args: [ "sensorValues.conductivityValue", undefined ]
+                    }
+                }
+            }
+        );
+    },
+    function () {
         return gpii.constructNexusPeer(nexusHost, nexusPort, "scienceLabCollector", {
             type: "gpii.nexus.scienceLab.collector"
         });
@@ -94,6 +141,30 @@ fluid.promise.sequence([
                 path: "sendPhSensor",
                 options: {
                     type: "gpii.nexus.scienceLab.sendPhSensor"
+                }
+            }
+        });
+    },
+    function () {
+        return gpii.addNexusRecipe(nexusHost, nexusPort, "sendConductivitySensor", {
+            reactants: {
+                conductivitySensor: {
+                    match: {
+                        type: "gradeMatcher",
+                        gradeName: "gpii.nexus.atlasScientificDriver.conductivitySensor"
+                    }
+                },
+                collector: {
+                    match: {
+                        type: "gradeMatcher",
+                        gradeName: "gpii.nexus.scienceLab.collector"
+                    }
+                }
+            },
+            product: {
+                path: "sendConductivitySensor",
+                options: {
+                    type: "gpii.nexus.scienceLab.sendConductivitySensor"
                 }
             }
         });

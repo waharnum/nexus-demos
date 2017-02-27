@@ -8,16 +8,17 @@
         "url": "https://github.com/simonbates/nexus-demos.git"
     },
     "dependencies": {
+        "commander": "2.9.0",
+        "flocking": "colinbdclark/flocking",
         "grunt": "0.4.5",
         "grunt-contrib-jshint": "1.0.0",
         "grunt-jsonlint": "1.0.7",
         "infusion": "2.0.0",
-        "node-static": "0.7.7",
-        "sensorapijs": "simonbates/p4a-sensorAPI",
-        "qwerty-hancock": "0.5.1",
-        "flocking": "colinbdclark/flocking",
-        "p5": "0.4.24",
         "nexus-client": "simonbates/nexus-client",
+        "node-static": "0.7.7",
+        "p5": "0.4.24",
+        "qwerty-hancock": "0.5.1",
+        "sensorapijs": "simonbates/p4a-sensorAPI",
         "serialport": "4.0.7"
     },
     "private": true

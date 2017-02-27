@@ -116,6 +116,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
     nexusHost: "localhost",
     nexusPort: 9081,
     nexusPeerComponentPath: null, // To be provided by user
+    nexusPeerComponentOptions: null, // To be provided by user
 
     components: {
         atlasScientificConnection: {
@@ -148,9 +149,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     nexusBoundModelPath: "sensorValue",
                     sendsChangesToNexus: true,
                     managesPeer: true,
-                    nexusPeerComponentOptions: {
-                        type: "gpii.nexus.atlasScientificDriver.phSensor"
-                    }
+                    nexusPeerComponentOptions: "{atlasScientificDriver}.options.nexusPeerComponentOptions"
                 },
                 model: {
                     sensorValue: 0
@@ -178,5 +177,13 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
 });
 
 gpii.nexus.atlasScientificDriver.updateModelSensorValue = function (nexusBinding, sensorReading) {
+    // Use the first value from the sensor reading
+    //
+    // For more information, see the Atlas Scientific circuit
+    // documentation:
+    //
+    // - https://www.atlas-scientific.com/_files/_datasheets/_circuit/pH_EZO_datasheet.pdf
+    // - https://www.atlas-scientific.com/_files/_datasheets/_circuit/EC_EZO_Datasheet.pdf
+    //
     nexusBinding.applier.change("sensorValue", sensorReading[0]);
 };
