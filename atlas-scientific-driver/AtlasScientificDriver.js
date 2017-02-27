@@ -172,7 +172,12 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                 "{that}.nexusBinding",
                 "{arguments}.0" // Sensor reading
             ]
-        }
+        },
+        deleteNexusPeerComponent: "{nexusBinding}.deleteNexusPeerComponent"
+    },
+
+    events: {
+        onNexusPeerComponentDeleted: "{nexusBinding}.events.onPeerDeleted"
     }
 
 });
