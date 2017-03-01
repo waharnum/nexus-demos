@@ -23,7 +23,8 @@ fluid.defaults("gpii.nexus.atlasScientificConnection", {
                     "{that}.options.devicePath",
                     "{that}.options.serialPortOptions",
                     "{that}.serialPortParser",
-                    "{that}.events.onData"
+                    "{that}.events.onData",
+                    "{that}.events.onClose"
                 ]
             }
         }
@@ -54,7 +55,8 @@ fluid.defaults("gpii.nexus.atlasScientificConnection", {
         onStarted: null,
         onData: null, // Response data string
         onReading: null, // Array of numbers
-        onDeviceInformation: null // Device Information data
+        onDeviceInformation: null, // Device Information data
+        onClose: null
     },
 
     listeners: {
@@ -72,7 +74,7 @@ gpii.nexus.atlasScientificConnection.constructReadlineCrParser = function () {
     return SerialPort.parsers.readline("\r");
 };
 
-gpii.nexus.atlasScientificConnection.constructSerialPort = function (devicePath, serialPortOptions, serialPortParser, onDataEvent) {
+gpii.nexus.atlasScientificConnection.constructSerialPort = function (devicePath, serialPortOptions, serialPortParser, onDataEvent, onCloseEvent) {
 
     var options = fluid.extend({}, serialPortOptions);
     options.parser = serialPortParser;
@@ -81,6 +83,10 @@ gpii.nexus.atlasScientificConnection.constructSerialPort = function (devicePath,
 
     port.on("data", function(data) {
         onDataEvent.fire(data);
+    });
+
+    port.on("close", function() {
+        onCloseEvent.fire();
     });
 
     return port;
@@ -145,7 +151,11 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     },
                     "onDeviceInformation.log": function (data) {
                         console.log("Device information: " + JSON.stringify(data));
-                    }
+                    },
+                    "onClose.log": function () {
+                        console.log("Close");
+                    },
+                    "onClose.destroyPeer": "{atlasScientificDriver}.events.doDestroyNexusPeer"
                 }
             }
         },
@@ -194,7 +204,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                             "{arguments}.0" // Sensor reading
                         ]
                     },
-                    "{atlasScientificDriver}.events.doNexusPeerDestroy": {
+                    "{atlasScientificDriver}.events.doDestroyNexusPeer": {
                         listener: "{that}.deleteNexusPeerComponent"
                     }
                 }
@@ -204,11 +214,11 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
 
     invokers: {
         start: "{atlasScientificConnection}.start",
-        destroyNexusPeerComponent: "{that}.events.doNexusPeerDestroy.fire"
+        destroyNexusPeerComponent: "{that}.events.doDestroyNexusPeer.fire"
     },
 
     events: {
-        doNexusPeerDestroy: null,
+        doDestroyNexusPeer: null,
         onNexusPeerComponentDestroyed: null
     }
 
