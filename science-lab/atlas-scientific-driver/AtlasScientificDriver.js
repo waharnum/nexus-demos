@@ -115,8 +115,21 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
     devicePath: null, // To be provided by user
     nexusHost: "localhost",
     nexusPort: 9081,
-    nexusPeerComponentPath: null, // To be provided by user
-    nexusPeerComponentOptions: null, // To be provided by user
+
+    circuitTypes: {
+        "EC": {
+            nexusPeerComponentPath: "conductivitySensor",
+            nexusPeerComponentOptions: {
+                type: "gpii.nexus.atlasScientificDriver.conductivitySensor"
+            }
+        },
+        "pH": {
+            nexusPeerComponentPath: "phSensor",
+            nexusPeerComponentOptions: {
+                type: "gpii.nexus.atlasScientificDriver.phSensor"
+            }
+        }
+    },
 
     components: {
         atlasScientificConnection: {
@@ -132,27 +145,58 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     },
                     "onDeviceInformation.log": function (data) {
                         console.log("Device information: " + JSON.stringify(data));
-                    },
-                    "onReading.updateModel": {
-                        listener: "{atlasScientificDriver}.updateModelSensorValue"
                     }
                 }
             }
         },
+
         nexusBinding: {
             type: "gpii.nexusWebSocketBoundComponent",
+            createOnEvent: "{atlasScientificConnection}.events.onDeviceInformation",
             options: {
+                circuitType: "{arguments}.0.deviceType",
                 members: {
                     nexusHost: "{atlasScientificDriver}.options.nexusHost",
                     nexusPort: "{atlasScientificDriver}.options.nexusPort",
-                    nexusPeerComponentPath: "{atlasScientificDriver}.options.nexusPeerComponentPath",
+                    nexusPeerComponentPath: {
+                        expander: {
+                            func: "gpii.nexus.atlasScientificDriver.lookupNexusPeerPath",
+                            args: [
+                                "{atlasScientificDriver}.options.circuitTypes",
+                                "{that}.options.circuitType"
+                            ]
+                        }
+                    },
+                    nexusPeerComponentOptions: {
+                        expander: {
+                            func: "gpii.nexus.atlasScientificDriver.lookupNexusPeerOptions",
+                            args: [
+                                "{atlasScientificDriver}.options.circuitTypes",
+                                "{that}.options.circuitType"
+                            ]
+                        }
+                    },
                     nexusBoundModelPath: "sensorValue",
                     sendsChangesToNexus: true,
-                    managesPeer: true,
-                    nexusPeerComponentOptions: "{atlasScientificDriver}.options.nexusPeerComponentOptions"
+                    managesPeer: true
                 },
                 model: {
                     sensorValue: 0
+                },
+                events: {
+                    onPeerDeleted: "{atlasScientificDriver}.events.onNexusPeerComponentDestroyed"
+                },
+                listeners: {
+                    "{atlasScientificConnection}.events.onReading": {
+                        listener: "gpii.nexus.atlasScientificDriver.updateModelSensorValue",
+                        args: [
+                            "{that}",
+                            "{arguments}.0" // Sensor reading
+                        ]
+                    },
+                    "{atlasScientificDriver}.events.doNexusPeerDestroy": {
+                        listener: "{that}.deleteNexusPeerComponent"
+                    }
                 }
             }
         }
@@ -160,21 +204,23 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
 
     invokers: {
         start: "{atlasScientificConnection}.start",
-        updateModelSensorValue: {
-            funcName: "gpii.nexus.atlasScientificDriver.updateModelSensorValue",
-            args: [
-                "{that}.nexusBinding",
-                "{arguments}.0" // Sensor reading
-            ]
-        },
-        deleteNexusPeerComponent: "{nexusBinding}.deleteNexusPeerComponent"
+        destroyNexusPeerComponent: "{that}.events.doNexusPeerDestroy.fire"
     },
 
     events: {
-        onNexusPeerComponentDeleted: "{nexusBinding}.events.onPeerDeleted"
+        doNexusPeerDestroy: null,
+        onNexusPeerComponentDestroyed: null
     }
 
 });
+
+gpii.nexus.atlasScientificDriver.lookupNexusPeerPath = function (circuitTypes, deviceType) {
+    return circuitTypes[deviceType].nexusPeerComponentPath;
+};
+
+gpii.nexus.atlasScientificDriver.lookupNexusPeerOptions = function (circuitTypes, deviceType) {
+    return circuitTypes[deviceType].nexusPeerComponentOptions;
+};
 
 gpii.nexus.atlasScientificDriver.updateModelSensorValue = function (nexusBinding, sensorReading) {
     // Use the first value from the sensor reading
