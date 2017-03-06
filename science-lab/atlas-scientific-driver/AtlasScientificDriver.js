@@ -194,7 +194,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     sensorValue: 0
                 },
                 events: {
-                    onPeerDeleted: "{atlasScientificDriver}.events.onNexusPeerComponentDestroyed"
+                    onPeerDestroyed: "{atlasScientificDriver}.events.onNexusPeerComponentDestroyed"
                 },
                 listeners: {
                     "{atlasScientificConnection}.events.onReading": {
@@ -205,7 +205,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                         ]
                     },
                     "{atlasScientificDriver}.events.doDestroyNexusPeer": {
-                        listener: "{that}.deleteNexusPeerComponent"
+                        listener: "{that}.destroyNexusPeerComponent"
                     }
                 }
             }
