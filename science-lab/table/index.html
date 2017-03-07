@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Table</title>
+
+        <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+
+        <script type="text/javascript" src="../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
+        <script type="text/javascript" src="js/NexusScienceLabTable.js"></script>
+    </head>
+    <body>
+        <div id="nexus-science-lab-table">
+        </div>
+        <script>
+            window.scienceLabTable = gpii.nexusScienceLabTable("#nexus-science-lab-table", {
+                members: {
+                    nexusHost: window.location.hostname
+                }
+            });
+        </script>
+    </body>
+</html>
