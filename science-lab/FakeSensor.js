@@ -1,3 +1,5 @@
+"use strict";
+
 var fluid = require("infusion"),
     gpii = fluid.registerNamespace("gpii");
 

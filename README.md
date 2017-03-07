@@ -23,7 +23,7 @@ Run the Nexus.
 ### 2. Construct the Nexus peers
 
 ```
-> node demos/constructNexusPeers.js
+> node music-demo/constructNexusPeers.js
 ```
 
 ### 3. Serve and visit the demo web pages

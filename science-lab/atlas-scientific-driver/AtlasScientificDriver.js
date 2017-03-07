@@ -1,3 +1,5 @@
+"use strict";
+
 var fluid = require("infusion"),
     gpii = fluid.registerNamespace("gpii"),
     SerialPort = require("serialport");
@@ -68,7 +70,7 @@ fluid.defaults("gpii.nexus.atlasScientificConnection", {
             ]
         }
     }
-})
+});
 
 gpii.nexus.atlasScientificConnection.constructReadlineCrParser = function () {
     return SerialPort.parsers.readline("\r");

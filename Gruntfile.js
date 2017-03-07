@@ -10,7 +10,7 @@ module.exports = function (grunt) {
             }
         },
         jsonlint: {
-            all: ["package.json", ".jshintrc", "demos/**/*.json", "src/**/*.json"]
+            all: ["package.json", ".jshintrc", "music-demo/**/*.json", "science-lab/**/*.json"]
         }
     });
 
