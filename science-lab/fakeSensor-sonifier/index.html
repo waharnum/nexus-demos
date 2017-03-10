@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Table</title>
+
+        <script type="text/javascript" src="../../node_modules/flocking/dist/flocking-all.js"></script>
+
+        <script type="text/javascript" src="../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
+
+        <script type="text/javascript" src="js/sensorPlayer.js"></script>
+        <script type="text/javascript" src="js/fakeSensorPlayer.js"></script>
+
+    </head>
+    <body>
+        <div class="nexus-fakeSensorNexusConnector">
+        </div>
+        <div class="nexus-fakeNexusSensorPlayer">
+        </div>
+        <script>
+        
+            window.fakeNexusSensorPlayer = fluid.sensorPlayer.fakeNexusSensorPlayer(".nexus-fakeNexusSensorPlayer");
+
+        </script>
+    </body>
+</html>

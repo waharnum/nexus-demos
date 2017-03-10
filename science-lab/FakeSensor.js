@@ -43,12 +43,16 @@ process.on("SIGINT", function () {
 });
 
 gpii.nexus.fakeSensor.update = function () {
-    var nextValue = Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
+    var nextValue = gpii.nexus.fakeSensor.getFakeSensorValue();
     console.log("Fake sensor: " + nextValue);
     sensor.applier.change("sensorValue", nextValue);
     setTimeout(function () {
         gpii.nexus.fakeSensor.update();
     }, updateDelayMs);
+};
+
+gpii.nexus.fakeSensor.getFakeSensorValue = function () {
+    return Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
 };
 
 gpii.nexus.fakeSensor.update();
