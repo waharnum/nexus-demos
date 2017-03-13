@@ -5,6 +5,8 @@
 
     fluid.defaults("gpii.nexusScienceLabTable", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
+        numberLocale: "en",
+        maximumFractionDigits: 2,
         members: {
             nexusPeerComponentPath: "scienceLabCollector",
             nexusBoundModelPath: "sensorValues",
@@ -25,7 +27,13 @@
         modelListeners: {
             sensorValues: {
                 funcName: "gpii.nexusScienceLabTable.updateTable",
-                args: ["{that}.dom.tableHead", "{that}.dom.tableBody", "{change}.value"]
+                args: [
+                    "{that}.dom.tableHead",
+                    "{that}.dom.tableBody",
+                    "{that}.options.numberLocale",
+                    "{that}.options.maximumFractionDigits",
+                    "{change}.value"
+                ]
             }
         }
     });
@@ -39,7 +47,7 @@
     //       If a value is not in the table, add it at the appropriate column
     //       If a column is in the table but not in the data, remove it
 
-    gpii.nexusScienceLabTable.updateTable = function (tableHead, tableBody, sensorValues) {
+    gpii.nexusScienceLabTable.updateTable = function (tableHead, tableBody, numberLocale, maximumFractionDigits, sensorValues) {
         var sensorValuesArray = fluid.hashToArray(
             sensorValues,
             "sensorName",
@@ -56,8 +64,14 @@
         tableBody.empty();
 
         fluid.each(sensorValuesArray, function (sensor) {
-            tableHead.append("<th>" + sensor.sensorName + "</th>");
-            tableBody.append("<td>" + sensor.sensorValue + "</td>");
+            tableHead.append(fluid.stringTemplate("<th>%sensorName</th>", {
+                sensorName: sensor.sensorName
+            }));
+            tableBody.append(fluid.stringTemplate("<td>%sensorValue</td>", {
+                sensorValue: sensor.sensorValue.toLocaleString(numberLocale, {
+                    maximumFractionDigits: maximumFractionDigits
+                })
+            }));
         });
     };
 
