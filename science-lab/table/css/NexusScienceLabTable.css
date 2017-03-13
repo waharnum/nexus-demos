@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+}
+
+.fl-nexus-science-lab-table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.fl-nexus-science-lab-table th {
+    text-align: center;
+    font-size: 3em;
+    font-weight: normal;
+}
+
+.fl-nexus-science-lab-table td {
+    text-align: center;
+    font-size: 8em;
+    font-weight: normal;
+}
