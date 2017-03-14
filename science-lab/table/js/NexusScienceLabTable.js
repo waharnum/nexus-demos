@@ -9,7 +9,7 @@
         maximumFractionDigits: 2,
         members: {
             nexusPeerComponentPath: "scienceLabCollector",
-            nexusBoundModelPath: "sensorValues",
+            nexusBoundModelPath: "sensors",
             receivesChangesFromNexus: true,
             sendsChangesToNexus: false
         },
@@ -25,7 +25,7 @@
             }
         },
         modelListeners: {
-            sensorValues: {
+            sensors: {
                 funcName: "gpii.nexusScienceLabTable.updateTable",
                 args: [
                     "{that}.dom.tableHead",
@@ -47,28 +47,25 @@
     //       If a value is not in the table, add it at the appropriate column
     //       If a column is in the table but not in the data, remove it
 
-    gpii.nexusScienceLabTable.updateTable = function (tableHead, tableBody, numberLocale, maximumFractionDigits, sensorValues) {
-        var sensorValuesArray = fluid.hashToArray(
-            sensorValues,
-            "sensorName",
-            function (newElement, oldElement) {
-                newElement.sensorValue = oldElement;
-            }
+    gpii.nexusScienceLabTable.updateTable = function (tableHead, tableBody, numberLocale, maximumFractionDigits, sensors) {
+        var sensorsArray = fluid.hashToArray(
+            sensors,
+            "sensor"
         );
 
-        fluid.stableSort(sensorValuesArray, function (a, b) {
-            return a.sensorName.localeCompare(b.sensorName);
+        fluid.stableSort(sensorsArray, function (a, b) {
+            return a.name.localeCompare(b.name);
         });
 
         tableHead.empty();
         tableBody.empty();
 
-        fluid.each(sensorValuesArray, function (sensor) {
+        fluid.each(sensorsArray, function (sensor) {
             tableHead.append(fluid.stringTemplate("<th>%sensorName</th>", {
-                sensorName: sensor.sensorName
+                sensorName: sensor.name
             }));
             tableBody.append(fluid.stringTemplate("<td>%sensorValue</td>", {
-                sensorValue: sensor.sensorValue.toLocaleString(numberLocale, {
+                sensorValue: sensor.value.toLocaleString(numberLocale, {
                     maximumFractionDigits: maximumFractionDigits
                 })
             }));

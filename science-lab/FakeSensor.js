@@ -24,12 +24,15 @@ var sensor = gpii.nexusWebSocketBoundComponent({
         nexusPeerComponentOptions: {
             type: "gpii.nexus.fakeSensor"
         },
-        nexusBoundModelPath: "sensorValue",
+        nexusBoundModelPath: "sensorData",
         sendsChangesToNexus: true,
         managesPeer: true
     },
     model: {
-        sensorValue: 0
+        sensorData: {
+            name: "Fake Sensor",
+            value: 0
+        }
     },
     listeners: {
         "onPeerDestroyed.exitProcess": {
@@ -45,7 +48,7 @@ process.on("SIGINT", function () {
 gpii.nexus.fakeSensor.update = function () {
     var nextValue = Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
     console.log("Fake sensor: " + nextValue);
-    sensor.applier.change("sensorValue", nextValue);
+    sensor.applier.change("sensorData.value", nextValue);
     setTimeout(function () {
         gpii.nexus.fakeSensor.update();
     }, updateDelayMs);

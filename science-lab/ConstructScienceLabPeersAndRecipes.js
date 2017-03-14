@@ -17,7 +17,7 @@ fluid.promise.sequence([
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValue: 0
+                    sensorData: { }
                 }
             }
         );
@@ -30,7 +30,7 @@ fluid.promise.sequence([
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValue: 0
+                    sensorData: { }
                 }
             }
         );
@@ -43,7 +43,7 @@ fluid.promise.sequence([
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValue: 0
+                    sensorData: { }
                 }
             }
         );
@@ -56,7 +56,7 @@ fluid.promise.sequence([
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValues: { }
+                    sensors: { }
                 }
             }
         );
@@ -77,8 +77,8 @@ fluid.promise.sequence([
                     collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
                 },
                 modelRelay: {
-                    source: "{fakeSensor}.model.sensorValue",
-                    target: "{collector}.model.sensorValues.fakeValue",
+                    source: "{fakeSensor}.model.sensorData",
+                    target: "{collector}.model.sensors.fakeSensor",
                     forward: {
                         excludeSource: "init"
                     },
@@ -87,9 +87,9 @@ fluid.promise.sequence([
                     }
                 },
                 listeners: {
-                    "onDestroy.removeFakeSensorValue": {
+                    "onDestroy.removeFakeSensor": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.fakeValue", null, "DELETE" ]
+                        args: [ "sensors.fakeSensor", null, "DELETE" ]
                     }
                 }
             }
@@ -111,8 +111,8 @@ fluid.promise.sequence([
                     collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
                 },
                 modelRelay: {
-                    source: "{phSensor}.model.sensorValue",
-                    target: "{collector}.model.sensorValues.phValue",
+                    source: "{phSensor}.model.sensorData",
+                    target: "{collector}.model.sensors.phSensor",
                     forward: {
                         excludeSource: "init"
                     },
@@ -121,9 +121,9 @@ fluid.promise.sequence([
                     }
                 },
                 listeners: {
-                    "onDestroy.removePhSensorValue": {
+                    "onDestroy.removePhSensor": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.phValue", null, "DELETE" ]
+                        args: [ "sensors.phSensor", null, "DELETE" ]
                     }
                 }
             }
@@ -145,8 +145,8 @@ fluid.promise.sequence([
                     collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
                 },
                 modelRelay: {
-                    source: "{conductivitySensor}.model.sensorValue",
-                    target: "{collector}.model.sensorValues.conductivityValue",
+                    source: "{conductivitySensor}.model.sensorData",
+                    target: "{collector}.model.sensors.conductivitySensor",
                     forward: {
                         excludeSource: "init"
                     },
@@ -155,9 +155,9 @@ fluid.promise.sequence([
                     }
                 },
                 listeners: {
-                    "onDestroy.removeConductivitySensorValue": {
+                    "onDestroy.removeConductivitySensor": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.conductivityValue", null, "DELETE" ]
+                        args: [ "sensors.conductivitySensor", null, "DELETE" ]
                     }
                 }
             }

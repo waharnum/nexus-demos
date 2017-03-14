@@ -126,12 +126,14 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
 
     circuitTypes: {
         "EC": {
+            sensorName: "Electrical Conductivity",
             nexusPeerComponentPath: "conductivitySensor",
             nexusPeerComponentOptions: {
                 type: "gpii.nexus.atlasScientificDriver.conductivitySensor"
             }
         },
         "pH": {
+            sensorName: "pH",
             nexusPeerComponentPath: "phSensor",
             nexusPeerComponentOptions: {
                 type: "gpii.nexus.atlasScientificDriver.phSensor"
@@ -188,12 +190,23 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                             ]
                         }
                     },
-                    nexusBoundModelPath: "sensorValue",
+                    nexusBoundModelPath: "sensorData",
                     sendsChangesToNexus: true,
                     managesPeer: true
                 },
                 model: {
-                    sensorValue: 0
+                    sensorData: {
+                        name: {
+                            expander: {
+                                func: "gpii.nexus.atlasScientificDriver.lookupSensorName",
+                                args: [
+                                    "{atlasScientificDriver}.options.circuitTypes",
+                                    "{that}.options.circuitType"
+                                ]
+                            }
+                        },
+                        value: 0
+                    }
                 },
                 events: {
                     onPeerDestroyed: "{atlasScientificDriver}.events.onNexusPeerComponentDestroyed"
@@ -234,6 +247,10 @@ gpii.nexus.atlasScientificDriver.lookupNexusPeerOptions = function (circuitTypes
     return circuitTypes[deviceType].nexusPeerComponentOptions;
 };
 
+gpii.nexus.atlasScientificDriver.lookupSensorName = function (circuitTypes, deviceType) {
+    return circuitTypes[deviceType].sensorName;
+};
+
 gpii.nexus.atlasScientificDriver.updateModelSensorValue = function (nexusBinding, sensorReading) {
     // Use the first value from the sensor reading
     //
@@ -243,5 +260,5 @@ gpii.nexus.atlasScientificDriver.updateModelSensorValue = function (nexusBinding
     // - https://www.atlas-scientific.com/_files/_datasheets/_circuit/pH_EZO_datasheet.pdf
     // - https://www.atlas-scientific.com/_files/_datasheets/_circuit/EC_EZO_Datasheet.pdf
     //
-    nexusBinding.applier.change("sensorValue", sensorReading[0]);
+    nexusBinding.applier.change("sensorData.value", sensorReading[0]);
 };
