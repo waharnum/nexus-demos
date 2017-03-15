@@ -80,8 +80,8 @@
                     freq: 440
                 }
             },
-            freqMax: 650,
-            freqMin: 250,
+            freqMax: 680,
+            freqMin: 200,
             sensorMax: 100,
             sensorMin: 0,
             sensorValue: 50,
@@ -94,7 +94,13 @@
             id: "carrier",
             ugen: "flock.ugen.sin",
             inputs: {
-                freq: 440
+                freq: 440,
+                mul: {
+                    id: "mod",
+                    ugen: "flock.ugen.sinOsc",
+                    freq: 0.1,
+                    mul: 0.5
+                }
                 }
             },
             {
