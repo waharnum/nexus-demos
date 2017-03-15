@@ -13,8 +13,8 @@
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer.simulatedSensor.fakeNexusSensor", {
-        gradeNames: ["fluid.sensorPlayer.simulatedSensor"],
+    fluid.defaults("fluid.sensorPlayer.sensor.fakeNexusSensor", {
+        gradeNames: ["fluid.sensorPlayer.sensor"],
         model: {
             sensorValue: 0,
             sensorMax: 1,
@@ -24,8 +24,8 @@
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer.simulatedSensor.nexusPHSensor", {
-        gradeNames: ["fluid.sensorPlayer.simulatedSensor"],
+    fluid.defaults("fluid.sensorPlayer.sensor.nexusPHSensor", {
+        gradeNames: ["fluid.sensorPlayer.sensor"],
         model: {
             sensorValue: 0,
             sensorMax: 14,
@@ -39,7 +39,7 @@
         gradeNames: ["fluid.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.simulatedSensor",
+                type: "fluid.sensorPlayer.sensor",
                 options: {
                     model: {
                         description: "A Nexus-attached Fake Sensor",
@@ -72,7 +72,7 @@
         gradeNames: ["fluid.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.simulatedSensor",
+                type: "fluid.sensorPlayer.sensor",
                 options: {
                     model: {
                         description: "A Nexus-attached pH Sensor",
@@ -98,7 +98,7 @@
         gradeNames: ["fluid.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.simulatedSensor",
+                type: "fluid.sensorPlayer.sensor",
                 options: {
                     model: {
                         description: "A Nexus-attached Conductivity Sensor",

@@ -5,7 +5,7 @@
     var environment = flock.init();
     environment.start();
 
-    fluid.defaults("fluid.sensorPlayer.simulatedSensor", {
+    fluid.defaults("fluid.sensorPlayer.sensor", {
         gradeNames: ["fluid.modelComponent"],
         model: {
             sensorValue: 50,
@@ -13,7 +13,7 @@
             simulateChangesInterval: 2000,
             sensorMax: 100,
             sensorMin: 0,
-            description: "A simulated sensor"
+            description: "A sensor"
         },
         members: {
             simulateChangesIntervalId: null
@@ -25,20 +25,20 @@
                 "args": "{that}.model.sensorValue"
             },
             simulateChanges: {
-                "funcName": "fluid.sensorPlayer.simulatedSensor.simulateChanges",
+                "funcName": "fluid.sensorPlayer.sensor.simulateChanges",
                 "args": ["{that}", "{that}.model.simulateChanges"]
             }
         }
     });
 
-    fluid.sensorPlayer.simulatedSensor.randomInt = function(min, max) {
+    fluid.sensorPlayer.sensor.randomInt = function(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
     };
 
-    fluid.defaults("fluid.sensorPlayer.simulatedSensor.pHSensor", {
-        gradeNames: ["fluid.sensorPlayer.simulatedSensor"],
+    fluid.defaults("fluid.sensorPlayer.sensor.pHSensor", {
+        gradeNames: ["fluid.sensorPlayer.sensor"],
         model: {
             sensorValue: 7,
             sensorMax: 14,
@@ -47,8 +47,8 @@
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer.simulatedSensor.temperatureSensor", {
-        gradeNames: ["fluid.sensorPlayer.simulatedSensor"],
+    fluid.defaults("fluid.sensorPlayer.sensor.temperatureSensor", {
+        gradeNames: ["fluid.sensorPlayer.sensor"],
         model: {
             sensorValue: 18,
             sensorMax: 26,
@@ -57,11 +57,11 @@
         }
     });
 
-    fluid.sensorPlayer.simulatedSensor.simulateChanges = function(that, simulateChanges) {
+    fluid.sensorPlayer.sensor.simulateChanges = function(that, simulateChanges) {
         if(simulateChanges) {
             // Turn on the interval changes to the sensorValue
             that.simulateChangesIntervalId = setInterval(function() {
-                that.applier.change("sensorValue", fluid.sensorPlayer.simulatedSensor.randomInt(that.model.sensorMax, that.model.sensorMin));
+                that.applier.change("sensorValue", fluid.sensorPlayer.sensor.randomInt(that.model.sensorMax, that.model.sensorMin));
             }, that.model.simulateChangesInterval);
         } else {
             // Turn off the interval changes to the sensorValue
@@ -238,7 +238,7 @@
         },
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.simulatedSensor",
+                type: "fluid.sensorPlayer.sensor",
                 options: {
                     model: {
                         simulateChanges: true,
@@ -362,7 +362,7 @@
         gradeNames: ["fluid.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.simulatedSensor.pHSensor"
+                type: "fluid.sensorPlayer.sensor.pHSensor"
             }
         }
     });
@@ -371,7 +371,7 @@
         gradeNames: ["fluid.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.simulatedSensor.temperatureSensor"
+                type: "fluid.sensorPlayer.sensor.temperatureSensor"
             }
         }
     });
