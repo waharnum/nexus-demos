@@ -31,13 +31,6 @@
                 options: {
                     members: {
                         nexusHost: window.location.hostname
-                    },
-                    modelListeners: {
-                        "sensorValues.fakeValue": {
-                            "this": "{sensor}.applier",
-                            "method": "change",
-                            "args": ["sensorValue", "{change}.value"]
-                        }
                     }
                 }
             }
