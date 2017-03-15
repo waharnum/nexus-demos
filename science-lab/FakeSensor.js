@@ -31,6 +31,8 @@ var sensor = gpii.nexusWebSocketBoundComponent({
     model: {
         sensorData: {
             name: "Fake Sensor",
+            rangeMin: -1,
+            rangeMax: 1,
             value: 0
         }
     },

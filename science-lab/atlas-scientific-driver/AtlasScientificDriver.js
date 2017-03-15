@@ -128,6 +128,8 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
         "EC": {
             sensorName: "Conductivity",
             units: "μS/cm",
+            rangeMin: 0,
+            rangeMax: 10000,
             nexusPeerComponentPath: "ecSensor",
             nexusPeerComponentOptions: {
                 type: "gpii.nexus.atlasScientificDriver.ecSensor"
@@ -136,6 +138,8 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
         "pH": {
             sensorName: "pH",
             units: undefined,
+            rangeMin: 0,
+            rangeMax: 14,
             nexusPeerComponentPath: "phSensor",
             nexusPeerComponentOptions: {
                 type: "gpii.nexus.atlasScientificDriver.phSensor"
@@ -220,6 +224,26 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                                 ]
                             }
                         },
+                        rangeMin: {
+                            expander: {
+                                func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
+                                args: [
+                                    "{atlasScientificDriver}.options.circuitTypes",
+                                    "{that}.options.circuitType",
+                                    "rangeMin"
+                                ]
+                            }
+                        },
+                        rangeMax: {
+                            expander: {
+                                func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
+                                args: [
+                                    "{atlasScientificDriver}.options.circuitTypes",
+                                    "{that}.options.circuitType",
+                                    "rangeMax"
+                                ]
+                            }
+                        },
                         value: 0
                     }
                 },
@@ -256,7 +280,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
 
 gpii.nexus.atlasScientificDriver.lookupCircuitData = function (circuitTypes, deviceType, key) {
     return circuitTypes[deviceType][key];
-}
+};
 
 gpii.nexus.atlasScientificDriver.updateModelSensorValue = function (nexusBinding, sensorReading) {
     // Use the first value from the sensor reading
