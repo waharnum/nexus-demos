@@ -17,7 +17,7 @@ fluid.promise.sequence([
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValue: 0
+                    sensorData: { }
                 }
             }
         );
@@ -30,7 +30,7 @@ fluid.promise.sequence([
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValue: 0
+                    sensorData: { }
                 }
             }
         );
@@ -39,11 +39,11 @@ fluid.promise.sequence([
         return gpii.writeNexusDefaults(
             nexusHost,
             nexusPort,
-            "gpii.nexus.atlasScientificDriver.conductivitySensor",
+            "gpii.nexus.atlasScientificDriver.ecSensor",
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValue: 0
+                    sensorData: { }
                 }
             }
         );
@@ -56,7 +56,7 @@ fluid.promise.sequence([
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
-                    sensorValues: { }
+                    sensors: { }
                 }
             }
         );
@@ -77,8 +77,8 @@ fluid.promise.sequence([
                     collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
                 },
                 modelRelay: {
-                    source: "{fakeSensor}.model.sensorValue",
-                    target: "{collector}.model.sensorValues.fakeValue",
+                    source: "{fakeSensor}.model.sensorData",
+                    target: "{collector}.model.sensors.fakeSensor",
                     forward: {
                         excludeSource: "init"
                     },
@@ -87,9 +87,9 @@ fluid.promise.sequence([
                     }
                 },
                 listeners: {
-                    "onDestroy.removeFakeSensorValue": {
+                    "onDestroy.removeFakeSensor": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.fakeValue", null, "DELETE" ]
+                        args: [ "sensors.fakeSensor", null, "DELETE" ]
                     }
                 }
             }
@@ -111,8 +111,8 @@ fluid.promise.sequence([
                     collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
                 },
                 modelRelay: {
-                    source: "{phSensor}.model.sensorValue",
-                    target: "{collector}.model.sensorValues.phValue",
+                    source: "{phSensor}.model.sensorData",
+                    target: "{collector}.model.sensors.phSensor",
                     forward: {
                         excludeSource: "init"
                     },
@@ -121,9 +121,9 @@ fluid.promise.sequence([
                     }
                 },
                 listeners: {
-                    "onDestroy.removePhSensorValue": {
+                    "onDestroy.removePhSensor": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.phValue", null, "DELETE" ]
+                        args: [ "sensors.phSensor", null, "DELETE" ]
                     }
                 }
             }
@@ -133,20 +133,20 @@ fluid.promise.sequence([
         return gpii.writeNexusDefaults(
             nexusHost,
             nexusPort,
-            "gpii.nexus.scienceLab.sendConductivitySensor",
+            "gpii.nexus.scienceLab.sendEcSensor",
             {
                 gradeNames: [ "gpii.nexus.recipeProduct" ],
                 componentPaths: {
-                    conductivitySensor: null,
+                    ecSensor: null,
                     collector: null
                 },
                 components: {
-                    conductivitySensor: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.conductivitySensor)",
+                    ecSensor: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.ecSensor)",
                     collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
                 },
                 modelRelay: {
-                    source: "{conductivitySensor}.model.sensorValue",
-                    target: "{collector}.model.sensorValues.conductivityValue",
+                    source: "{ecSensor}.model.sensorData",
+                    target: "{collector}.model.sensors.ecSensor",
                     forward: {
                         excludeSource: "init"
                     },
@@ -155,9 +155,9 @@ fluid.promise.sequence([
                     }
                 },
                 listeners: {
-                    "onDestroy.removeConductivitySensorValue": {
+                    "onDestroy.removeEcSensor": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensorValues.conductivityValue", null, "DELETE" ]
+                        args: [ "sensors.ecSensor", null, "DELETE" ]
                     }
                 }
             }
@@ -217,12 +217,12 @@ fluid.promise.sequence([
         });
     },
     function () {
-        return gpii.addNexusRecipe(nexusHost, nexusPort, "sendConductivitySensor", {
+        return gpii.addNexusRecipe(nexusHost, nexusPort, "sendEcSensor", {
             reactants: {
-                conductivitySensor: {
+                ecSensor: {
                     match: {
                         type: "gradeMatcher",
-                        gradeName: "gpii.nexus.atlasScientificDriver.conductivitySensor"
+                        gradeName: "gpii.nexus.atlasScientificDriver.ecSensor"
                     }
                 },
                 collector: {
@@ -233,9 +233,9 @@ fluid.promise.sequence([
                 }
             },
             product: {
-                path: "sendConductivitySensor",
+                path: "sendEcSensor",
                 options: {
-                    type: "gpii.nexus.scienceLab.sendConductivitySensor"
+                    type: "gpii.nexus.scienceLab.sendEcSensor"
                 }
             }
         });

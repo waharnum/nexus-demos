@@ -126,12 +126,20 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
 
     circuitTypes: {
         "EC": {
-            nexusPeerComponentPath: "conductivitySensor",
+            sensorName: "Conductivity",
+            units: "μS/cm",
+            rangeMin: 0,
+            rangeMax: 10000,
+            nexusPeerComponentPath: "ecSensor",
             nexusPeerComponentOptions: {
-                type: "gpii.nexus.atlasScientificDriver.conductivitySensor"
+                type: "gpii.nexus.atlasScientificDriver.ecSensor"
             }
         },
         "pH": {
+            sensorName: "pH",
+            units: undefined,
+            rangeMin: 0,
+            rangeMax: 14,
             nexusPeerComponentPath: "phSensor",
             nexusPeerComponentOptions: {
                 type: "gpii.nexus.atlasScientificDriver.phSensor"
@@ -172,28 +180,72 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     nexusPort: "{atlasScientificDriver}.options.nexusPort",
                     nexusPeerComponentPath: {
                         expander: {
-                            func: "gpii.nexus.atlasScientificDriver.lookupNexusPeerPath",
+                            func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
                             args: [
                                 "{atlasScientificDriver}.options.circuitTypes",
-                                "{that}.options.circuitType"
+                                "{that}.options.circuitType",
+                                "nexusPeerComponentPath"
                             ]
                         }
                     },
                     nexusPeerComponentOptions: {
                         expander: {
-                            func: "gpii.nexus.atlasScientificDriver.lookupNexusPeerOptions",
+                            func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
                             args: [
                                 "{atlasScientificDriver}.options.circuitTypes",
-                                "{that}.options.circuitType"
+                                "{that}.options.circuitType",
+                                "nexusPeerComponentOptions"
                             ]
                         }
                     },
-                    nexusBoundModelPath: "sensorValue",
+                    nexusBoundModelPath: "sensorData",
                     sendsChangesToNexus: true,
                     managesPeer: true
                 },
                 model: {
-                    sensorValue: 0
+                    sensorData: {
+                        name: {
+                            expander: {
+                                func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
+                                args: [
+                                    "{atlasScientificDriver}.options.circuitTypes",
+                                    "{that}.options.circuitType",
+                                    "sensorName"
+                                ]
+                            }
+                        },
+                        units: {
+                            expander: {
+                                func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
+                                args: [
+                                    "{atlasScientificDriver}.options.circuitTypes",
+                                    "{that}.options.circuitType",
+                                    "units"
+                                ]
+                            }
+                        },
+                        rangeMin: {
+                            expander: {
+                                func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
+                                args: [
+                                    "{atlasScientificDriver}.options.circuitTypes",
+                                    "{that}.options.circuitType",
+                                    "rangeMin"
+                                ]
+                            }
+                        },
+                        rangeMax: {
+                            expander: {
+                                func: "gpii.nexus.atlasScientificDriver.lookupCircuitData",
+                                args: [
+                                    "{atlasScientificDriver}.options.circuitTypes",
+                                    "{that}.options.circuitType",
+                                    "rangeMax"
+                                ]
+                            }
+                        },
+                        value: 0
+                    }
                 },
                 events: {
                     onPeerDestroyed: "{atlasScientificDriver}.events.onNexusPeerComponentDestroyed"
@@ -226,12 +278,8 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
 
 });
 
-gpii.nexus.atlasScientificDriver.lookupNexusPeerPath = function (circuitTypes, deviceType) {
-    return circuitTypes[deviceType].nexusPeerComponentPath;
-};
-
-gpii.nexus.atlasScientificDriver.lookupNexusPeerOptions = function (circuitTypes, deviceType) {
-    return circuitTypes[deviceType].nexusPeerComponentOptions;
+gpii.nexus.atlasScientificDriver.lookupCircuitData = function (circuitTypes, deviceType, key) {
+    return circuitTypes[deviceType][key];
 };
 
 gpii.nexus.atlasScientificDriver.updateModelSensorValue = function (nexusBinding, sensorReading) {
@@ -243,5 +291,5 @@ gpii.nexus.atlasScientificDriver.updateModelSensorValue = function (nexusBinding
     // - https://www.atlas-scientific.com/_files/_datasheets/_circuit/pH_EZO_datasheet.pdf
     // - https://www.atlas-scientific.com/_files/_datasheets/_circuit/EC_EZO_Datasheet.pdf
     //
-    nexusBinding.applier.change("sensorValue", sensorReading[0]);
+    nexusBinding.applier.change("sensorData.value", sensorReading[0]);
 };

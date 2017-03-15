@@ -4,6 +4,8 @@
         <meta charset="UTF-8" />
         <title>Table</title>
 
+        <link rel="stylesheet" type="text/css" href="css/NexusScienceLabTable.css" />
+
         <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
         <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
         <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
@@ -18,10 +20,9 @@
         <script type="text/javascript" src="js/NexusScienceLabTable.js"></script>
     </head>
     <body>
-        <div id="nexus-science-lab-table">
-        </div>
+        <div id="table" class="fl-nexus-science-lab-table"></div>
         <script>
-            window.scienceLabTable = gpii.nexusScienceLabTable("#nexus-science-lab-table", {
+            window.scienceLabTable = gpii.nexusScienceLabTable("#table", {
                 members: {
                     nexusHost: window.location.hostname
                 }
