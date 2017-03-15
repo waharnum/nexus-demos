@@ -124,7 +124,6 @@
     fluid.sensorPlayer.sensorScalingSynthesizer.relaySensorValue = function(that, newSensorValue) {
         var freqMax = that.model.freqMax,
             freqMin = that.model.freqMin,
-            currentSensorValue = that.model.sensorValue,
             currentSynthFreq = that.model.inputs.carrier.freq,
             sensorMax = that.model.sensorMax,
             sensorMin = that.model.sensorMin,
@@ -193,7 +192,7 @@
                 "this": "{that}.dom.value",
                 "method": "html",
                 "args": ["{that}.model.value"]
-            },
+            }
         },
         modelListeners: {
             value: {
@@ -217,10 +216,10 @@
             descriptionDisplay: ".flc-descriptionDisplay",
             gradualToneControl: ".flc-gradualToneControl",
             midpointToneControl: ".flc-midpointToneControl",
-            muteControl: ".flc-muteControl",
+            muteControl: ".flc-muteControl"
         },
         members: {
-            template: '<div class="flc-descriptionDisplay"></div><div class="flc-sensorMaxValue"></div><div class="flc-sensorMinValue"></div><div class="flc-sensorValue"></div><div class="flc-freqValue"></div><form> <label>Gradual Tone Change<input class="flc-gradualToneControl" type="checkbox"/></label> <label>Play Sensor Midpoint Tone<input class="flc-midpointToneControl" type="checkbox"/></label><br/> <label><strong>Mute Main Synthesizer</strong><input class="flc-muteControl" type="checkbox"/></label> </form>'
+            template: "<div class=\"flc-descriptionDisplay\"></div><div class=\"flc-sensorMaxValue\"></div><div class=\"flc-sensorMinValue\"></div><div class=\"flc-sensorValue\"></div><div class=\"flc-freqValue\"></div><form> <label>Gradual Tone Change<input class=\"flc-gradualToneControl\" type=\"checkbox\"/></label> <label>Play Sensor Midpoint Tone<input class=\"flc-midpointToneControl\" type=\"checkbox\"/></label><br/> <label><strong>Mute Main Synthesizer</strong><input class=\"flc-muteControl\" type=\"checkbox\"/></label> </form>"
         },
         listeners: {
             "onCreate.appendDisplayTemplate": {
@@ -241,7 +240,7 @@
                 type: "fluid.sensorPlayer.sensor",
                 options: {
                     model: {
-                        simulateChanges: true,
+                        simulateChanges: true
                     }
                 }
             },

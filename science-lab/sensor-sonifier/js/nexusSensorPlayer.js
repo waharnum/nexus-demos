@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    var gpii = fluid.registerNamespace("gpii");
-
     fluid.defaults("gpii.nexusSensorConnector", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.modelComponent"],
         members: {
