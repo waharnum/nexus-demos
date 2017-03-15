@@ -13,28 +13,6 @@
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer.sensor.fakeNexusSensor", {
-        gradeNames: ["fluid.sensorPlayer.sensor"],
-        model: {
-            sensorValue: 0,
-            sensorMax: 1,
-            sensorMin: -1,
-            simulateChanges: false,
-            description: "A simulated version of the fake Nexus sensor (yes, I know this doesn't make sense)."
-        }
-    });
-
-    fluid.defaults("fluid.sensorPlayer.sensor.nexusPHSensor", {
-        gradeNames: ["fluid.sensorPlayer.sensor"],
-        model: {
-            sensorValue: 0,
-            sensorMax: 14,
-            sensorMin: 0,
-            simulateChanges: false,
-            description: "A Nexus-attached pH Sensor"
-        }
-    });
-
     fluid.defaults("fluid.sensorPlayer.nexusFakeSensorPlayer", {
         gradeNames: ["fluid.sensorPlayer"],
         components: {
