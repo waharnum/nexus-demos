@@ -35,18 +35,22 @@
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer.fakeNexusSensorPlayer", {
+    fluid.defaults("fluid.sensorPlayer.nexusFakeSensorPlayer", {
         gradeNames: ["fluid.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.simulatedSensor.fakeNexusSensor",
+                type: "fluid.sensorPlayer.simulatedSensor",
                 options: {
                     model: {
-                        simulateChanges: false
+                        description: "A Nexus-attached Fake Sensor",
+                        simulateChanges: false,
+                        sensorValue: "{nexusSensorConnector}.model.sensors.fakeSensor.value",
+                        sensorMax: "{nexusSensorConnector}.model.sensors.fakeSensor.rangeMax",
+                        sensorMin: "{nexusSensorConnector}.model.sensors.fakeSensor.rangeMin"
                     }
                 }
             },
-            fakeNexusSensorConnector: {
+            nexusSensorConnector: {
                 type: "gpii.nexusSensorConnector",
                 options: {
                     members: {
