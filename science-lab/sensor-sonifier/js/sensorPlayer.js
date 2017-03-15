@@ -231,8 +231,8 @@
                 func: "{that}.events.displayTemplateReady.fire"
             },
             "onCreate.bindSynthControls": {
-                func: "gpii.sensorPlayer.bindSynthControls",
-                args: ["{that}"]
+                func: "gpii.sensorPlayer.sensorDisplay.bindSynthControls",
+                args: ["{that}", "{sensorSynthesizer}"]
             }
         },
         components: {
@@ -304,6 +304,39 @@
         }
     });
 
+    gpii.sensorPlayer.sensorDisplay.bindSynthControls = function (that, sensorSynthesizer) {
+        var muteControl = that.locate("muteControl");
+        var gradualToneControl = that.locate("gradualToneControl");
+        var midpointToneControl = that.locate("midpointToneControl");
+
+        muteControl.click(function () {
+            var checked = muteControl.is(":checked");
+            if(checked) {
+                sensorSynthesizer.applier.change("inputs.carrier.mul", 0);
+            }
+            else {
+                sensorSynthesizer.applier.change("inputs.carrier.mul", 1);
+            }
+
+        });
+
+        gradualToneControl.click(function () {
+            var checked = gradualToneControl.is(":checked");
+            sensorSynthesizer.applier.change("gradualToneChange", checked);
+        });
+
+        midpointToneControl.click(function () {
+            var checked = midpointToneControl.is(":checked");
+            if(checked) {
+                sensorSynthesizer.applier.change("inputs.midpoint.mul", 0.25);
+            }
+            else {
+                sensorSynthesizer.applier.change("inputs.midpoint.mul", 0);
+            }
+
+        });
+    };
+
     fluid.defaults("gpii.sensorPlayer", {
         gradeNames: ["fluid.component"],
         components: {
@@ -332,40 +365,6 @@
             }
         }
     });
-
-    gpii.sensorPlayer.bindSynthControls = function (that) {
-        var muteControl = that.locate("muteControl");
-        var gradualToneControl = that.locate("gradualToneControl");
-        var midpointToneControl = that.locate("midpointToneControl");
-
-        muteControl.click(function () {
-            var checked = muteControl.is(":checked");
-            if(checked) {
-                that.sensorSynthesizer.applier.change("inputs.carrier.mul", 0);
-            }
-            else {
-                that.sensorSynthesizer.applier.change("inputs.carrier.mul", 1);
-            }
-
-        });
-
-        gradualToneControl.click(function () {
-            var checked = gradualToneControl.is(":checked");
-            that.sensorSynthesizer.applier.change("gradualToneChange", checked);
-        });
-
-        midpointToneControl.click(function () {
-            var checked = midpointToneControl.is(":checked");
-            if(checked) {
-                that.sensorSynthesizer.applier.change("inputs.midpoint.mul", 0.25);
-            }
-            else {
-                that.sensorSynthesizer.applier.change("inputs.midpoint.mul", 0);
-            }
-
-        });
-
-    };
 
     fluid.defaults("gpii.sensorPlayer.pHSensorPlayer", {
         gradeNames: ["gpii.sensorPlayer"],
