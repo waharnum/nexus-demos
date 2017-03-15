@@ -9,17 +9,15 @@
         <script type="text/javascript" src="../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
 
         <script type="text/javascript" src="js/sensorPlayer.js"></script>
-        <script type="text/javascript" src="js/fakeSensorPlayer.js"></script>
+        <script type="text/javascript" src="js/nexusSensorPlayer.js"></script>
 
     </head>
     <body>
-        <div class="nexus-fakeSensorNexusConnector">
-        </div>
-        <div class="nexus-fakeNexusSensorPlayer">
+        <div class="nexus-nexusSensorPlayer">
         </div>
         <script>
-        
-            window.fakeNexusSensorPlayer = fluid.sensorPlayer.fakeNexusSensorPlayer(".nexus-fakeNexusSensorPlayer");
+
+            window.fakeNexusSensorPlayer = fluid.sensorPlayer.nexusConductivitySensorPlayer(".nexus-nexusSensorPlayer");
 
         </script>
     </body>
