@@ -18,7 +18,7 @@
                 type: "gpii.sensorPlayer.sensor",
                 options: {
                     model: {
-                        description: "A Nexus-attached Fake Sensor",
+                        description: "{nexusSensorConnector}.model.sensors.fakeSensor.name",
                         simulateChanges: false,
                         sensorValue: "{nexusSensorConnector}.model.sensors.fakeSensor.value",
                         sensorMax: "{nexusSensorConnector}.model.sensors.fakeSensor.rangeMax",
