@@ -5,7 +5,7 @@
     var environment = flock.init();
     environment.start();
 
-    fluid.defaults("fluid.sensorPlayer.sensor", {
+    fluid.defaults("gpii.sensorPlayer.sensor", {
         gradeNames: ["fluid.modelComponent"],
         model: {
             sensorValue: 50,
@@ -25,20 +25,20 @@
                 "args": "{that}.model.sensorValue"
             },
             simulateChanges: {
-                "funcName": "fluid.sensorPlayer.sensor.simulateChanges",
+                "funcName": "gpii.sensorPlayer.sensor.simulateChanges",
                 "args": ["{that}", "{that}.model.simulateChanges"]
             }
         }
     });
 
-    fluid.sensorPlayer.sensor.randomInt = function(min, max) {
+    gpii.sensorPlayer.sensor.randomInt = function(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
     };
 
-    fluid.defaults("fluid.sensorPlayer.sensor.pHSensor", {
-        gradeNames: ["fluid.sensorPlayer.sensor"],
+    fluid.defaults("gpii.sensorPlayer.sensor.pHSensor", {
+        gradeNames: ["gpii.sensorPlayer.sensor"],
         model: {
             sensorValue: 7,
             sensorMax: 14,
@@ -47,8 +47,8 @@
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer.sensor.temperatureSensor", {
-        gradeNames: ["fluid.sensorPlayer.sensor"],
+    fluid.defaults("gpii.sensorPlayer.sensor.temperatureSensor", {
+        gradeNames: ["gpii.sensorPlayer.sensor"],
         model: {
             sensorValue: 18,
             sensorMax: 26,
@@ -57,11 +57,11 @@
         }
     });
 
-    fluid.sensorPlayer.sensor.simulateChanges = function(that, simulateChanges) {
+    gpii.sensorPlayer.sensor.simulateChanges = function(that, simulateChanges) {
         if(simulateChanges) {
             // Turn on the interval changes to the sensorValue
             that.simulateChangesIntervalId = setInterval(function() {
-                that.applier.change("sensorValue", fluid.sensorPlayer.sensor.randomInt(that.model.sensorMax, that.model.sensorMin));
+                that.applier.change("sensorValue", gpii.sensorPlayer.sensor.randomInt(that.model.sensorMax, that.model.sensorMin));
             }, that.model.simulateChangesInterval);
         } else {
             // Turn off the interval changes to the sensorValue
@@ -72,7 +72,7 @@
     // A sensor synthesizer that translates a lower and upper bounded
     // sensor into lower or higher frequencies
     // Also plays a continuous "midpoint" tone
-    fluid.defaults("fluid.sensorPlayer.sensorScalingSynthesizer", {
+    fluid.defaults("gpii.sensorPlayer.sensorScalingSynthesizer", {
         gradeNames: ["flock.modelSynth"],
         model: {
             inputs: {
@@ -115,13 +115,13 @@
         addToEnvironment: true,
         modelListeners: {
             sensorValue: {
-                funcName: "fluid.sensorPlayer.sensorScalingSynthesizer.relaySensorValue",
+                funcName: "gpii.sensorPlayer.sensorScalingSynthesizer.relaySensorValue",
                 args: ["{that}", "{that}.model.sensorValue"]
             }
         }
     });
 
-    fluid.sensorPlayer.sensorScalingSynthesizer.relaySensorValue = function(that, newSensorValue) {
+    gpii.sensorPlayer.sensorScalingSynthesizer.relaySensorValue = function(that, newSensorValue) {
         var freqMax = that.model.freqMax,
             freqMin = that.model.freqMin,
             currentSynthFreq = that.model.inputs.carrier.freq,
@@ -131,20 +131,20 @@
             gradualToneChangeDuration = that.model.gradualToneChangeDuration,
             graduateToneChangeTickDuration = that.model.graduateToneChangeTickDuration;
 
-        var targetFreq = fluid.sensorPlayer.sensorScalingSynthesizer.scaleValue(newSensorValue, sensorMin, sensorMax, freqMin, freqMax);
-        var midpointFreq = fluid.sensorPlayer.sensorScalingSynthesizer.getMidpointValue(freqMax, freqMin);
+        var targetFreq = gpii.sensorPlayer.sensorScalingSynthesizer.scaleValue(newSensorValue, sensorMin, sensorMax, freqMin, freqMax);
+        var midpointFreq = gpii.sensorPlayer.sensorScalingSynthesizer.getMidpointValue(freqMax, freqMin);
 
         that.applier.change("inputs.midpoint.freq", midpointFreq);
 
         if(gradualToneChange) {
-            fluid.sensorPlayer.sensorScalingSynthesizer.adjustFrequencyGradually(that, currentSynthFreq, targetFreq, gradualToneChangeDuration, graduateToneChangeTickDuration);
+            gpii.sensorPlayer.sensorScalingSynthesizer.adjustFrequencyGradually(that, currentSynthFreq, targetFreq, gradualToneChangeDuration, graduateToneChangeTickDuration);
         } else {
             that.applier.change("inputs.carrier.freq", targetFreq);
         }
     };
 
     // Adjust a frequency up or down evenly over "duration"
-    fluid.sensorPlayer.sensorScalingSynthesizer.adjustFrequencyGradually = function (that, currentFreq, targetFreq, duration, tick) {
+    gpii.sensorPlayer.sensorScalingSynthesizer.adjustFrequencyGradually = function (that, currentFreq, targetFreq, duration, tick) {
         var totalMovement = targetFreq - currentFreq;
         var intervals = duration / tick;
         var tickMovement = totalMovement / intervals;
@@ -162,16 +162,16 @@
 
     };
 
-    fluid.sensorPlayer.sensorScalingSynthesizer.getMidpointValue = function(upper, lower) {
+    gpii.sensorPlayer.sensorScalingSynthesizer.getMidpointValue = function(upper, lower) {
         return (upper + lower) / 2;
     };
 
-    fluid.sensorPlayer.sensorScalingSynthesizer.scaleValue = function (value, inputLower, inputUpper, outputLower, outputUpper) {
+    gpii.sensorPlayer.sensorScalingSynthesizer.scaleValue = function (value, inputLower, inputUpper, outputLower, outputUpper) {
         var scaledValue = ((outputUpper - outputLower) * (value - inputLower) / (inputUpper - inputLower)) + outputLower;
         return scaledValue;
     };
 
-    fluid.defaults("fluid.sensorPlayer.valueDisplay", {
+    fluid.defaults("gpii.sensorPlayer.valueDisplay", {
         gradeNames: ["fluid.viewComponent"],
         model: {
             value: "Hello, World!"
@@ -203,7 +203,7 @@
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer", {
+    fluid.defaults("gpii.sensorPlayer", {
         gradeNames: ["fluid.viewComponent"],
         events: {
             displayTemplateReady: null
@@ -231,13 +231,13 @@
                 func: "{that}.events.displayTemplateReady.fire"
             },
             "onCreate.bindSynthControls": {
-                func: "fluid.sensorPlayer.bindSynthControls",
+                func: "gpii.sensorPlayer.bindSynthControls",
                 args: ["{that}"]
             }
         },
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.sensor",
+                type: "gpii.sensorPlayer.sensor",
                 options: {
                     model: {
                         simulateChanges: true
@@ -245,7 +245,7 @@
                 }
             },
             sensorSynthesizer: {
-                type: "fluid.sensorPlayer.sensorScalingSynthesizer",
+                type: "gpii.sensorPlayer.sensorScalingSynthesizer",
                 options: {
                     model: {
                         sensorValue: "{sensor}.model.sensorValue",
@@ -257,7 +257,7 @@
             },
             descriptionDisplay: {
                 createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "fluid.sensorPlayer.valueDisplay",
+                type: "gpii.sensorPlayer.valueDisplay",
                 container: "{sensorPlayer}.dom.descriptionDisplay",
                 options: {
                     model: {
@@ -270,7 +270,7 @@
             },
             sensorMinDisplay: {
                 createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "fluid.sensorPlayer.valueDisplay",
+                type: "gpii.sensorPlayer.valueDisplay",
                 container: "{sensorPlayer}.dom.sensorMinDisplay",
                 options: {
                     model: {
@@ -283,7 +283,7 @@
             },
             sensorMaxDisplay: {
                 createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "fluid.sensorPlayer.valueDisplay",
+                type: "gpii.sensorPlayer.valueDisplay",
                 container: "{sensorPlayer}.dom.sensorMaxDisplay",
                 options: {
                     model: {
@@ -296,7 +296,7 @@
             },
             sensorDisplay: {
                 createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "fluid.sensorPlayer.valueDisplay",
+                type: "gpii.sensorPlayer.valueDisplay",
                 container: "{sensorPlayer}.dom.sensorValueDisplay",
                 options: {
                     model: {
@@ -309,7 +309,7 @@
             },
             synthFreqDisplay: {
                 createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "fluid.sensorPlayer.valueDisplay",
+                type: "gpii.sensorPlayer.valueDisplay",
                 container: "{sensorPlayer}.dom.synthFreqDisplay",
                 options: {
                     model: {
@@ -323,7 +323,7 @@
         }
     });
 
-    fluid.sensorPlayer.bindSynthControls = function (that) {
+    gpii.sensorPlayer.bindSynthControls = function (that) {
         var muteControl = that.locate("muteControl");
         var gradualToneControl = that.locate("gradualToneControl");
         var midpointToneControl = that.locate("midpointToneControl");
@@ -357,20 +357,20 @@
 
     };
 
-    fluid.defaults("fluid.sensorPlayer.pHSensorPlayer", {
-        gradeNames: ["fluid.sensorPlayer"],
+    fluid.defaults("gpii.sensorPlayer.pHSensorPlayer", {
+        gradeNames: ["gpii.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.sensor.pHSensor"
+                type: "gpii.sensorPlayer.sensor.pHSensor"
             }
         }
     });
 
-    fluid.defaults("fluid.sensorPlayer.temperatureSensorPlayer", {
-        gradeNames: ["fluid.sensorPlayer"],
+    fluid.defaults("gpii.sensorPlayer.temperatureSensorPlayer", {
+        gradeNames: ["gpii.sensorPlayer"],
         components: {
             sensor: {
-                type: "fluid.sensorPlayer.sensor.temperatureSensor"
+                type: "gpii.sensorPlayer.sensor.temperatureSensor"
             }
         }
     });
