@@ -55,14 +55,25 @@
             var tableBody = container.find(".flc-nexus-science-lab-table-body");
 
             fluid.each(sensorsArray, function (sensor) {
-                tableHead.append(fluid.stringTemplate("<th>%sensorName</th>", {
-                    sensorName: sensor.name
-                }));
+                tableHead.append(gpii.nexusScienceLabTable.buildTableHeading(sensor));
                 tableBody.append(fluid.stringTemplate("<td>%sensorValue</td>", {
                     sensorValue: sensor.value.toLocaleString(numberLocale, {
                         maximumFractionDigits: maximumFractionDigits
                     })
                 }));
+            });
+        }
+    };
+
+    gpii.nexusScienceLabTable.buildTableHeading = function (sensorData) {
+        if (sensorData.units) {
+            return fluid.stringTemplate("<th>%sensorName (%units)</th>", {
+                sensorName: sensorData.name,
+                units: sensorData.units
+            });
+        } else {
+            return fluid.stringTemplate("<th>%sensorName</th>", {
+                sensorName: sensorData.name
             });
         }
     };
