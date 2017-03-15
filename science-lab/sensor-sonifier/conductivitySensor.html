@@ -13,12 +13,17 @@
 
     </head>
     <body>
-        <canvas id="gfx" height="45" width="240"></canvas>
-        <div class="nexus-nexusSensorPlayer">
+        <div class="nexus-nexusSensorPlayer-display">
         </div>
         <script>
 
-            window.fakeNexusSensorPlayer = gpii.sensorPlayer.nexusConductivitySensorPlayer(".nexus-nexusSensorPlayer");
+            window.fakeNexusSensorPlayer = gpii.sensorPlayer.nexusConductivitySensorPlayer({
+                components: {
+                    sensorDisplay: {
+                        container: ".nexus-nexusSensorPlayer-display"
+                    }
+                }
+            });
 
         </script>
     </body>

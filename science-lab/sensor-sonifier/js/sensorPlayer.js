@@ -203,7 +203,7 @@
         }
     });
 
-    fluid.defaults("gpii.sensorPlayer", {
+    fluid.defaults("gpii.sensorPlayer.sensorDisplay", {
         gradeNames: ["fluid.viewComponent"],
         events: {
             displayTemplateReady: null
@@ -236,6 +236,77 @@
             }
         },
         components: {
+            descriptionDisplay: {
+                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                type: "gpii.sensorPlayer.valueDisplay",
+                container: "{sensorDisplay}.dom.descriptionDisplay",
+                options: {
+                    model: {
+                        value: "{sensor}.model.description"
+                    },
+                    members: {
+                        template: "<strong>Sensor Description:</strong> <span class=\"flc-valueDisplay-value\"></span>"
+                    }
+                }
+            },
+            sensorMinDisplay: {
+                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                type: "gpii.sensorPlayer.valueDisplay",
+                container: "{sensorDisplay}.dom.sensorMinDisplay",
+                options: {
+                    model: {
+                        value: "{sensor}.model.sensorMin"
+                    },
+                    members: {
+                        template: "<strong>Sensor Min Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
+                    }
+                }
+            },
+            sensorMaxDisplay: {
+                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                type: "gpii.sensorPlayer.valueDisplay",
+                container: "{sensorDisplay}.dom.sensorMaxDisplay",
+                options: {
+                    model: {
+                        value: "{sensor}.model.sensorMax"
+                    },
+                    members: {
+                        template: "<strong>Sensor Max Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
+                    }
+                }
+            },
+            sensorDisplay: {
+                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                type: "gpii.sensorPlayer.valueDisplay",
+                container: "{sensorDisplay}.dom.sensorValueDisplay",
+                options: {
+                    model: {
+                        value: "{sensor}.model.sensorValue"
+                    },
+                    members: {
+                        template: "<strong>Sensor Current Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
+                    }
+                }
+            },
+            synthFreqDisplay: {
+                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                type: "gpii.sensorPlayer.valueDisplay",
+                container: "{sensorDisplay}.dom.synthFreqDisplay",
+                options: {
+                    model: {
+                        value: "{sensorSynthesizer}.model.inputs.carrier.freq"
+                    },
+                    members: {
+                        template: "<strong>Synthesizer frequency:</strong> <span class=\"flc-valueDisplay-value\"></span>"
+                    }
+                }
+            }
+        }
+    });
+
+    fluid.defaults("gpii.sensorPlayer", {
+        gradeNames: ["fluid.component"],
+        components: {
             sensor: {
                 type: "gpii.sensorPlayer.sensor",
                 options: {
@@ -255,70 +326,9 @@
                     addToEnvironment: true
                 }
             },
-            descriptionDisplay: {
-                createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorPlayer}.dom.descriptionDisplay",
-                options: {
-                    model: {
-                        value: "{sensor}.model.description"
-                    },
-                    members: {
-                        template: "<strong>Sensor Description:</strong> <span class=\"flc-valueDisplay-value\"></span>"
-                    }
-                }
-            },
-            sensorMinDisplay: {
-                createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorPlayer}.dom.sensorMinDisplay",
-                options: {
-                    model: {
-                        value: "{sensor}.model.sensorMin"
-                    },
-                    members: {
-                        template: "<strong>Sensor Min Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
-                    }
-                }
-            },
-            sensorMaxDisplay: {
-                createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorPlayer}.dom.sensorMaxDisplay",
-                options: {
-                    model: {
-                        value: "{sensor}.model.sensorMax"
-                    },
-                    members: {
-                        template: "<strong>Sensor Max Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
-                    }
-                }
-            },
             sensorDisplay: {
-                createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorPlayer}.dom.sensorValueDisplay",
-                options: {
-                    model: {
-                        value: "{sensor}.model.sensorValue"
-                    },
-                    members: {
-                        template: "<strong>Sensor Current Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
-                    }
-                }
-            },
-            synthFreqDisplay: {
-                createOnEvent: "{sensorPlayer}.events.displayTemplateReady",
-                type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorPlayer}.dom.synthFreqDisplay",
-                options: {
-                    model: {
-                        value: "{sensorSynthesizer}.model.inputs.carrier.freq"
-                    },
-                    members: {
-                        template: "<strong>Synthesizer frequency:</strong> <span class=\"flc-valueDisplay-value\"></span>"
-                    }
-                }
+                type: "gpii.sensorPlayer.sensorDisplay",
+                container: ".gpii-sensorPlayer-display"
             }
         }
     });
