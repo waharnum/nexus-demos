@@ -3,6 +3,8 @@
 
     var gpii = fluid.registerNamespace("gpii");
 
+    // TODO: Add a hidden h1 "Dashboard"
+
     fluid.defaults("gpii.nexusScienceLabDashboard", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
         numberLocale: "en",
@@ -16,65 +18,66 @@
         strings: {
             noSensorsConnected: "No sensors connected"
         },
+        markup: {
+            noSensorsConnected: "<p class='flc-nexus-science-lab-dashboard-message'>%message</p>",
+            sensor: "<div><h2>%sensorHeading</h2><p class='fl-nexus-science-lab-dashboard-value'>%sensorValue</p></div>"
+        },
+        selectors: {
+            message: ".flc-nexus-science-lab-dashboard-message",
+            sensor: "div",
+            sensorHeading: "h2",
+            sensorValue: "p"
+        },
         modelListeners: {
             sensors: {
                 funcName: "gpii.nexusScienceLabDashboard.updateDashboard",
-                args: [
-                    "{that}.container",
-                    "{that}.options.numberLocale",
-                    "{that}.options.maximumFractionDigits",
-                    "{that}.options.strings.noSensorsConnected",
-                    "{change}.value"
-                ]
+                args: ["{that}", "{change}.value"]
             }
         }
     });
 
-    // TODO: Add a hidden h1 "Dashboard"
-
-    gpii.nexusScienceLabDashboard.updateDashboard = function (container, numberLocale, maximumFractionDigits, noSensorsConnectedMessage, sensors) {
+    gpii.nexusScienceLabDashboard.updateDashboard = function (that, sensors) {
 
         var sensorsArray = fluid.hashToArray(sensors, "sensor");
 
         if (sensorsArray.length === 0) {
-            container.html(fluid.stringTemplate(
-                "<p class='flc-nexus-science-lab-dashboard-message'>%message</p>",
+            that.container.html(fluid.stringTemplate(
+                that.options.markup.noSensorsConnected,
                 {
-                    message: noSensorsConnectedMessage
+                    message: that.options.strings.noSensorsConnected
                 }
             ));
         } else {
-            $(".flc-nexus-science-lab-dashboard-message").remove();
+            $(that.container.find(that.options.selectors.message)).remove();
 
             fluid.stableSort(sensorsArray, function (a, b) {
                 return a.name.localeCompare(b.name);
             });
 
             gpii.nexusScienceLabDashboard.updateDashboardValues(
-                container,
-                numberLocale,
-                maximumFractionDigits,
+                that,
                 sensorsArray
             );
         }
     };
 
-    gpii.nexusScienceLabDashboard.updateDashboardValues = function (container, numberLocale, maximumFractionDigits, sortedSensors) {
+    gpii.nexusScienceLabDashboard.updateDashboardValues = function (that, sortedSensors) {
 
         var sensorsArrayIndex = 0;
 
-        container.find("div").each(function (index, sensorDivElem) {
+        that.container.find(that.options.selectors.sensor).each(function (index, sensorElem) {
             if (sensorsArrayIndex < sortedSensors.length) {
                 // We have incoming sensor data yet to process
 
-                var sensorOnPage = $($(sensorDivElem).find("h2")).text();
+                var sensorOnPage = $($(sensorElem).find(that.options.selectors.sensorHeading)).text();
 
                 // Insert any new sensors
                 while (sensorOnPage.localeCompare(gpii.nexusScienceLabDashboard.buildSensorHeading(sortedSensors[sensorsArrayIndex])) === 1) {
-                    $(sensorDivElem).before(gpii.nexusScienceLabDashboard.buildSensorDiv(
+                    $(sensorElem).before(gpii.nexusScienceLabDashboard.buildSensorMarkup(
+                        that.options.markup.sensor,
                         sortedSensors[sensorsArrayIndex],
-                        numberLocale,
-                        maximumFractionDigits
+                        that.options.numberLocale,
+                        that.options.maximumFractionDigits
                     ));
                     ++sensorsArrayIndex;
                 }
@@ -84,41 +87,41 @@
                         // Existing value, update it
                         var newValue = gpii.nexusScienceLabDashboard.buildSensorValue(
                             sortedSensors[sensorsArrayIndex],
-                            numberLocale,
-                            maximumFractionDigits
+                            that.options.numberLocale,
+                            that.options.maximumFractionDigits
                         );
-                        $($(sensorDivElem).find("p")).text(newValue);
+                        $($(sensorElem).find(that.options.selectors.sensorValue)).text(newValue);
                         ++sensorsArrayIndex;
                         break;
                     case -1:
                         // Outdated sensor, remove it
-                        $(sensorDivElem).remove();
+                        $(sensorElem).remove();
                         break;
                 }
             } else {
                 // We have reached the end of the incoming sensor data,
                 // remove any remaining outdated values from the page
-                $(sensorDivElem).remove();
+                $(sensorElem).remove();
             }
         });
 
         // Add any remaining new sensors from the incoming data
         while (sensorsArrayIndex < sortedSensors.length) {
-            container.append(gpii.nexusScienceLabDashboard.buildSensorDiv(
+            that.container.append(gpii.nexusScienceLabDashboard.buildSensorMarkup(
+                that.options.markup.sensor,
                 sortedSensors[sensorsArrayIndex],
-                numberLocale,
-                maximumFractionDigits
+                that.options.numberLocale,
+                that.options.maximumFractionDigits
             ));
             ++sensorsArrayIndex;
         }
     };
 
-    gpii.nexusScienceLabDashboard.buildSensorDiv = function (sensorData, numberLocale, maximumFractionDigits) {
-        return fluid.stringTemplate(
-            "<div><h2>%heading</h2><p class='fl-nexus-science-lab-dashboard-value'>%value</p></div>",
+    gpii.nexusScienceLabDashboard.buildSensorMarkup = function (markup, sensorData, numberLocale, maximumFractionDigits) {
+        return fluid.stringTemplate(markup,
             {
-                heading: gpii.nexusScienceLabDashboard.buildSensorHeading(sensorData),
-                value: gpii.nexusScienceLabDashboard.buildSensorValue(
+                sensorHeading: gpii.nexusScienceLabDashboard.buildSensorHeading(sensorData),
+                sensorValue: gpii.nexusScienceLabDashboard.buildSensorValue(
                     sensorData,
                     numberLocale,
                     maximumFractionDigits
