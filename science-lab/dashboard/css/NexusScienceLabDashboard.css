@@ -3,24 +3,24 @@ body {
     font-family: sans-serif;
 }
 
-.fl-nexus-science-lab-table {
+.fl-nexus-science-lab-dashboard {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.fl-nexus-science-lab-table p {
+.fl-nexus-science-lab-dashboard p {
     font-size: 3em;
 }
 
-.fl-nexus-science-lab-table th {
+.fl-nexus-science-lab-dashboard th {
     text-align: center;
     font-size: 3em;
     font-weight: normal;
 }
 
-.fl-nexus-science-lab-table td {
+.fl-nexus-science-lab-dashboard td {
     text-align: center;
     font-size: 8em;
     font-weight: normal;

@@ -3,9 +3,7 @@
 
     var gpii = fluid.registerNamespace("gpii");
 
-    // TODO: Rename to "Dashboard"
-
-    fluid.defaults("gpii.nexusScienceLabTable", {
+    fluid.defaults("gpii.nexusScienceLabDashboard", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
         numberLocale: "en",
         maximumFractionDigits: 2,
@@ -20,7 +18,7 @@
         },
         modelListeners: {
             sensors: {
-                funcName: "gpii.nexusScienceLabTable.updateTable",
+                funcName: "gpii.nexusScienceLabDashboard.updateDashboard",
                 args: [
                     "{that}.container",
                     "{that}.options.numberLocale",
@@ -40,7 +38,7 @@
     // TODO: If a value is not present, add it at the appropriate position
     // TODO: If a value is on the page but not in the latest data, remove it
 
-    gpii.nexusScienceLabTable.updateTable = function (container, numberLocale, maximumFractionDigits, noSensorsConnectedMessage, sensors) {
+    gpii.nexusScienceLabDashboard.updateDashboard = function (container, numberLocale, maximumFractionDigits, noSensorsConnectedMessage, sensors) {
         var sensorsArray = fluid.hashToArray(
             sensors,
             "sensor"
@@ -55,13 +53,13 @@
                 return a.name.localeCompare(b.name);
             });
 
-            container.html("<table><thead><tr class='flc-nexus-science-lab-table-head'></tr></thead><tbody><tr class='flc-nexus-science-lab-table-body'></tr></tbody></table>");
-            var tableHead = container.find(".flc-nexus-science-lab-table-head");
-            var tableBody = container.find(".flc-nexus-science-lab-table-body");
+            container.html("<table><thead><tr class='flc-nexus-science-lab-dashboard-head'></tr></thead><tbody><tr class='flc-nexus-science-lab-dashboard-body'></tr></tbody></table>");
+            var dashboardHead = container.find(".flc-nexus-science-lab-dashboard-head");
+            var dashboardBody = container.find(".flc-nexus-science-lab-dashboard-body");
 
             fluid.each(sensorsArray, function (sensor) {
-                tableHead.append(gpii.nexusScienceLabTable.buildTableHeading(sensor));
-                tableBody.append(fluid.stringTemplate("<td>%sensorValue</td>", {
+                dashboardHead.append(gpii.nexusScienceLabDashboard.buildDashboardHeading(sensor));
+                dashboardBody.append(fluid.stringTemplate("<td>%sensorValue</td>", {
                     sensorValue: sensor.value.toLocaleString(numberLocale, {
                         maximumFractionDigits: maximumFractionDigits
                     })
@@ -70,7 +68,7 @@
         }
     };
 
-    gpii.nexusScienceLabTable.buildTableHeading = function (sensorData) {
+    gpii.nexusScienceLabDashboard.buildDashboardHeading = function (sensorData) {
         if (sensorData.units) {
             return fluid.stringTemplate("<th>%sensorName (%units)</th>", {
                 sensorName: sensorData.name,
