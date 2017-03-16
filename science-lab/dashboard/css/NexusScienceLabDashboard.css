@@ -14,15 +14,22 @@ body {
     font-size: 3em;
 }
 
-.fl-nexus-science-lab-dashboard th {
+.fl-nexus-science-lab-dashboard div {
+    padding: 0 3em;
+}
+
+.fl-nexus-science-lab-dashboard h2 {
     text-align: center;
     font-size: 3em;
     font-weight: normal;
+    padding: 0;
+    margin: 0;
 }
 
-.fl-nexus-science-lab-dashboard td {
+p.fl-nexus-science-lab-dashboard-value {
     text-align: center;
     font-size: 8em;
     font-weight: normal;
-    padding: 0 0.5em;
+    padding: 0.25ex 0;
+    margin: 0;
 }

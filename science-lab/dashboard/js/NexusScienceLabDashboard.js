@@ -30,9 +30,7 @@
         }
     });
 
-    // TODO: Change from a table to headings and paragraphs for values
-    // TODO: Include a hidden h1 "Dashboard"
-    // TODO: Use h2s for the sensor names
+    // TODO: Add a hidden h1 "Dashboard"
     // TODO: Don't rebuild the content for every update
     // TODO: If a value is present, update it
     // TODO: If a value is not present, add it at the appropriate position
@@ -53,31 +51,30 @@
                 return a.name.localeCompare(b.name);
             });
 
-            container.html("<table><thead><tr class='flc-nexus-science-lab-dashboard-head'></tr></thead><tbody><tr class='flc-nexus-science-lab-dashboard-body'></tr></tbody></table>");
-            var dashboardHead = container.find(".flc-nexus-science-lab-dashboard-head");
-            var dashboardBody = container.find(".flc-nexus-science-lab-dashboard-body");
+            container.empty();
 
             fluid.each(sensorsArray, function (sensor) {
-                dashboardHead.append(gpii.nexusScienceLabDashboard.buildDashboardHeading(sensor));
-                dashboardBody.append(fluid.stringTemplate("<td>%sensorValue</td>", {
-                    sensorValue: sensor.value.toLocaleString(numberLocale, {
-                        maximumFractionDigits: maximumFractionDigits
-                    })
-                }));
+                container.append(fluid.stringTemplate(
+                    "<div><h2>%heading</h2><p class='fl-nexus-science-lab-dashboard-value'>%value</p></div>",
+                    {
+                        heading: gpii.nexusScienceLabDashboard.buildSensorHeading(sensor),
+                        value: sensor.value.toLocaleString(numberLocale, {
+                            maximumFractionDigits: maximumFractionDigits
+                        })
+                    }
+                ));
             });
         }
     };
 
-    gpii.nexusScienceLabDashboard.buildDashboardHeading = function (sensorData) {
+    gpii.nexusScienceLabDashboard.buildSensorHeading = function (sensorData) {
         if (sensorData.units) {
-            return fluid.stringTemplate("<th>%sensorName (%units)</th>", {
+            return fluid.stringTemplate("%sensorName (%units)", {
                 sensorName: sensorData.name,
                 units: sensorData.units
             });
         } else {
-            return fluid.stringTemplate("<th>%sensorName</th>", {
-                sensorName: sensorData.name
-            });
+            return sensorData.name;
         }
     };
 
