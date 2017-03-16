@@ -49,12 +49,30 @@
             sensorMin: "{nexusSensorSonificationPanel}.model.sensors." + sensorId + ".rangeMin"
         };
 
-        var sensorOptions =
+        var sensorContainerClass = "nexus-nexusSensorSonificationPanel-sensorDisplay-" + sensorId;
+
+        var sensorPlayerOptions =
         {
+            events: {
+                onSensorDisplayContainerAppended: null
+            },
             listeners: {
                 "{nexusSensorSonificationPanel}.events.onSensorRemoval": {
                    funcName: "gpii.nexusSensorSonificationPanel.checkForRemoval",
-                   args: ["{that}", "{that}.sensor", "{arguments}.0"]
+                   args: ["{that}", "{that}.sensor", "{arguments}.0"],
+                   namespace: "removeSensorPlayer"
+               },
+               "onCreate.appendSensorDisplayContainer": {
+                   "this": "{nexusSensorSonificationPanel}.container",
+                   "method": "append",
+                   "args": ["<div class='" + sensorContainerClass + "'></div>"]
+               },
+               "onCreate.fireOnSensorDisplayContainerAppended": {
+                   funcName: "{that}.events.onSensorDisplayContainerAppended.fire"
+               },
+               "onDestroy.removeSensorDisplayContainer": {
+                   funcName: "gpii.nexusSensorSonificationPanel.removeSensorDisplayContainer",
+                   args: ["{nexusSensorSonificationPanel}", sensorContainerClass]
                }
            },
             components: {
@@ -62,10 +80,23 @@
                     options: {
                         model: sensorModel
                     }
+                },
+                sensorDisplayDebug: {
+                    type: "gpii.sensorPlayer.sensorDisplayDebug",
+                    container: "." + sensorContainerClass,
+                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended",
+                    options: {
+                        // listeners: {
+                        //     "onDestroy.removeDisplayContainer": {
+                        //         "this": "{that}.container",
+                        //         "method": "empty"
+                        //     }
+                        // }
+                    }
                 }
             }
         };
-        return sensorOptions;
+        return sensorPlayerOptions;
     };
 
     gpii.nexusSensorSonificationPanel.checkForRemoval = function (sensorPlayer, sensor, removedSensorId) {
@@ -78,6 +109,12 @@
         }
     };
 
+    gpii.nexusSensorSonificationPanel.removeSensorDisplayContainer = function (nexusSensorSonificationPanel, sensorContainerClass) {
+        var removedSensorContainer = nexusSensorSonificationPanel.container.find("." + sensorContainerClass).remove();
+        console.log(removedSensorContainer);
+        console.log(nexusSensorSonificationPanel, sensorContainerClass);
+    };
+
     gpii.nexusSensorSonificationPanel.updateSonifications = function (that, sensors) {
 
         var sensorsArray = fluid.hashToArray(
@@ -85,18 +122,18 @@
             "sensorId"
         );
 
-        // Add new sensors
         fluid.each(sensorsArray, function (sensor) {
             var sensorId = sensor.sensorId;
 
+            // Add new sensor sonifiers
             if(! that.attachedSensors[sensorId]) {
-                console.log("New sensor to add: " + sensorId);
+                console.log("New sensorPlayer to add: " + sensorId);
                 that.events.onSensorAppearance.fire(sensorId);
                 that.attachedSensors[sensorId] = true;
             }
         });
 
-        // Remove old sensors
+        // Remove any sensor sonifiers for removed sensors
         fluid.each(that.attachedSensors, function (attachedSensor, attachedSensorId) {
             if (! sensors[attachedSensorId]) {
                 console.log("Sensor to remove: " + attachedSensorId);
