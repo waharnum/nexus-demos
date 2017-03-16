@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>pH Sensor Sonification</title>
+        <title>Sonification</title>
 
         <script type="text/javascript" src="../../node_modules/flocking/dist/flocking-all.js"></script>
 
@@ -10,22 +10,19 @@
 
         <script type="text/javascript" src="js/sensorPlayer.js"></script>
         <script type="text/javascript" src="js/nexusSensorPlayer.js"></script>
+        <script type="text/javascript" src="js/nexusSensorSonificationPanel.js"></script>
 
     </head>
     <body>
-        <div class="nexus-nexusSensorPlayer-display">
+        <div class="nexus-nexusSensorSonificationPanel">
         </div>
         <script>
 
-            window.fakeNexusSensorPlayer = gpii.sensorPlayer.nexusPHSensorPlayer({
-                components: {
-                    sensorDisplayDebug: {
-                        type: "gpii.sensorPlayer.sensorDisplayDebug",
-                        container: ".nexus-nexusSensorPlayer-display"
-                    }
+            window.nexusSensorSonificationPanel = gpii.nexusSensorSonificationPanel(".nexus-nexusSensorSonificationPanel", {
+                members: {
+                    nexusHost: window.location.hostname
                 }
             });
-
         </script>
     </body>
 </html>

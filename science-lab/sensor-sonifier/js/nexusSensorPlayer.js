@@ -11,6 +11,32 @@
         }
     });
 
+    fluid.defaults("gpii.sensorPlayer.nexusSensorPlayer", {
+        gradeNames: ["gpii.sensorPlayer"],
+        components: {
+            sensor: {
+                type: "gpii.sensorPlayer.sensor",
+                options: {
+                    model: {
+                        simulateChanges: false
+                        // description: "{nexusSensorConnector}.model.sensors.fakeSensor.name",
+                        // sensorValue: "{nexusSensorConnector}.model.sensors.fakeSensor.value",
+                        // sensorMax: "{nexusSensorConnector}.model.sensors.fakeSensor.rangeMax",
+                        // sensorMin: "{nexusSensorConnector}.model.sensors.fakeSensor.rangeMin"
+                    }
+                }
+            },
+            nexusSensorConnector: {
+                type: "gpii.nexusSensorConnector",
+                options: {
+                    members: {
+                        nexusHost: window.location.hostname
+                    }
+                }
+            }
+        }
+    });
+
     fluid.defaults("gpii.sensorPlayer.nexusFakeSensorPlayer", {
         gradeNames: ["gpii.sensorPlayer"],
         components: {

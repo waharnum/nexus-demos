@@ -203,7 +203,7 @@
         }
     });
 
-    fluid.defaults("gpii.sensorPlayer.sensorDisplay", {
+    fluid.defaults("gpii.sensorPlayer.sensorDisplayDebug", {
         gradeNames: ["fluid.viewComponent"],
         events: {
             displayTemplateReady: null
@@ -231,15 +231,15 @@
                 func: "{that}.events.displayTemplateReady.fire"
             },
             "onCreate.bindSynthControls": {
-                func: "gpii.sensorPlayer.sensorDisplay.bindSynthControls",
+                func: "gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls",
                 args: ["{that}", "{sensorSynthesizer}"]
             }
         },
         components: {
             descriptionDisplay: {
-                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
                 type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorDisplay}.dom.descriptionDisplay",
+                container: "{sensorDisplayDebug}.dom.descriptionDisplay",
                 options: {
                     model: {
                         value: "{sensor}.model.description"
@@ -250,9 +250,9 @@
                 }
             },
             sensorMinDisplay: {
-                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
                 type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorDisplay}.dom.sensorMinDisplay",
+                container: "{sensorDisplayDebug}.dom.sensorMinDisplay",
                 options: {
                     model: {
                         value: "{sensor}.model.sensorMin"
@@ -263,9 +263,9 @@
                 }
             },
             sensorMaxDisplay: {
-                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
                 type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorDisplay}.dom.sensorMaxDisplay",
+                container: "{sensorDisplayDebug}.dom.sensorMaxDisplay",
                 options: {
                     model: {
                         value: "{sensor}.model.sensorMax"
@@ -275,10 +275,10 @@
                     }
                 }
             },
-            sensorDisplay: {
-                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+            sensorDisplayDebug: {
+                createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
                 type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorDisplay}.dom.sensorValueDisplay",
+                container: "{sensorDisplayDebug}.dom.sensorValueDisplay",
                 options: {
                     model: {
                         value: "{sensor}.model.sensorValue"
@@ -289,9 +289,9 @@
                 }
             },
             synthFreqDisplay: {
-                createOnEvent: "{sensorDisplay}.events.displayTemplateReady",
+                createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
                 type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorDisplay}.dom.synthFreqDisplay",
+                container: "{sensorDisplayDebug}.dom.synthFreqDisplay",
                 options: {
                     model: {
                         value: "{sensorSynthesizer}.model.inputs.carrier.freq"
@@ -304,7 +304,7 @@
         }
     });
 
-    gpii.sensorPlayer.sensorDisplay.bindSynthControls = function (that, sensorSynthesizer) {
+    gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSynthesizer) {
         var muteControl = that.locate("muteControl");
         var gradualToneControl = that.locate("gradualToneControl");
         var midpointToneControl = that.locate("midpointToneControl");
@@ -338,7 +338,7 @@
     };
 
     fluid.defaults("gpii.sensorPlayer", {
-        gradeNames: ["fluid.component"],
+        gradeNames: ["fluid.modelComponent"],
         components: {
             sensor: {
                 type: "gpii.sensorPlayer.sensor",
@@ -358,10 +358,6 @@
                     },
                     addToEnvironment: true
                 }
-            },
-            sensorDisplay: {
-                type: "gpii.sensorPlayer.sensorDisplay",
-                container: ".gpii-sensorPlayer-display"
             }
         }
     });
