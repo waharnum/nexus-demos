@@ -3,6 +3,8 @@
 
     var gpii = fluid.registerNamespace("gpii");
 
+    // TODO: Rename to "Dashboard"
+
     fluid.defaults("gpii.nexusScienceLabTable", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
         numberLocale: "en",
@@ -30,10 +32,13 @@
         }
     });
 
-    // TODO: Don't rebuild the table for every update:
-    //       If a value is in the table, update it
-    //       If a value is not in the table, add it at the appropriate column
-    //       If a column is in the table but not in the data, remove it
+    // TODO: Change from a table to headings and paragraphs for values
+    // TODO: Include a hidden h1 "Dashboard"
+    // TODO: Use h2s for the sensor names
+    // TODO: Don't rebuild the content for every update
+    // TODO: If a value is present, update it
+    // TODO: If a value is not present, add it at the appropriate position
+    // TODO: If a value is on the page but not in the latest data, remove it
 
     gpii.nexusScienceLabTable.updateTable = function (container, numberLocale, maximumFractionDigits, noSensorsConnectedMessage, sensors) {
         var sensorsArray = fluid.hashToArray(
