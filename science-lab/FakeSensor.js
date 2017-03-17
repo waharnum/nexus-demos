@@ -7,11 +7,14 @@ require("gpii-nexus-client");
 
 var nexusHost = "localhost";
 var nexusPort = 9081;
-var updateDelayMs = 1000;
-var sinPeriodMs = 10000;
 
 fluid.defaults("gpii.nexus.fakeSensor", {
     gradeNames: ["gpii.nexusWebSocketBoundComponent"],
+    model: {
+        fakeSensorConfig: {
+            updateDelayMs: 1000
+        }
+    },
     members: {
         nexusHost: nexusHost,
         nexusPort: nexusPort,
@@ -41,6 +44,9 @@ fluid.defaults("gpii.nexus.fakeSensor.sinValue", {
         }
     },
     model: {
+        fakeSensorConfig: {
+            updateDelayMs: 2000
+        },
         sensorData: {
             name: "Fake Sensor",
             rangeMin: -1,
@@ -50,7 +56,8 @@ fluid.defaults("gpii.nexus.fakeSensor.sinValue", {
     },
         invokers: {
         "getFakeSensorValue": {
-            "funcName": "gpii.nexus.fakeSensor.getFakeSensorValueSin"
+            "funcName": "gpii.nexus.fakeSensor.getFakeSensorValueSin",
+            "args": ["{that}"]
         }
     }
 });
@@ -64,6 +71,9 @@ fluid.defaults("gpii.nexus.fakeSensor.pHValue", {
         }
     },
     model: {
+        fakeSensorConfig: {
+            updateDelayMs: 10000
+        },
         sensorData: {
             name: "Fake pH Sensor",
             rangeMin: 0,
@@ -84,15 +94,17 @@ gpii.nexus.fakeSensor.exitProcess = function () {
 
 gpii.nexus.fakeSensor.update = function (that) {
     var nextValue = that.getFakeSensorValue();
-    console.log("Fake sensor: " + nextValue);
+    console.log(that.model.sensorData.name + ": " + nextValue);
     that.applier.change("sensorData.value", nextValue);
     setTimeout(function () {
         gpii.nexus.fakeSensor.update(that);
-    }, updateDelayMs);
+    }, that.model.fakeSensorConfig.updateDelayMs);
 };
 
 // A fairly even sin-based sensor value that moves between -1 and 1
-gpii.nexus.fakeSensor.getFakeSensorValueSin = function () {
+// Calculates the sin period based on the update frequency
+gpii.nexus.fakeSensor.getFakeSensorValueSin = function (that) {
+    var sinPeriodMs = that.model.fakeSensorConfig.updateDelayMs * 10;
     return Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
 };
 
