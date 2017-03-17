@@ -15,10 +15,6 @@ fluid.defaults("gpii.nexus.fakeSensor", {
     members: {
         nexusHost: nexusHost,
         nexusPort: nexusPort,
-        nexusPeerComponentPath: "fakeSensor",
-        nexusPeerComponentOptions: {
-            type: "gpii.nexus.fakeSensor"
-        },
         nexusBoundModelPath: "sensorData",
         sendsChangesToNexus: true,
         managesPeer: true
@@ -38,6 +34,12 @@ fluid.defaults("gpii.nexus.fakeSensor", {
 
 fluid.defaults("gpii.nexus.fakeSensor.sinValue", {
     gradeNames: ["gpii.nexus.fakeSensor"],
+    members: {
+        nexusPeerComponentPath: "fakeSensor",
+        nexusPeerComponentOptions: {
+            type: "gpii.nexus.fakeSensor"
+        }
+    },
     model: {
         sensorData: {
             name: "Fake Sensor",
@@ -55,6 +57,12 @@ fluid.defaults("gpii.nexus.fakeSensor.sinValue", {
 
 fluid.defaults("gpii.nexus.fakeSensor.pHValue", {
     gradeNames: ["gpii.nexus.fakeSensor"],
+    members: {
+        nexusPeerComponentPath: "fakeSensorPH",
+        nexusPeerComponentOptions: {
+            type: "gpii.nexus.fakeSensorPH"
+        }
+    },
     model: {
         sensorData: {
             name: "Fake pH Sensor",
@@ -103,10 +111,14 @@ gpii.nexus.fakeSensor.randomFloat = function(min, max) {
     return Math.random() * (max - min) + min;
 };
 
-var sinSensor = gpii.nexus.fakeSensor.sinValue();
+var fakeSensor = gpii.nexus.fakeSensor.sinValue();
+
+var fakeSensorPH = gpii.nexus.fakeSensor.pHValue();
 
 process.on("SIGINT", function () {
-    sinSensor.destroyNexusPeerComponent();
+    fakeSensor.destroyNexusPeerComponent();
+    fakeSensorPH.destroyNexusPeerComponent();
 });
 
-sinSensor.update();
+fakeSensor.update();
+fakeSensorPH.update();
