@@ -16,7 +16,21 @@ gpii.nexus.fakeSensor.exitProcess = function () {
     process.exit();
 };
 
-var sensor = gpii.nexusWebSocketBoundComponent({
+gpii.nexus.fakeSensor.update = function (that) {
+    var nextValue = gpii.nexus.fakeSensor.getFakeSensorValue();    
+    console.log("Fake sensor: " + nextValue);
+    that.applier.change("sensorData.value", nextValue);
+    setTimeout(function () {
+        gpii.nexus.fakeSensor.update(that);
+    }, updateDelayMs);
+};
+
+gpii.nexus.fakeSensor.getFakeSensorValue = function () {
+    return Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
+};
+
+fluid.defaults("gpii.nexus.fakeSensor", {
+    gradeNames: ["gpii.nexusWebSocketBoundComponent"],
     members: {
         nexusHost: nexusHost,
         nexusPort: nexusPort,
@@ -36,6 +50,12 @@ var sensor = gpii.nexusWebSocketBoundComponent({
             value: 0
         }
     },
+    invokers: {
+        "update": {
+            "funcName": "gpii.nexus.fakeSensor.update",
+            "args": "{that}"
+        }
+    },
     listeners: {
         "onPeerDestroyed.exitProcess": {
             funcName: "gpii.nexus.fakeSensor.exitProcess"
@@ -43,21 +63,10 @@ var sensor = gpii.nexusWebSocketBoundComponent({
     }
 });
 
+var sensor = gpii.nexus.fakeSensor();
+
 process.on("SIGINT", function () {
     sensor.destroyNexusPeerComponent();
 });
 
-gpii.nexus.fakeSensor.update = function () {
-    var nextValue = gpii.nexus.fakeSensor.getFakeSensorValue();
-    console.log("Fake sensor: " + nextValue);
-    sensor.applier.change("sensorData.value", nextValue);
-    setTimeout(function () {
-        gpii.nexus.fakeSensor.update();
-    }, updateDelayMs);
-};
-
-gpii.nexus.fakeSensor.getFakeSensorValue = function () {
-    return Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
-};
-
-gpii.nexus.fakeSensor.update();
+sensor.update();
