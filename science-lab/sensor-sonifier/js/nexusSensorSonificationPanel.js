@@ -3,6 +3,51 @@
 
     var gpii = fluid.registerNamespace("gpii");
 
+    fluid.defaults("gpii.nexusSensorSonificationPanel.sensorSonifierDisplay", {
+        gradeNames: ["fluid.viewComponent"],
+        events: {
+            displayTemplateReady: null
+        },
+        selectors: {
+            descriptionDisplay: ".flc-descriptionDisplay",
+            gradualToneControl: ".flc-gradualToneControl",
+            midpointToneControl: ".flc-midpointToneControl",
+            muteControl: ".flc-muteControl"
+        },
+        members: {
+            template: "<div class=\"flc-descriptionDisplay\"></div><form> <label>Sensor Midpoint Tone<input class=\"flc-midpointToneControl\" type=\"checkbox\"/></label><br/> <label>Mute Sensor<input class=\"flc-muteControl\" type=\"checkbox\"/></label> </form>"
+        },
+        listeners: {
+            "onCreate.appendDisplayTemplate": {
+                "this": "{that}.container",
+                "method": "html",
+                "args": "{that}.template"
+            },
+            "onCreate.fireDisplayTemplateReady": {
+                func: "{that}.events.displayTemplateReady.fire"
+            },
+            "onCreate.bindSynthControls": {
+                func: "gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls",
+                args: ["{that}", "{sensorSynthesizer}"]
+            }
+        },
+        components: {
+            descriptionDisplay: {
+                createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
+                type: "gpii.sensorPlayer.valueDisplay",
+                container: "{sensorDisplayDebug}.dom.descriptionDisplay",
+                options: {
+                    model: {
+                        value: "{sensor}.model.description"
+                    },
+                    members: {
+                        template: "<span class=\"flc-valueDisplay-value\"></span>"
+                    }
+                }
+            }
+        }
+    });
+
     fluid.defaults("gpii.nexusSensorSonificationPanel", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
         numberLocale: "en",
@@ -83,7 +128,7 @@
                     }
                 },
                 sensorDisplayDebug: {
-                    type: "gpii.sensorPlayer.sensorDisplayDebug",
+                    type: "gpii.nexusSensorSonificationPanel.sensorSonifierDisplay",
                     container: "." + sensorContainerClass,
                     createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended"
                 }
