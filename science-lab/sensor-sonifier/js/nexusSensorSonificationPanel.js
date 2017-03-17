@@ -32,9 +32,9 @@
         },
         components: {
             sensorNameDisplay: {
-                createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
+                createOnEvent: "{sensorSonifierDisplay}.events.displayTemplateReady",
                 type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorDisplayDebug}.dom.sensorNameDisplay",
+                container: "{sensorSonifierDisplay}.dom.sensorNameDisplay",
                 options: {
                     model: {
                         value: "{sensor}.model.description"
@@ -109,7 +109,7 @@
                "onCreate.appendSensorDisplayContainer": {
                    "this": "{nexusSensorSonificationPanel}.container",
                    "method": "append",
-                   "args": ["<div class='" + sensorContainerClass + "'></div>"]
+                   "args": ["<div class='nexus-nexusSensorSonificationPanel-sensorDisplay " + sensorContainerClass + "'></div>"]
                },
                "onCreate.fireOnSensorDisplayContainerAppended": {
                    funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
@@ -126,10 +126,25 @@
                         model: sensorModel
                     }
                 },
-                sensorDisplayDebug: {
+                sensorSonifierDisplay: {
                     type: "gpii.nexusSensorSonificationPanel.sensorSonifierDisplay",
                     container: "." + sensorContainerClass,
-                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended"
+                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended",
+                    options: {
+                        listeners: {
+                            // Start hidden
+                           "onCreate.hideContainer": {
+                               "this": "{nexusSensorSonificationPanel}.container",
+                               "method": "hide",
+                               "args": [0]
+                           },
+                           // Fade in
+                           "onCreate.fadeInContainer": {
+                               "this": "{nexusSensorSonificationPanel}.container",
+                               "method": "fadeIn"
+                           }
+                        }
+                    }
                 }
             }
         };
