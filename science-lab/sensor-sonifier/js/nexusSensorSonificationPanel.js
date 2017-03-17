@@ -9,13 +9,12 @@
             displayTemplateReady: null
         },
         selectors: {
-            descriptionDisplay: ".flc-descriptionDisplay",
-            gradualToneControl: ".flc-gradualToneControl",
-            midpointToneControl: ".flc-midpointToneControl",
-            muteControl: ".flc-muteControl"
+            sensorNameDisplay: ".nexusc-sensorNameDisplay",
+            midpointToneControl: ".nexusc-midpointToneControl",
+            muteControl: ".nexusc-sensorMuteControl"
         },
         members: {
-            template: "<div class=\"flc-descriptionDisplay\"></div><form> <label>Sensor Midpoint Tone<input class=\"flc-midpointToneControl\" type=\"checkbox\"/></label><br/> <label>Mute Sensor<input class=\"flc-muteControl\" type=\"checkbox\"/></label> </form>"
+            template: "<h2 class=\"nexusc-sensorNameDisplay\"></h2><form class=\"nexus-sensorSonifierControls\"><span class=\"nexus-sensorSonifierControls-checkboxContainer\"><label>Play Midpoint<input class=\"nexusc-midpointToneControl\" type=\"checkbox\"/><i></i></label></span><br/><span class=\"nexus-sensorSonifierControls-checkboxContainer\"><label>Mute Sensor<input class=\"nexusc-sensorMuteControl\" type=\"checkbox\"/><i></i></label></span> </form>"
         },
         listeners: {
             "onCreate.appendDisplayTemplate": {
@@ -32,10 +31,10 @@
             }
         },
         components: {
-            descriptionDisplay: {
+            sensorNameDisplay: {
                 createOnEvent: "{sensorDisplayDebug}.events.displayTemplateReady",
                 type: "gpii.sensorPlayer.valueDisplay",
-                container: "{sensorDisplayDebug}.dom.descriptionDisplay",
+                container: "{sensorDisplayDebug}.dom.sensorNameDisplay",
                 options: {
                     model: {
                         value: "{sensor}.model.description"
