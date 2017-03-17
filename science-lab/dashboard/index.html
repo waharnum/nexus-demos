@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Table</title>
+        <title>Dashboard</title>
 
-        <link rel="stylesheet" type="text/css" href="css/NexusScienceLabTable.css" />
+        <link rel="stylesheet" type="text/css" href="css/NexusScienceLabDashboard.css" />
 
         <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
         <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
@@ -17,12 +17,12 @@
         <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
 
         <script type="text/javascript" src="../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
-        <script type="text/javascript" src="js/NexusScienceLabTable.js"></script>
+        <script type="text/javascript" src="js/NexusScienceLabDashboard.js"></script>
     </head>
     <body>
-        <div id="table" class="fl-nexus-science-lab-table"></div>
+        <div id="dashboard" class="fl-nexus-science-lab-dashboard"></div>
         <script>
-            window.scienceLabTable = gpii.nexusScienceLabTable("#table", {
+            window.scienceLabDashboard = gpii.nexusScienceLabDashboard("#dashboard", {
                 members: {
                     nexusHost: window.location.hostname
                 }

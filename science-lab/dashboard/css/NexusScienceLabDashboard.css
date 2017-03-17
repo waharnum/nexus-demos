@@ -3,26 +3,33 @@ body {
     font-family: sans-serif;
 }
 
-.fl-nexus-science-lab-table {
+.fl-nexus-science-lab-dashboard {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.fl-nexus-science-lab-table p {
+.fl-nexus-science-lab-dashboard p {
     font-size: 3em;
 }
 
-.fl-nexus-science-lab-table th {
+.fl-nexus-science-lab-dashboard div {
+    padding: 0 3em;
+}
+
+.fl-nexus-science-lab-dashboard h2 {
     text-align: center;
     font-size: 3em;
     font-weight: normal;
+    padding: 0;
+    margin: 0;
 }
 
-.fl-nexus-science-lab-table td {
+p.fl-nexus-science-lab-dashboard-value {
     text-align: center;
     font-size: 8em;
     font-weight: normal;
-    padding: 0 0.5em;
+    padding: 0.25ex 0;
+    margin: 0;
 }
