@@ -68,7 +68,8 @@
                    "args": ["<div class='" + sensorContainerClass + "'></div>"]
                },
                "onCreate.fireOnSensorDisplayContainerAppended": {
-                   funcName: "{that}.events.onSensorDisplayContainerAppended.fire"
+                   funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
+                   priority: "after:appendSensorDisplayContainer"
                },
                "onDestroy.removeSensorDisplayContainer": {
                    funcName: "gpii.nexusSensorSonificationPanel.removeSensorDisplayContainer",
@@ -110,7 +111,10 @@
     };
 
     gpii.nexusSensorSonificationPanel.removeSensorDisplayContainer = function (nexusSensorSonificationPanel, sensorContainerClass) {
-        var removedSensorContainer = nexusSensorSonificationPanel.container.find("." + sensorContainerClass).remove();
+        var removedSensorContainer = nexusSensorSonificationPanel.container.find("." + sensorContainerClass);
+        removedSensorContainer.fadeOut(function() {
+            removedSensorContainer.remove();
+        });
         console.log(removedSensorContainer);
         console.log(nexusSensorSonificationPanel, sensorContainerClass);
     };
