@@ -23,21 +23,10 @@ fluid.defaults("gpii.nexus.fakeSensor", {
         sendsChangesToNexus: true,
         managesPeer: true
     },
-    model: {
-        sensorData: {
-            name: "Fake Sensor",
-            rangeMin: -1,
-            rangeMax: 1,
-            value: 0
-        }
-    },
     invokers: {
         "update": {
             "funcName": "gpii.nexus.fakeSensor.update",
             "args": "{that}"
-        },
-        "getFakeSensorValue": {
-            "funcName": "gpii.nexus.fakeSensor.getFakeSensorValueSin"
         }
     },
     listeners: {
@@ -47,6 +36,22 @@ fluid.defaults("gpii.nexus.fakeSensor", {
     }
 });
 
+fluid.defaults("gpii.nexus.fakeSensor.sinValue", {
+    gradeNames: ["gpii.nexus.fakeSensor"],
+    model: {
+        sensorData: {
+            name: "Fake Sensor",
+            rangeMin: -1,
+            rangeMax: 1,
+            value: 0
+        }
+    },
+        invokers: {
+        "getFakeSensorValue": {
+            "funcName": "gpii.nexus.fakeSensor.getFakeSensorValueSin"
+        }
+    }
+});
 
 gpii.nexus.fakeSensor.exitProcess = function () {
     process.exit();
@@ -66,7 +71,7 @@ gpii.nexus.fakeSensor.getFakeSensorValueSin = function () {
     return Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
 };
 
-var sensor = gpii.nexus.fakeSensor();
+var sensor = gpii.nexus.fakeSensor.sinValue();
 
 process.on("SIGINT", function () {
     sensor.destroyNexusPeerComponent();
