@@ -10,25 +10,6 @@ var nexusPort = 9081;
 var updateDelayMs = 1000;
 var sinPeriodMs = 10000;
 
-fluid.registerNamespace("gpii.nexus.fakeSensor");
-
-gpii.nexus.fakeSensor.exitProcess = function () {
-    process.exit();
-};
-
-gpii.nexus.fakeSensor.update = function (that) {
-    var nextValue = gpii.nexus.fakeSensor.getFakeSensorValue();    
-    console.log("Fake sensor: " + nextValue);
-    that.applier.change("sensorData.value", nextValue);
-    setTimeout(function () {
-        gpii.nexus.fakeSensor.update(that);
-    }, updateDelayMs);
-};
-
-gpii.nexus.fakeSensor.getFakeSensorValue = function () {
-    return Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
-};
-
 fluid.defaults("gpii.nexus.fakeSensor", {
     gradeNames: ["gpii.nexusWebSocketBoundComponent"],
     members: {
@@ -54,6 +35,9 @@ fluid.defaults("gpii.nexus.fakeSensor", {
         "update": {
             "funcName": "gpii.nexus.fakeSensor.update",
             "args": "{that}"
+        },
+        "getFakeSensorValue": {
+            "funcName": "gpii.nexus.fakeSensor.getFakeSensorValueSin"
         }
     },
     listeners: {
@@ -62,6 +46,25 @@ fluid.defaults("gpii.nexus.fakeSensor", {
         }
     }
 });
+
+
+gpii.nexus.fakeSensor.exitProcess = function () {
+    process.exit();
+};
+
+gpii.nexus.fakeSensor.update = function (that) {
+    var nextValue = that.getFakeSensorValue();
+    console.log("Fake sensor: " + nextValue);
+    that.applier.change("sensorData.value", nextValue);
+    setTimeout(function () {
+        gpii.nexus.fakeSensor.update(that);
+    }, updateDelayMs);
+};
+
+// A fairly even sin-based sensor value that moves between -1 and 1
+gpii.nexus.fakeSensor.getFakeSensorValueSin = function () {
+    return Math.sin((new Date().getTime() % sinPeriodMs) * Math.PI * 2 / sinPeriodMs);
+};
 
 var sensor = gpii.nexus.fakeSensor();
 
