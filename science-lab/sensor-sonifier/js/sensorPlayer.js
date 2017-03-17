@@ -326,7 +326,7 @@
                    rate: "control",
                    start: 0.25,
                    end: 0,
-                   duration: 3
+                   duration: 1
                 });
             }
             else {
@@ -336,7 +336,7 @@
                    rate: "control",
                    start: 0,
                    end: 0.25,
-                   duration: 3
+                   duration: 1
                 });
 
             }
