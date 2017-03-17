@@ -103,10 +103,10 @@ gpii.nexus.fakeSensor.randomFloat = function(min, max) {
     return Math.random() * (max - min) + min;
 };
 
-var sensor = gpii.nexus.fakeSensor.sinValue();
+var sinSensor = gpii.nexus.fakeSensor.sinValue();
 
 process.on("SIGINT", function () {
-    sensor.destroyNexusPeerComponent();
+    sinSensor.destroyNexusPeerComponent();
 });
 
-sensor.update();
+sinSensor.update();
