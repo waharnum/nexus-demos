@@ -89,29 +89,37 @@
             gradualToneChangeDuration: 500,
             graduateToneChangeTickDuration: 100
         },
-        synthDef: [
-            {
-            id: "carrier",
-            ugen: "flock.ugen.sin",
-            inputs: {
-                freq: 440,
-                mul: {
-                    id: "mod",
-                    ugen: "flock.ugen.sinOsc",
-                    freq: 0.1,
-                    mul: 0.5
+        synthDef: {
+            ugen: "flock.ugen.out",
+            sources: [
+                {
+                    ugen: "flock.ugen.sum",
+                    sources: [
+                        {
+                        id: "carrier",
+                        ugen: "flock.ugen.sin",
+                        inputs: {
+                            freq: 440,
+                            mul: {
+                                id: "mod",
+                                ugen: "flock.ugen.sinOsc",
+                                freq: 0.1,
+                                mul: 0.25
+                            }
+                            }
+                        },
+                        {
+                        id: "midpoint",
+                        ugen: "flock.ugen.sin",
+                        inputs: {
+                            freq: 440,
+                            mul: 0
+                            }
+                        }
+                    ]
                 }
-                }
-            },
-            {
-            id: "midpoint",
-            ugen: "flock.ugen.sin",
-            inputs: {
-                freq: 440,
-                mul: 0
-                }
-            }
-        ],
+            ]
+        },
         addToEnvironment: true,
         modelListeners: {
             sensorValue: {
@@ -312,10 +320,10 @@
         muteControl.click(function () {
             var checked = muteControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.applier.change("inputs.carrier.mul", 0);
+                sensorSynthesizer.pause();
             }
             else {
-                sensorSynthesizer.applier.change("inputs.carrier.mul", 1);
+                sensorSynthesizer.play();
             }
 
         });
@@ -328,7 +336,7 @@
         midpointToneControl.click(function () {
             var checked = midpointToneControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.applier.change("inputs.midpoint.mul", 0.25);
+                sensorSynthesizer.applier.change("inputs.midpoint.mul", 0.12);
             }
             else {
                 sensorSynthesizer.applier.change("inputs.midpoint.mul", 0);

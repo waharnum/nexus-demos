@@ -85,15 +85,7 @@
                 sensorDisplayDebug: {
                     type: "gpii.sensorPlayer.sensorDisplayDebug",
                     container: "." + sensorContainerClass,
-                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended",
-                    options: {
-                        // listeners: {
-                        //     "onDestroy.removeDisplayContainer": {
-                        //         "this": "{that}.container",
-                        //         "method": "empty"
-                        //     }
-                        // }
-                    }
+                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended"
                 }
             }
         };
