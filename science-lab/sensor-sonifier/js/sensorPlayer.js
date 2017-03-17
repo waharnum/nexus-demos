@@ -105,7 +105,7 @@
                                 ugen: "flock.ugen.sinOsc",
                                 freq: 0.1,
                                 mul: 0.25
-                            }
+                                }
                             }
                         },
                         {
@@ -320,10 +320,25 @@
         muteControl.click(function () {
             var checked = muteControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.pause();
+                sensorSynthesizer.set("mod.mul", {
+                    id: "fader",
+                   ugen: "flock.ugen.line",
+                   rate: "control",
+                   start: 0.25,
+                   end: 0,
+                   duration: 3
+                });
             }
             else {
-                sensorSynthesizer.play();
+                sensorSynthesizer.set("mod.mul", {
+                    id: "fader",
+                   ugen: "flock.ugen.line",
+                   rate: "control",
+                   start: 0,
+                   end: 0.25,
+                   duration: 3
+                });
+
             }
 
         });
