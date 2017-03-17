@@ -60,7 +60,7 @@
                 "{nexusSensorSonificationPanel}.events.onSensorRemoval": {
                    funcName: "gpii.nexusSensorSonificationPanel.checkForRemoval",
                    args: ["{that}", "{that}.sensor", "{arguments}.0"],
-                   namespace: "removeSensorPlayer"
+                   namespace: "removeSensorPlayer-"+sensorId
                },
                "onCreate.appendSensorDisplayContainer": {
                    "this": "{nexusSensorSonificationPanel}.container",
@@ -100,10 +100,11 @@
         return sensorPlayerOptions;
     };
 
-    gpii.nexusSensorSonificationPanel.checkForRemoval = function (sensorPlayer, sensor, removedSensorId) {
+    gpii.nexusSensorSonificationPanel.checkForRemoval = function (sensorPlayer, sensor, removedSensorIds) {
         console.log("gpii.nexusSensorSonificationPanel.checkForRemoval");
-        console.log(sensorPlayer, sensor, removedSensorId);
-        if(fluid.get(sensor.model, "sensorId") === removedSensorId) {
+        console.log(sensorPlayer, sensor, removedSensorIds);
+        console.log(sensorPlayer);
+        if(fluid.contains(removedSensorIds,fluid.get(sensor.model, "sensorId"))) {
             console.log("this sensorPlayer should be removed");
             sensorPlayer.destroy();
             console.log(sensorPlayer);
@@ -111,12 +112,12 @@
     };
 
     gpii.nexusSensorSonificationPanel.removeSensorDisplayContainer = function (nexusSensorSonificationPanel, sensorContainerClass) {
+        console.log(nexusSensorSonificationPanel, sensorContainerClass);
         var removedSensorContainer = nexusSensorSonificationPanel.container.find("." + sensorContainerClass);
+        console.log(removedSensorContainer);
         removedSensorContainer.fadeOut(function() {
             removedSensorContainer.remove();
         });
-        console.log(removedSensorContainer);
-        console.log(nexusSensorSonificationPanel, sensorContainerClass);
     };
 
     gpii.nexusSensorSonificationPanel.updateSonifications = function (that, sensors) {
@@ -138,14 +139,17 @@
         });
 
         // Remove any sensor sonifiers for removed sensors
+        var removedSensorIds = [];
         fluid.each(that.attachedSensors, function (attachedSensor, attachedSensorId) {
             if (! sensors[attachedSensorId]) {
                 console.log("Sensor to remove: " + attachedSensorId);
-                console.log(that);
-                that.events.onSensorRemoval.fire(attachedSensorId);
+                removedSensorIds.push(attachedSensorId);
                 that.attachedSensors[attachedSensorId] = false;
             }
         });
+        if(removedSensorIds.length > 0) {
+            that.events.onSensorRemoval.fire(removedSensorIds);
+        }
     };
 
 }());
