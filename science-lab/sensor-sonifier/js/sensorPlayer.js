@@ -83,7 +83,19 @@
             scalingSynth: {
                 type: "flock.modelSynth",
                 options: {
+                    modelListeners: {
+                        valueInformation: {
+                            funcName: "gpii.sensorPlayer.sensorSonifier.relaySensorValue",
+                            args: ["{that}", "{that}.model.valueInformation"],
+                            excludeSource: "init"
+                        }
+                    },
                     model: {
+                        valueInformation: {
+                            max: "{sensorSonifier}.model.sensorMax",
+                            min: "{sensorSonifier}.model.sensorMin",
+                            current: "{sensorSonifier}.model.sensorValue"
+                        },
                         inputs: {
                             carrier: {
                                 freq: 440
@@ -126,30 +138,23 @@
                     addToEnvironment: true
                 }
             }
-        },
-        modelListeners: {
-            sensorValue: {
-                funcName: "gpii.sensorPlayer.sensorSonifier.relaySensorValue",
-                args: ["{that}", "{that}.model.sensorValue"],
-                excludeSource: "init"
-            }
         }
     });
 
-    gpii.sensorPlayer.sensorSonifier.relaySensorValue = function(that, newSensorValue) {
+    gpii.sensorPlayer.sensorSonifier.relaySensorValue = function(that, valueInformation) {
         console.log(that);
-        var freqMax = that.scalingSynth.model.freqMax,
-            freqMin = that.scalingSynth.model.freqMin,
-            currentSynthFreq = that.scalingSynth.model.inputs.carrier.freq,
-            sensorMax = that.model.sensorMax,
-            sensorMin = that.model.sensorMin;
+        console.log(valueInformation);
+        var freqMax = that.model.freqMax,
+            freqMin = that.model.freqMin,
+            sensorMax = valueInformation.max,
+            sensorMin = valueInformation.min;
 
-        var targetFreq = gpii.sensorPlayer.sensorSonifier.scaleValue(newSensorValue, sensorMin, sensorMax, freqMin, freqMax);
+        var targetFreq = gpii.sensorPlayer.sensorSonifier.scaleValue(valueInformation.current, sensorMin, sensorMax, freqMin, freqMax);
         var midpointFreq = gpii.sensorPlayer.sensorSonifier.getMidpointValue(freqMax, freqMin);
 
-        that.scalingSynth.applier.change("inputs.midpoint.freq", midpointFreq);
+        that.applier.change("inputs.midpoint.freq", midpointFreq);
 
-        that.scalingSynth.applier.change("inputs.carrier.freq", targetFreq);
+        that.applier.change("inputs.carrier.freq", targetFreq);
     };
 
     gpii.sensorPlayer.sensorSonifier.getMidpointValue = function(upper, lower) {
