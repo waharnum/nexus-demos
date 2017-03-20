@@ -99,7 +99,7 @@
         gradeNames: ["flock.modelSynth"],
         modelRelay: [{
             target: "inputs.carrier.freq",
-            singleTransform: {
+            singleTransform: {                
                 type: "gpii.sensorPlayer.transforms.minMaxScale",
                 input: "{that}.model.valueInformation.current",
                 inputScaleMax: "{that}.model.valueInformation.max",
@@ -145,6 +145,8 @@
             ugen: "flock.ugen.out",
             sources: [
                 {
+                    id: "sum",
+                    mul: 1,
                     ugen: "flock.ugen.sum",
                     sources: [
                         {
@@ -331,22 +333,22 @@
         muteControl.click(function () {
             var checked = muteControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.scalingSynth.set("mod.mul", {
+                sensorSynthesizer.scalingSynth.set("sum.mul", {
                     id: "fader",
                    ugen: "flock.ugen.line",
                    rate: "control",
-                   start: 0.25,
+                   start: 1,
                    end: 0,
                    duration: 1
                 });
             }
             else {
-                sensorSynthesizer.scalingSynth.set("mod.mul", {
+                sensorSynthesizer.scalingSynth.set("sum.mul", {
                     id: "fader",
                    ugen: "flock.ugen.line",
                    rate: "control",
                    start: 0,
-                   end: 0.25,
+                   end: 1,
                    duration: 1
                 });
 
