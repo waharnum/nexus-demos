@@ -72,87 +72,98 @@
     // A sensor synthesizer that translates a lower and upper bounded
     // sensor into lower or higher frequencies
     // Also plays a continuous "midpoint" tone
-    fluid.defaults("gpii.sensorPlayer.sensorScalingSynthesizer", {
-        gradeNames: ["flock.modelSynth"],
+    fluid.defaults("gpii.sensorPlayer.sensorSonifier", {
+        gradeNames: ["fluid.modelComponent"],
         model: {
-            inputs: {
-                carrier: {
-                    freq: 440
-                }
-            },
-            freqMax: 680,
-            freqMin: 200,
             sensorMax: 100,
             sensorMin: 0,
-            sensorValue: 50,
-            gradualToneChange: false,
-            gradualToneChangeDuration: 500,
-            graduateToneChangeTickDuration: 100
+            sensorValue: 50
         },
-        synthDef: {
-            ugen: "flock.ugen.out",
-            sources: [
-                {
-                    ugen: "flock.ugen.sum",
-                    sources: [
-                        {
-                        id: "carrier",
-                        ugen: "flock.ugen.sin",
+        components: {
+            scalingSynth: {
+                type: "flock.modelSynth",
+                options: {
+                    model: {
                         inputs: {
-                            freq: 440,
-                            mul: {
-                                id: "mod",
-                                ugen: "flock.ugen.sinOsc",
-                                freq: 0.1,
-                                mul: 0.25
-                                }
+                            carrier: {
+                                freq: 440
                             }
                         },
-                        {
-                        id: "midpoint",
-                        ugen: "flock.ugen.sin",
-                        inputs: {
-                            freq: 440,
-                            mul: 0
+                        freqMax: 680,
+                        freqMin: 200,
+                        gradualToneChange: false,
+                        gradualToneChangeDuration: 500,
+                        graduateToneChangeTickDuration: 100
+                    },
+                    synthDef: {
+                        ugen: "flock.ugen.out",
+                        sources: [
+                            {
+                                ugen: "flock.ugen.sum",
+                                sources: [
+                                    {
+                                    id: "carrier",
+                                    ugen: "flock.ugen.sin",
+                                    inputs: {
+                                        freq: 440,
+                                        mul: {
+                                            id: "mod",
+                                            ugen: "flock.ugen.sinOsc",
+                                            freq: 0.1,
+                                            mul: 0.25
+                                            }
+                                        }
+                                    },
+                                    {
+                                    id: "midpoint",
+                                    ugen: "flock.ugen.sin",
+                                    inputs: {
+                                        freq: 440,
+                                        mul: 0
+                                        }
+                                    }
+                                ]
                             }
-                        }
-                    ]
+                        ]
+                    },
+                    addToEnvironment: true
                 }
-            ]
+            }
         },
-        addToEnvironment: true,
         modelListeners: {
             sensorValue: {
-                funcName: "gpii.sensorPlayer.sensorScalingSynthesizer.relaySensorValue",
-                args: ["{that}", "{that}.model.sensorValue"]
+                funcName: "gpii.sensorPlayer.sensorSonifier.relaySensorValue",
+                args: ["{that}", "{that}.model.sensorValue"],
+                excludeSource: "init"
             }
         }
     });
 
-    gpii.sensorPlayer.sensorScalingSynthesizer.relaySensorValue = function(that, newSensorValue) {
-        var freqMax = that.model.freqMax,
-            freqMin = that.model.freqMin,
-            currentSynthFreq = that.model.inputs.carrier.freq,
+    gpii.sensorPlayer.sensorSonifier.relaySensorValue = function(that, newSensorValue) {
+        console.log(that);
+        var freqMax = that.scalingSynth.model.freqMax,
+            freqMin = that.scalingSynth.model.freqMin,
+            currentSynthFreq = that.scalingSynth.model.inputs.carrier.freq,
             sensorMax = that.model.sensorMax,
             sensorMin = that.model.sensorMin,
-            gradualToneChange = that.model.gradualToneChange,
-            gradualToneChangeDuration = that.model.gradualToneChangeDuration,
-            graduateToneChangeTickDuration = that.model.graduateToneChangeTickDuration;
+            gradualToneChange = that.scalingSynth.model.gradualToneChange,
+            gradualToneChangeDuration = that.scalingSynth.model.gradualToneChangeDuration,
+            graduateToneChangeTickDuration = that.scalingSynth.model.graduateToneChangeTickDuration;
 
-        var targetFreq = gpii.sensorPlayer.sensorScalingSynthesizer.scaleValue(newSensorValue, sensorMin, sensorMax, freqMin, freqMax);
-        var midpointFreq = gpii.sensorPlayer.sensorScalingSynthesizer.getMidpointValue(freqMax, freqMin);
+        var targetFreq = gpii.sensorPlayer.sensorSonifier.scaleValue(newSensorValue, sensorMin, sensorMax, freqMin, freqMax);
+        var midpointFreq = gpii.sensorPlayer.sensorSonifier.getMidpointValue(freqMax, freqMin);
 
-        that.applier.change("inputs.midpoint.freq", midpointFreq);
+        that.scalingSynth.applier.change("inputs.midpoint.freq", midpointFreq);
 
         if(gradualToneChange) {
-            gpii.sensorPlayer.sensorScalingSynthesizer.adjustFrequencyGradually(that, currentSynthFreq, targetFreq, gradualToneChangeDuration, graduateToneChangeTickDuration);
+            gpii.sensorPlayer.sensorSonifier.adjustFrequencyGradually(that, currentSynthFreq, targetFreq, gradualToneChangeDuration, graduateToneChangeTickDuration);
         } else {
-            that.applier.change("inputs.carrier.freq", targetFreq);
+            that.scalingSynth.applier.change("inputs.carrier.freq", targetFreq);
         }
     };
 
     // Adjust a frequency up or down evenly over "duration"
-    gpii.sensorPlayer.sensorScalingSynthesizer.adjustFrequencyGradually = function (that, currentFreq, targetFreq, duration, tick) {
+    gpii.sensorPlayer.sensorSonifier.adjustFrequencyGradually = function (that, currentFreq, targetFreq, duration, tick) {
         var totalMovement = targetFreq - currentFreq;
         var intervals = duration / tick;
         var tickMovement = totalMovement / intervals;
@@ -166,15 +177,13 @@
             }, currentTickTime);
             currentTickTime = currentTickTime + tick;
         }
-
-
     };
 
-    gpii.sensorPlayer.sensorScalingSynthesizer.getMidpointValue = function(upper, lower) {
+    gpii.sensorPlayer.sensorSonifier.getMidpointValue = function(upper, lower) {
         return (upper + lower) / 2;
     };
 
-    gpii.sensorPlayer.sensorScalingSynthesizer.scaleValue = function (value, inputLower, inputUpper, outputLower, outputUpper) {
+    gpii.sensorPlayer.sensorSonifier.scaleValue = function (value, inputLower, inputUpper, outputLower, outputUpper) {
         var scaledValue = ((outputUpper - outputLower) * (value - inputLower) / (inputUpper - inputLower)) + outputLower;
         return scaledValue;
     };
@@ -313,6 +322,7 @@
     });
 
     gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSynthesizer) {
+        console.log(sensorSynthesizer);
         var muteControl = that.locate("muteControl");
         var gradualToneControl = that.locate("gradualToneControl");
         var midpointToneControl = that.locate("midpointToneControl");
@@ -320,7 +330,7 @@
         muteControl.click(function () {
             var checked = muteControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.set("mod.mul", {
+                sensorSynthesizer.scalingSynth.set("mod.mul", {
                     id: "fader",
                    ugen: "flock.ugen.line",
                    rate: "control",
@@ -330,7 +340,7 @@
                 });
             }
             else {
-                sensorSynthesizer.set("mod.mul", {
+                sensorSynthesizer.scalingSynth.set("mod.mul", {
                     id: "fader",
                    ugen: "flock.ugen.line",
                    rate: "control",
@@ -345,16 +355,16 @@
 
         gradualToneControl.click(function () {
             var checked = gradualToneControl.is(":checked");
-            sensorSynthesizer.applier.change("gradualToneChange", checked);
+            sensorSynthesizer.scalingSynth.applier.change("gradualToneChange", checked);
         });
 
         midpointToneControl.click(function () {
             var checked = midpointToneControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.applier.change("inputs.midpoint.mul", 0.12);
+                sensorSynthesizer.scalingSynth.applier.change("inputs.midpoint.mul", 0.12);
             }
             else {
-                sensorSynthesizer.applier.change("inputs.midpoint.mul", 0);
+                sensorSynthesizer.scalingSynth.applier.change("inputs.midpoint.mul", 0);
             }
 
         });
@@ -372,14 +382,13 @@
                 }
             },
             sensorSynthesizer: {
-                type: "gpii.sensorPlayer.sensorScalingSynthesizer",
+                type: "gpii.sensorPlayer.sensorSonifier",
                 options: {
                     model: {
                         sensorValue: "{sensor}.model.sensorValue",
                         sensorMax: "{sensor}.model.sensorMax",
                         sensorMin: "{sensor}.model.sensorMin"
-                    },
-                    addToEnvironment: true
+                    }
                 }
             }
         }
