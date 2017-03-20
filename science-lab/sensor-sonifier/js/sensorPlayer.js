@@ -69,9 +69,7 @@
         }
     };
 
-    // A sensor synthesizer that translates a lower and upper bounded
-    // sensor into lower or higher frequencies
-    // Also plays a continuous "midpoint" tone
+    // A sensor sonifier that uses the scaling synth
     fluid.defaults("gpii.sensorPlayer.sensorSonifier", {
         gradeNames: ["fluid.modelComponent"],
         model: {
@@ -96,14 +94,37 @@
     });
 
     // A model-driven synth that scales model values
+    // with specified min / max to a min/max frequency range
     fluid.defaults("gpii.sensorPlayer.scalingSynth", {
         gradeNames: ["flock.modelSynth"],
-        modelListeners: {
-            valueInformation: {
-                funcName: "gpii.sensorPlayer.sensorSonifier.relaySensorValue",
-                args: ["{that}", "{that}.model.valueInformation"]
+        modelRelay: [{
+            target: "inputs.carrier.freq",
+            singleTransform: {
+                type: "gpii.sensorPlayer.transforms.minMaxScale",
+                input: "{that}.model.valueInformation.current",
+                inputScaleMax: "{that}.model.valueInformation.max",
+                inputScaleMin: "{that}.model.valueInformation.min",
+                outputScaleMax: "{that}.model.freqMax",
+                outputScaleMin: "{that}.model.freqMin"
             }
         },
+        {
+            target: "inputs.midpoint.freq",
+            singleTransform: {
+                type: "fluid.transforms.binaryOp",
+                left: {
+                    transform: {
+                        type: "fluid.transforms.binaryOp",
+                        left: "{that}.model.freqMax",
+                        right: "{that}.model.freqMin",
+                        operator: "+"
+                    }
+                },
+                right: "2",
+                operator: "/"
+            }
+        }
+        ],
         model: {
             // In real-world usage, these will be bound
             // to models from other components
@@ -154,26 +175,20 @@
         addToEnvironment: true
     });
 
-    gpii.sensorPlayer.sensorSonifier.relaySensorValue = function(that, valueInformation) {
-        var freqMax = that.model.freqMax,
-            freqMin = that.model.freqMin,
-            sensorMax = valueInformation.max,
-            sensorMin = valueInformation.min;
+    fluid.registerNamespace("gpii.sensorPlayer.transforms");
 
-        var targetFreq = gpii.sensorPlayer.sensorSonifier.scaleValue(valueInformation.current, sensorMin, sensorMax, freqMin, freqMax);
-        var midpointFreq = gpii.sensorPlayer.sensorSonifier.getMidpointValue(freqMax, freqMin);
+    fluid.defaults("gpii.sensorPlayer.transforms.minMaxScale", {
+        "gradeNames": [ "fluid.standardTransformFunction", "fluid.multiInputTransformFunction" ],
+        "inputVariables": {
+            "inputScaleMax": 100,
+            "inputScaleMin": 0,
+            "outputScaleMax": 680,
+            "outputScaleMin": 200
+        }
+    });
 
-        that.applier.change("inputs.midpoint.freq", midpointFreq);
-
-        that.applier.change("inputs.carrier.freq", targetFreq);
-    };
-
-    gpii.sensorPlayer.sensorSonifier.getMidpointValue = function(upper, lower) {
-        return (upper + lower) / 2;
-    };
-
-    gpii.sensorPlayer.sensorSonifier.scaleValue = function (value, inputLower, inputUpper, outputLower, outputUpper) {
-        var scaledValue = ((outputUpper - outputLower) * (value - inputLower) / (inputUpper - inputLower)) + outputLower;
+    gpii.sensorPlayer.transforms.minMaxScale = function (input, extraInputs) {
+        var scaledValue = ((extraInputs.outputScaleMax() - extraInputs.outputScaleMin()) * (input - extraInputs.inputScaleMin()) / (extraInputs.inputScaleMax() - extraInputs.inputScaleMin())) + extraInputs.outputScaleMin();
         return scaledValue;
     };
 
