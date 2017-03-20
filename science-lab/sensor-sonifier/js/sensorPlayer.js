@@ -90,10 +90,7 @@
                             }
                         },
                         freqMax: 680,
-                        freqMin: 200,
-                        gradualToneChange: false,
-                        gradualToneChangeDuration: 500,
-                        graduateToneChangeTickDuration: 100
+                        freqMin: 200
                     },
                     synthDef: {
                         ugen: "flock.ugen.out",
@@ -145,38 +142,14 @@
             freqMin = that.scalingSynth.model.freqMin,
             currentSynthFreq = that.scalingSynth.model.inputs.carrier.freq,
             sensorMax = that.model.sensorMax,
-            sensorMin = that.model.sensorMin,
-            gradualToneChange = that.scalingSynth.model.gradualToneChange,
-            gradualToneChangeDuration = that.scalingSynth.model.gradualToneChangeDuration,
-            graduateToneChangeTickDuration = that.scalingSynth.model.graduateToneChangeTickDuration;
+            sensorMin = that.model.sensorMin;
 
         var targetFreq = gpii.sensorPlayer.sensorSonifier.scaleValue(newSensorValue, sensorMin, sensorMax, freqMin, freqMax);
         var midpointFreq = gpii.sensorPlayer.sensorSonifier.getMidpointValue(freqMax, freqMin);
 
         that.scalingSynth.applier.change("inputs.midpoint.freq", midpointFreq);
 
-        if(gradualToneChange) {
-            gpii.sensorPlayer.sensorSonifier.adjustFrequencyGradually(that, currentSynthFreq, targetFreq, gradualToneChangeDuration, graduateToneChangeTickDuration);
-        } else {
-            that.scalingSynth.applier.change("inputs.carrier.freq", targetFreq);
-        }
-    };
-
-    // Adjust a frequency up or down evenly over "duration"
-    gpii.sensorPlayer.sensorSonifier.adjustFrequencyGradually = function (that, currentFreq, targetFreq, duration, tick) {
-        var totalMovement = targetFreq - currentFreq;
-        var intervals = duration / tick;
-        var tickMovement = totalMovement / intervals;
-
-        var currentTickTime = tick;
-        for(var i = 1; i < intervals; i++ ) {
-            setTimeout(function() {
-                var existingFreq = fluid.get(that.model, "inputs.carrier.freq");
-                var freqToMoveTo = existingFreq + tickMovement;
-                that.applier.change("inputs.carrier.freq", freqToMoveTo);
-            }, currentTickTime);
-            currentTickTime = currentTickTime + tick;
-        }
+        that.scalingSynth.applier.change("inputs.carrier.freq", targetFreq);
     };
 
     gpii.sensorPlayer.sensorSonifier.getMidpointValue = function(upper, lower) {
@@ -231,12 +204,11 @@
             sensorValueDisplay: ".flc-sensorValue",
             synthFreqDisplay: ".flc-freqValue",
             descriptionDisplay: ".flc-descriptionDisplay",
-            gradualToneControl: ".flc-gradualToneControl",
             midpointToneControl: ".flc-midpointToneControl",
             muteControl: ".flc-muteControl"
         },
         members: {
-            template: "<div class=\"flc-descriptionDisplay\"></div><div class=\"flc-sensorMaxValue\"></div><div class=\"flc-sensorMinValue\"></div><div class=\"flc-sensorValue\"></div><div class=\"flc-freqValue\"></div><form> <label>Gradual Tone Change<input class=\"flc-gradualToneControl\" type=\"checkbox\"/></label> <label>Play Sensor Midpoint Tone<input class=\"flc-midpointToneControl\" type=\"checkbox\"/></label><br/> <label><strong>Mute Synthesizer</strong><input class=\"flc-muteControl\" type=\"checkbox\"/></label> </form>"
+            template: "<div class=\"flc-descriptionDisplay\"></div><div class=\"flc-sensorMaxValue\"></div><div class=\"flc-sensorMinValue\"></div><div class=\"flc-sensorValue\"></div><div class=\"flc-freqValue\"></div><form> <label>Play Sensor Midpoint Tone<input class=\"flc-midpointToneControl\" type=\"checkbox\"/></label><br/> <label><strong>Mute Synthesizer</strong><input class=\"flc-muteControl\" type=\"checkbox\"/></label> </form>"
         },
         listeners: {
             "onCreate.appendDisplayTemplate": {
@@ -324,7 +296,6 @@
     gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSynthesizer) {
         console.log(sensorSynthesizer);
         var muteControl = that.locate("muteControl");
-        var gradualToneControl = that.locate("gradualToneControl");
         var midpointToneControl = that.locate("midpointToneControl");
 
         muteControl.click(function () {
@@ -351,11 +322,6 @@
 
             }
 
-        });
-
-        gradualToneControl.click(function () {
-            var checked = gradualToneControl.is(":checked");
-            sensorSynthesizer.scalingSynth.applier.change("gradualToneChange", checked);
         });
 
         midpointToneControl.click(function () {
