@@ -81,69 +81,80 @@
         },
         components: {
             scalingSynth: {
-                type: "flock.modelSynth",
+                type: "gpii.sensorPlayer.scalingSynth",
                 options: {
-                    modelListeners: {
-                        valueInformation: {
-                            funcName: "gpii.sensorPlayer.sensorSonifier.relaySensorValue",
-                            args: ["{that}", "{that}.model.valueInformation"],
-                            excludeSource: "init"
-                        }
-                    },
                     model: {
                         valueInformation: {
                             max: "{sensorSonifier}.model.sensorMax",
                             min: "{sensorSonifier}.model.sensorMin",
                             current: "{sensorSonifier}.model.sensorValue"
-                        },
-                        inputs: {
-                            carrier: {
-                                freq: 440
-                            }
-                        },
-                        freqMax: 680,
-                        freqMin: 200
-                    },
-                    synthDef: {
-                        ugen: "flock.ugen.out",
-                        sources: [
-                            {
-                                ugen: "flock.ugen.sum",
-                                sources: [
-                                    {
-                                    id: "carrier",
-                                    ugen: "flock.ugen.sin",
-                                    inputs: {
-                                        freq: 440,
-                                        mul: {
-                                            id: "mod",
-                                            ugen: "flock.ugen.sinOsc",
-                                            freq: 0.1,
-                                            mul: 0.25
-                                            }
-                                        }
-                                    },
-                                    {
-                                    id: "midpoint",
-                                    ugen: "flock.ugen.sin",
-                                    inputs: {
-                                        freq: 440,
-                                        mul: 0
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    addToEnvironment: true
+                        }
+                    }
                 }
             }
         }
     });
 
+    // A model-driven synth that scales model values
+    fluid.defaults("gpii.sensorPlayer.scalingSynth", {
+        gradeNames: ["flock.modelSynth"],
+        modelListeners: {
+            valueInformation: {
+                funcName: "gpii.sensorPlayer.sensorSonifier.relaySensorValue",
+                args: ["{that}", "{that}.model.valueInformation"]
+            }
+        },
+        model: {
+            // In real-world usage, these will be bound
+            // to models from other components
+            valueInformation: {
+                max: "680",
+                min: "200",
+                current: "440"
+            },
+            inputs: {
+                carrier: {
+                    freq: 440
+                }
+            },
+            freqMax: 680,
+            freqMin: 200
+        },
+        synthDef: {
+            ugen: "flock.ugen.out",
+            sources: [
+                {
+                    ugen: "flock.ugen.sum",
+                    sources: [
+                        {
+                        id: "carrier",
+                        ugen: "flock.ugen.sin",
+                        inputs: {
+                            freq: 440,
+                            mul: {
+                                id: "mod",
+                                ugen: "flock.ugen.sinOsc",
+                                freq: 0.1,
+                                mul: 0.25
+                                }
+                            }
+                        },
+                        {
+                        id: "midpoint",
+                        ugen: "flock.ugen.sin",
+                        inputs: {
+                            freq: 440,
+                            mul: 0
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        addToEnvironment: true
+    });
+
     gpii.sensorPlayer.sensorSonifier.relaySensorValue = function(that, valueInformation) {
-        console.log(that);
-        console.log(valueInformation);
         var freqMax = that.model.freqMax,
             freqMin = that.model.freqMin,
             sensorMax = valueInformation.max,
@@ -299,7 +310,6 @@
     });
 
     gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSynthesizer) {
-        console.log(sensorSynthesizer);
         var muteControl = that.locate("muteControl");
         var midpointToneControl = that.locate("midpointToneControl");
 
