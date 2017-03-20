@@ -129,9 +129,9 @@
             // In real-world usage, these will be bound
             // to models from other components
             valueInformation: {
-                max: "680",
-                min: "200",
-                current: "440"
+                max: 100,
+                min: 0,
+                current: 50
             },
             inputs: {
                 carrier: {
