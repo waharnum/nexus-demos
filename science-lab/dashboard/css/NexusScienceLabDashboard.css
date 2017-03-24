@@ -3,6 +3,15 @@ body {
     font-family: sans-serif;
 }
 
+.fl-nexus-science-lab-hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
 .fl-nexus-science-lab-dashboard {
     display: flex;
     justify-content: center;
