@@ -14,10 +14,6 @@ fluid.defaults("gpii.nexus.rpiSenseHat", {
     },
 
     invokers: {
-        start: {
-            "this": "{that}",
-            method: "getReading"
-        },
         getReading: {
             funcName: "gpii.nexus.rpiSenseHat.getReading",
             args: [
@@ -31,6 +27,10 @@ fluid.defaults("gpii.nexus.rpiSenseHat", {
 
     events: {
         onReading: null
+    },
+
+    listeners: {
+        "onCreate.startReading": "{that}.getReading"
     }
 });
 
@@ -47,10 +47,60 @@ gpii.nexus.rpiSenseHat.getReading = function (that, imu, readIntervalMs, onReadi
     });
 };
 
-var sense = gpii.nexus.rpiSenseHat({
-    listeners: {
-        onReading: function (data) { console.log(JSON.stringify(data, null, 4)); }
+fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
+    gradeNames: "fluid.modelComponent",
+
+    nexusHost: "localhost",
+    nexusPort: 9081,
+
+    components: {
+        sense: {
+            type: "gpii.nexus.rpiSenseHat",
+            options: {
+                listeners: {
+                    "onReading.log": function (data) {
+                        console.log(JSON.stringify(data, null, 4));
+                    }
+                }
+            }
+        },
+        tempNexusBinding: {
+            type: "gpii.nexusWebSocketBoundComponent",
+            options: {
+                members: {
+                    nexusHost: "{rpiSenseHatDriver}.options.nexusHost",
+                    nexusPort: "{rpiSenseHatDriver}.options.nexusPort",
+                    nexusPeerComponentPath: "rpiSenseHatTemp",
+                    nexusPeerComponentOptions: {
+                        type: "gpii.nexus.rpiSenseHatDriver.tempSensor"
+                    },
+                    nexusBoundModelPath: "sensorData",
+                    sendsChangesToNexus: true,
+                    managesPeer: true
+                },
+                model: {
+                    sensorData: {
+                        name: "Temperature",
+                        units: "C",
+                        rangeMin: 0,
+                        rangeMax: 100,
+                        value: 0
+                    }
+                },
+                listeners: {
+                    "{rpiSenseHat}.events.onReading": {
+                        listener: "gpii.nexus.rpiSenseHatDriver.updateTemp",
+                        args: [
+                            "{that}",
+                            "{arguments}.0" // Sensor reading
+                        ]
+                    }
+                }
+            }
+        }
     }
 });
 
-sense.start();
+gpii.nexus.rpiSenseHatDriver.updateTemp = function (nexusBinding, senseHatData) {
+    nexusBinding.applier.change("sensorData.value", senseHatData.temperature);
+};
