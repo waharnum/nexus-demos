@@ -16,6 +16,7 @@
         "infusion": "2.0.0",
         "nexus-client": "simonbates/nexus-client",
         "node-static": "0.7.7",
+        "nodeimu": "2.1.9",
         "p5": "0.4.24",
         "qwerty-hancock": "0.5.1",
         "sensorapijs": "simonbates/p4a-sensorAPI",
