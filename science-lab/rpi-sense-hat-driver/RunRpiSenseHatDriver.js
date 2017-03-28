@@ -24,7 +24,16 @@ if (program.port) {
     nexusPort = program.port;
 }
 
-gpii.nexus.rpiSenseHatDriver({
+var driver = gpii.nexus.rpiSenseHatDriver({
     nexusHost: nexusHost,
-    nexusPort: nexusPort    
+    nexusPort: nexusPort,
+    listeners: {
+        "onNexusPeerComponentDestroyed.exitProcess": {
+            func: function () { process.exit(); }
+        }
+    }
+});
+
+process.on("SIGINT", function () {
+    driver.destroyNexusPeerComponent();
 });

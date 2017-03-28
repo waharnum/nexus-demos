@@ -177,6 +177,40 @@ fluid.promise.sequence([
         );
     },
     function () {
+        return gpii.writeNexusDefaults(
+            nexusHost,
+            nexusPort,
+            "gpii.nexus.scienceLab.sendRpiTempSensor",
+            {
+                gradeNames: [ "gpii.nexus.recipeProduct" ],
+                componentPaths: {
+                    tempSensor: null,
+                    collector: null
+                },
+                components: {
+                    tempSensor: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.tempSensor)",
+                    collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
+                },
+                modelRelay: {
+                    source: "{tempSensor}.model.sensorData",
+                    target: "{collector}.model.sensors.rpiTempSensor",
+                    forward: {
+                        excludeSource: "init"
+                    },
+                    singleTransform: {
+                        type: "fluid.identity"
+                    }
+                },
+                listeners: {
+                    "onDestroy.removeRpiTempSensor": {
+                        listener: "{collector}.applier.change",
+                        args: [ "sensors.rpiTempSensor", null, "DELETE" ]
+                    }
+                }
+            }
+        );
+    },
+    function () {
         return gpii.constructNexusPeer(nexusHost, nexusPort, "scienceLabCollector", {
             type: "gpii.nexus.scienceLab.collector"
         });
@@ -249,6 +283,30 @@ fluid.promise.sequence([
                 path: "sendEcSensor",
                 options: {
                     type: "gpii.nexus.scienceLab.sendEcSensor"
+                }
+            }
+        });
+    },
+    function () {
+        return gpii.addNexusRecipe(nexusHost, nexusPort, "sendRpiTempSensor", {
+            reactants: {
+                tempSensor: {
+                    match: {
+                        type: "gradeMatcher",
+                        gradeName: "gpii.nexus.rpiSenseHatDriver.tempSensor"
+                    }
+                },
+                collector: {
+                    match: {
+                        type: "gradeMatcher",
+                        gradeName: "gpii.nexus.scienceLab.collector"
+                    }
+                }
+            },
+            product: {
+                path: "sendRpiTempSensor",
+                options: {
+                    type: "gpii.nexus.scienceLab.sendRpiTempSensor"
                 }
             }
         });

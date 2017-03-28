@@ -87,6 +87,9 @@ fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
                         value: 0
                     }
                 },
+                events: {
+                    onPeerDestroyed: "{rpiSenseHatDriver}.events.onNexusPeerComponentDestroyed"
+                },
                 listeners: {
                     "{rpiSenseHat}.events.onReading": {
                         listener: "gpii.nexus.rpiSenseHatDriver.updateTemp",
@@ -94,11 +97,24 @@ fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
                             "{that}",
                             "{arguments}.0" // Sensor reading
                         ]
+                    },
+                    "{rpiSenseHatDriver}.events.doDestroyNexusPeer": {
+                        listener: "{that}.destroyNexusPeerComponent"
                     }
                 }
             }
         }
+    },
+
+    invokers: {
+        destroyNexusPeerComponent: "{that}.events.doDestroyNexusPeer.fire"
+    },
+
+    events: {
+        doDestroyNexusPeer: null,
+        onNexusPeerComponentDestroyed: null
     }
+
 });
 
 gpii.nexus.rpiSenseHatDriver.updateTemp = function (nexusBinding, senseHatData) {
