@@ -209,7 +209,7 @@
             "onCreate.appendTemplate": {
                 "this": "{that}.container",
                 "method": "html",
-                "args": "{that}.template"
+                "args": "{that}.options.strings.template"
             },
             "onCreate.setInitialValue": {
                 "this": "{that}.dom.value",
