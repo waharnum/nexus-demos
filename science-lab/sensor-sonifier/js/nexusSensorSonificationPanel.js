@@ -66,6 +66,7 @@
             nexusBoundModelPath: "sensors",
             receivesChangesFromNexus: true,
             sendsChangesToNexus: false,
+            // Member variable for tracking attached sensor state
             attachedSensors: {}
         },
         strings: {
@@ -82,6 +83,9 @@
         }
     });
 
+    // expander function; used to generate sensor sonifiers as sensors
+    // are attached; dynamically configures model characteristics and
+    // container for display / controls based on the sensorId
     gpii.nexusSensorSonificationPanel.getSensorOptions = function (sensorId) {
 
         var sensorModel = {
@@ -151,6 +155,9 @@
         return sensorPlayerOptions;
     };
 
+    // Function used by a sensorPlayer to check the array of
+    // removed sensor IDs and invoke its own destroy function
+    // if it matches a removed sensor ID
     gpii.nexusSensorSonificationPanel.checkForRemoval = function (sensorPlayer, sensor, removedSensorIds) {
         console.log("gpii.nexusSensorSonificationPanel.checkForRemoval");
         console.log(sensorPlayer, sensor, removedSensorIds);
@@ -162,6 +169,9 @@
         }
     };
 
+    // Function used by the sensorSonificationPanel to remove
+    // dynamically generated container markup when a sensor is
+    // removed
     gpii.nexusSensorSonificationPanel.removeSensorDisplayContainer = function (nexusSensorSonificationPanel, sensorContainerClass) {
         console.log(nexusSensorSonificationPanel, sensorContainerClass);
         var removedSensorContainer = nexusSensorSonificationPanel.container.find("." + sensorContainerClass);
@@ -171,6 +181,8 @@
         });
     };
 
+    // Add / remove function for updating sonification components
+    // as sensors are added / removed
     gpii.nexusSensorSonificationPanel.updateSonifications = function (that, sensors) {
 
         var sensorsArray = fluid.hashToArray(
@@ -178,22 +190,21 @@
             "sensorId"
         );
 
+        // Add loop for new sensors
         fluid.each(sensorsArray, function (sensor) {
             var sensorId = sensor.sensorId;
-
-            // Add new sensor sonifiers
             if(! that.attachedSensors[sensorId]) {
-                console.log("New sensorPlayer to add: " + sensorId);
                 that.events.onSensorAppearance.fire(sensorId);
                 that.attachedSensors[sensorId] = true;
             }
         });
 
-        // Remove any sensor sonifiers for removed sensors
+        // Track removed sensor IDs here
         var removedSensorIds = [];
+
+        // Remove loop for any removed sensors
         fluid.each(that.attachedSensors, function (attachedSensor, attachedSensorId) {
             if (! sensors[attachedSensorId]) {
-                console.log("Sensor to remove: " + attachedSensorId);
                 removedSensorIds.push(attachedSensorId);
                 that.attachedSensors[attachedSensorId] = false;
             }
