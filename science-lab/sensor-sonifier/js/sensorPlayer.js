@@ -99,7 +99,7 @@
         gradeNames: ["flock.modelSynth"],
         modelRelay: [{
             target: "inputs.carrier.freq",
-            singleTransform: {                
+            singleTransform: {
                 type: "gpii.sensorPlayer.transforms.minMaxScale",
                 input: "{that}.model.valueInformation.current",
                 inputScaleMax: "{that}.model.valueInformation.max",
@@ -199,7 +199,7 @@
         model: {
             value: "Hello, World!"
         },
-        members: {
+        strings: {
             template: "<p class=\"flc-valueDisplay-value\"></p>"
         },
         selectors: {
@@ -240,14 +240,14 @@
             midpointToneControl: ".flc-midpointToneControl",
             muteControl: ".flc-muteControl"
         },
-        members: {
+        strings: {
             template: "<div class=\"flc-descriptionDisplay\"></div><div class=\"flc-sensorMaxValue\"></div><div class=\"flc-sensorMinValue\"></div><div class=\"flc-sensorValue\"></div><div class=\"flc-freqValue\"></div><form> <label>Play Sensor Midpoint Tone<input class=\"flc-midpointToneControl\" type=\"checkbox\"/></label><br/> <label><strong>Mute Synthesizer</strong><input class=\"flc-muteControl\" type=\"checkbox\"/></label> </form>"
         },
         listeners: {
             "onCreate.appendDisplayTemplate": {
                 "this": "{that}.container",
                 "method": "html",
-                "args": "{that}.template"
+                "args": "{that}.options.strings.template"
             },
             "onCreate.fireDisplayTemplateReady": {
                 func: "{that}.events.displayTemplateReady.fire"
@@ -266,7 +266,7 @@
                     model: {
                         value: "{sensor}.model.description"
                     },
-                    members: {
+                    strings: {
                         template: "<strong>Sensor Description:</strong> <span class=\"flc-valueDisplay-value\"></span>"
                     }
                 }
@@ -279,7 +279,7 @@
                     model: {
                         value: "{sensor}.model.sensorMin"
                     },
-                    members: {
+                    strings: {
                         template: "<strong>Sensor Min Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
                     }
                 }
@@ -292,7 +292,7 @@
                     model: {
                         value: "{sensor}.model.sensorMax"
                     },
-                    members: {
+                    strings: {
                         template: "<strong>Sensor Max Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
                     }
                 }
@@ -305,7 +305,7 @@
                     model: {
                         value: "{sensor}.model.sensorValue"
                     },
-                    members: {
+                    strings: {
                         template: "<strong>Sensor Current Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
                     }
                 }
@@ -318,7 +318,7 @@
                     model: {
                         value: "{sensorSynthesizer}.model.inputs.carrier.freq"
                     },
-                    members: {
+                    strings: {
                         template: "<strong>Synthesizer frequency:</strong> <span class=\"flc-valueDisplay-value\"></span>"
                     }
                 }

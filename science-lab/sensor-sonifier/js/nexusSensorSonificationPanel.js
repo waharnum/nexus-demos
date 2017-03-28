@@ -13,14 +13,14 @@
             midpointToneControl: ".nexusc-midpointToneControl",
             muteControl: ".nexusc-sensorMuteControl"
         },
-        members: {
+        strings: {
             template: "<h2 class=\"nexusc-sensorNameDisplay\"></h2><form class=\"nexus-sensorSonifierControls\"><span class=\"nexus-sensorSonifierControls-checkboxContainer\"><label>Play Midpoint<input class=\"nexusc-midpointToneControl\" type=\"checkbox\"/><i></i></label></span><br/><span class=\"nexus-sensorSonifierControls-checkboxContainer\"><label>Mute Sensor<input class=\"nexusc-sensorMuteControl\" type=\"checkbox\"/><i></i></label></span> </form>"
         },
         listeners: {
             "onCreate.appendDisplayTemplate": {
                 "this": "{that}.container",
                 "method": "html",
-                "args": "{that}.template"
+                "args": "{that}.options.strings.template"
             },
             "onCreate.fireDisplayTemplateReady": {
                 func: "{that}.events.displayTemplateReady.fire"
@@ -39,7 +39,7 @@
                     model: {
                         value: "{sensor}.model.description"
                     },
-                    members: {
+                    strings: {
                         template: "<span class=\"flc-valueDisplay-value\"></span>"
                     }
                 }
