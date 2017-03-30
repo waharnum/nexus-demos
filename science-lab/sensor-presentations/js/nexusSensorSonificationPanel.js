@@ -24,31 +24,14 @@
 
         var sensorContainerClass = "nexus-nexusSensorSonificationPanel-sensorDisplay-" + sensorId;
 
+        var sensorPlayerListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorContainerClass);
+
         var sensorPlayerOptions =
         {
             events: {
                 onSensorDisplayContainerAppended: null
             },
-            listeners: {
-                "{nexusSensorPresentationPanel}.events.onSensorRemoval": {
-                   funcName: "gpii.nexusSensorPresentationPanel.checkForRemoval",
-                   args: ["{that}", "{that}.sensor", "{arguments}.0"],
-                   namespace: "removeSensorPlayer-"+sensorId
-               },
-               "onCreate.appendSensorDisplayContainer": {
-                   "this": "{nexusSensorPresentationPanel}.container",
-                   "method": "append",
-                   "args": ["<div class='nexus-nexusSensorSonificationPanel-sensorDisplay " + sensorContainerClass + "'></div>"]
-               },
-               "onCreate.fireOnSensorDisplayContainerAppended": {
-                   funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
-                   priority: "after:appendSensorDisplayContainer"
-               },
-               "onDestroy.removeSensorDisplayContainer": {
-                   funcName: "gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer",
-                   args: ["{nexusSensorPresentationPanel}", sensorContainerClass]
-               }
-           },
+            listeners: sensorPlayerListenerOptions,
             components: {
                 sensor: {
                     options: {

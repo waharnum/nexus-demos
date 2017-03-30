@@ -83,21 +83,46 @@
         return sensorModelOptions;
     };
 
-    // Function used by a sensorPlayer to check the array of
+    gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions = function (sensorId, sensorContainerClass) {
+        var sensorListenerOptions = {
+            "{nexusSensorPresentationPanel}.events.onSensorRemoval": {
+               funcName: "gpii.nexusSensorPresentationPanel.checkForRemoval",
+               args: ["{that}", "{that}.sensor", "{arguments}.0"],
+               namespace: "removeSensorPresenter-"+sensorId
+           },
+           "onCreate.appendSensorDisplayContainer": {
+               "this": "{nexusSensorPresentationPanel}.container",
+               "method": "append",
+               "args": ["<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>"]
+           },
+           "onCreate.fireOnSensorDisplayContainerAppended": {
+               funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
+               priority: "after:appendSensorDisplayContainer"
+           },
+           "onDestroy.removeSensorDisplayContainer": {
+               funcName: "gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer",
+               args: ["{nexusSensorPresentationPanel}", sensorContainerClass]
+           }
+        };
+
+        return sensorListenerOptions;
+    };
+
+    // Function used by a sensorPresenter to check the array of
     // removed sensor IDs and invoke its own destroy function
     // if it matches a removed sensor ID
-    gpii.nexusSensorPresentationPanel.checkForRemoval = function (sensorPlayer, sensor, removedSensorIds) {
+    gpii.nexusSensorPresentationPanel.checkForRemoval = function (sensorPresenter, sensor, removedSensorIds) {
         console.log("gpii.nexusSensorPresentationPanel.checkForRemoval");
-        console.log(sensorPlayer, sensor, removedSensorIds);
-        console.log(sensorPlayer);
+        console.log(sensorPresenter, sensor, removedSensorIds);
+        console.log(sensorPresenter);
         if(fluid.contains(removedSensorIds,fluid.get(sensor.model, "sensorId"))) {
-            console.log("this sensorPlayer should be removed");
-            sensorPlayer.destroy();
-            console.log(sensorPlayer);
+            console.log("this sensorPresenter should be removed");
+            sensorPresenter.destroy();
+            console.log(sensorPresenter);
         }
     };
 
-    // Function used by the sensorSonificationPanel to remove
+    // Function used by the nexusSensorPresentationPanel to remove
     // dynamically generated container markup when a sensor is
     // removed
     gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer = function (nexusSensorPresentationPanel, sensorContainerClass) {
