@@ -70,4 +70,43 @@
         }
     };
 
+    gpii.nexusSensorPresentationPanel.getSensorModelOptions = function (sensorId) {
+        var sensorModelOptions = {
+            sensorId: sensorId,
+            description: "{nexusSensorPresentationPanel}.model.sensors." + sensorId + ".name",
+            simulateChanges: false,
+            sensorValue: "{nexusSensorPresentationPanel}.model.sensors." + sensorId + ".value",
+            sensorMax: "{nexusSensorPresentationPanel}.model.sensors." + sensorId + ".rangeMax",
+            sensorMin: "{nexusSensorPresentationPanel}.model.sensors." + sensorId + ".rangeMin"
+        };
+
+        return sensorModelOptions;
+    };
+
+    // Function used by a sensorPlayer to check the array of
+    // removed sensor IDs and invoke its own destroy function
+    // if it matches a removed sensor ID
+    gpii.nexusSensorPresentationPanel.checkForRemoval = function (sensorPlayer, sensor, removedSensorIds) {
+        console.log("gpii.nexusSensorPresentationPanel.checkForRemoval");
+        console.log(sensorPlayer, sensor, removedSensorIds);
+        console.log(sensorPlayer);
+        if(fluid.contains(removedSensorIds,fluid.get(sensor.model, "sensorId"))) {
+            console.log("this sensorPlayer should be removed");
+            sensorPlayer.destroy();
+            console.log(sensorPlayer);
+        }
+    };
+
+    // Function used by the sensorSonificationPanel to remove
+    // dynamically generated container markup when a sensor is
+    // removed
+    gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer = function (nexusSensorPresentationPanel, sensorContainerClass) {
+        console.log(nexusSensorPresentationPanel, sensorContainerClass);
+        var removedSensorContainer = nexusSensorPresentationPanel.container.find("." + sensorContainerClass);
+        console.log(removedSensorContainer);
+        removedSensorContainer.fadeOut(function() {
+            removedSensorContainer.remove();
+        });
+    };
+
 }());

@@ -16,13 +16,8 @@
     });
 
     gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions = function (sensorId) {
-        var sensorModel = {
-            sensorId: sensorId,
-            description: "{nexusSensorVisualizationPanel}.model.sensors." + sensorId + ".name",
-            sensorValue: "{nexusSensorVisualizationPanel}.model.sensors." + sensorId + ".value",
-            sensorMax: "{nexusSensorVisualizationPanel}.model.sensors." + sensorId + ".rangeMax",
-            sensorMin: "{nexusSensorVisualizationPanel}.model.sensors." + sensorId + ".rangeMin"
-        };
+
+        var sensorModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
 
         var sensorContainerClass = "nexus-nexusSensorVisualizationPanel-sensorDisplay-" + sensorId;
 
@@ -31,20 +26,29 @@
                     onSensorDisplayContainerAppended: null
                 },
                 listeners: {
-                    "onCreate.appendSensorDisplayContainer": {
-                        "this": "{nexusSensorVisualizationPanel}.container",
-                        method: "append",
-                        "args": ["<div class='nexus-nexusSensorVisualizationPanel-sensorDisplay " + sensorContainerClass + "'></div>"]
-                    },
-                    "onCreate.fireOnSensorDisplayContainerAppended": {
-                        funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
-                        priority: "after:appendSensorDisplayContainer"
-                    }
-                },
+                    "{nexusSensorPresentationPanel}.events.onSensorRemoval": {
+                       funcName: "gpii.nexusSensorPresentationPanel.checkForRemoval",
+                       args: ["{that}", "{that}.sensor", "{arguments}.0"],
+                       namespace: "removeSensorPlayer-"+sensorId
+                   },
+                   "onCreate.appendSensorDisplayContainer": {
+                       "this": "{nexusSensorPresentationPanel}.container",
+                       "method": "append",
+                       "args": ["<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>"]
+                   },
+                   "onCreate.fireOnSensorDisplayContainerAppended": {
+                       funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
+                       priority: "after:appendSensorDisplayContainer"
+                   },
+                   "onDestroy.removeSensorDisplayContainer": {
+                       funcName: "gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer",
+                       args: ["{nexusSensorPresentationPanel}", sensorContainerClass]
+                   }
+               },
                 components: {
                     sensor: {
                         options: {
-                            model: sensorModel
+                            model: sensorModelOptions
                         }
                     },
                     visualizer: {
@@ -63,16 +67,7 @@
         },
         components: {
             sensor: {
-                type: "fluid.modelComponent",
-                options: {
-                    listeners: {
-                        "onCreate.announce": {
-                            "this": "console",
-                            method: "log",
-                            args: "{that}"
-                        }
-                    }
-                }
+                type: "fluid.modelComponent"
             },
             visualizer: {
                 type: "fluid.viewComponent",
@@ -104,11 +99,6 @@
                         }
                     },
                     listeners: {
-                        "onCreate.announce": {
-                            "this": "console",
-                            method: "log",
-                            args: "{that}"
-                        },
                         "onCreate.appendCircle": {
                             "this": "{that}.container",
                             method: "html",
@@ -118,6 +108,16 @@
                                     args: ["<h2>%description</h2> <br/> <svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circleOutline\" cx=\"100\" cy=\"100\" r=\"100\" fill=\"red\" /><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circle\" cx=\"100\" cy=\"100\" r=\"0\" /></svg>", "{sensor}.model"]
                                 }
                             }
+                        },
+                        "onCreate.hideContainer": {
+                            "this": "{nexusSensorPresentationPanel}.container",
+                            "method": "hide",
+                            "args": [0]
+                        },
+                        // Fade in
+                        "onCreate.fadeInContainer": {
+                            "this": "{nexusSensorPresentationPanel}.container",
+                            "method": "fadeIn"
                         }
                     }
                 }
