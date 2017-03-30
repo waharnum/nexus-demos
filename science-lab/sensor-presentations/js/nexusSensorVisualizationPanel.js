@@ -54,7 +54,7 @@
             },
             visualizer: {
                 type: "fluid.viewComponent",
-                createOnEvent: "{nexusSensorVisualizer}.events.onSensorDisplayContainerAppended",
+                createOnEvent: "{sensorPresenter}.events.onSensorDisplayContainerAppended",
                 // Must be specified
                 // container: ""
                 options: {
@@ -93,13 +93,13 @@
                             }
                         },
                         "onCreate.hideContainer": {
-                            "this": "{nexusSensorPresentationPanel}.container",
+                            "this": "{that}.container",
                             "method": "hide",
                             "args": [0]
                         },
                         // Fade in
                         "onCreate.fadeInContainer": {
-                            "this": "{nexusSensorPresentationPanel}.container",
+                            "this": "{that}.container",
                             "method": "fadeIn"
                         }
                     }
