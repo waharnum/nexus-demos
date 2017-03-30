@@ -49,7 +49,6 @@
 
     fluid.defaults("gpii.nexusSensorSonificationPanel", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
-        numberLocale: "en",
         events: {
             onSensorAppearance: null,
             onSensorRemoval: null
@@ -68,9 +67,6 @@
             sendsChangesToNexus: false,
             // Member variable for tracking attached sensor state
             attachedSensors: {}
-        },
-        strings: {
-            noSensorsConnected: "No sensors connected"
         },
         modelListeners: {
             sensors: {
