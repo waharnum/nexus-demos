@@ -40,6 +40,9 @@
 
         <script>
 
+            var environment = flock.init();
+            environment.start();
+
             window.nexusSensorSonificationPanel = gpii.nexusSensorSonificationPanel(".nexus-nexusSensorSonificationPanel", {
                 members: {
                     nexusHost: window.location.hostname

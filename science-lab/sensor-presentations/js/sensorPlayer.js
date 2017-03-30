@@ -2,9 +2,6 @@
 
     "use strict";
 
-    var environment = flock.init();
-    environment.start();
-
     fluid.defaults("gpii.sensorPlayer.sensor", {
         gradeNames: ["fluid.modelComponent"],
         model: {
