@@ -54,11 +54,16 @@
             onSensorAppearance: null,
             onSensorRemoval: null
         },
+        components: {
+            tts: {
+                type: "fluid.textToSpeech"
+            }
+        },
         dynamicComponents: {
             sensorSonifier: {
                 type: "gpii.sensorPlayer",
                 createOnEvent: "onSensorAppearance",
-                options: "@expand:gpii.nexusSensorSonificationPanel.getSensorOptions({arguments}.0)"
+                options: "@expand:gpii.nexusSensorSonificationPanel.getSensorOptions({arguments}.0, {arguments}.1)"
             }
         },
         members: {
@@ -86,7 +91,8 @@
     // expander function; used to generate sensor sonifiers as sensors
     // are attached; dynamically configures model characteristics and
     // container for display / controls based on the sensorId
-    gpii.nexusSensorSonificationPanel.getSensorOptions = function (sensorId) {
+    gpii.nexusSensorSonificationPanel.getSensorOptions = function (sensorId, sensor) {
+        console.log(sensor);
 
         var sensorModel = {
             sensorId: sensorId,
@@ -118,6 +124,14 @@
                "onCreate.fireOnSensorDisplayContainerAppended": {
                    funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
                    priority: "after:appendSensorDisplayContainer"
+               },
+               "onCreate.announceAppearance": {
+                 func: "{nexusSensorSonificationPanel}.tts.queueSpeech",
+                 args: ["Sensor " + sensor.name + " appeared."]
+               },
+               "onDestroy.announceRemoval": {
+                 func: "{nexusSensorSonificationPanel}.tts.queueSpeech",
+                 args: ["Sensor " + sensor.name + " removed."]
                },
                "onDestroy.removeSensorDisplayContainer": {
                    funcName: "gpii.nexusSensorSonificationPanel.removeSensorDisplayContainer",
@@ -194,7 +208,7 @@
         fluid.each(sensorsArray, function (sensor) {
             var sensorId = sensor.sensorId;
             if(! that.attachedSensors[sensorId]) {
-                that.events.onSensorAppearance.fire(sensorId);
+                that.events.onSensorAppearance.fire(sensorId, sensor);
                 that.attachedSensors[sensorId] = true;
             }
         });
