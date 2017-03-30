@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Visualization</title>
+
+        <link rel="stylesheet" type="text/css" href="../../dashboard/css/NexusScienceLabDashboard.css" />
+
+        <link rel="stylesheet" type="text/css" href="../css/NexusScienceLabSonifier.css" />
+
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/components/textToSpeech/js/TextToSpeech.js"></script>
+
+        <script type="text/javascript" src="../../../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
+
+        <script type="text/javascript" src="../js/nexusSensorPresentationPanel.js"></script>
+
+        <script type="text/javascript" src="../js/nexusSensorVisualizationPanel.js"></script>
+
+    </head>
+    <body>
+        <div class="nexus-nexusSensorVisualizationPanel fl-nexus-science-lab-dashboard">
+        </div>
+
+        <script>
+        window.nexusSensorVisualizationPanel = gpii.nexusSensorVisualizationPanel(".nexus-nexusSensorVisualizationPanel", {
+            members: {
+                nexusHost: window.location.hostname
+            }
+        });
+        </script>
+    </body>
+</html>

@@ -49,6 +49,7 @@
         fluid.each(sensorsArray, function (sensor) {
             var sensorId = sensor.sensorId;
             if(! that.attachedSensors[sensorId]) {
+                console.log(sensorId);
                 that.events.onSensorAppearance.fire(sensorId);
                 that.attachedSensors[sensorId] = true;
             }
