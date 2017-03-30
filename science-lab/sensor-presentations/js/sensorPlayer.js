@@ -6,65 +6,11 @@
         gradeNames: ["fluid.modelComponent"],
         model: {
             sensorValue: 50,
-            simulateChanges: false,
-            simulateChangesInterval: 2000,
             sensorMax: 100,
             sensorMin: 0,
             description: "A sensor"
-        },
-        members: {
-            simulateChangesIntervalId: null
-        },
-        modelListeners: {
-            sensorValue: {
-                "this": "console",
-                "method": "log",
-                "args": "{that}.model.sensorValue"
-            },
-            simulateChanges: {
-                "funcName": "gpii.sensorPlayer.sensor.simulateChanges",
-                "args": ["{that}", "{that}.model.simulateChanges"]
-            }
         }
     });
-
-    gpii.sensorPlayer.sensor.randomInt = function(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min)) + min;
-    };
-
-    fluid.defaults("gpii.sensorPlayer.sensor.pHSensor", {
-        gradeNames: ["gpii.sensorPlayer.sensor"],
-        model: {
-            sensorValue: 7,
-            sensorMax: 14,
-            sensorMin: 1,
-            description: "A simulated pH sensor."
-        }
-    });
-
-    fluid.defaults("gpii.sensorPlayer.sensor.temperatureSensor", {
-        gradeNames: ["gpii.sensorPlayer.sensor"],
-        model: {
-            sensorValue: 18,
-            sensorMax: 26,
-            sensorMin: 18,
-            description: "A simulated temperature sensor (in celcius); constrained from 18 to 26."
-        }
-    });
-
-    gpii.sensorPlayer.sensor.simulateChanges = function(that, simulateChanges) {
-        if(simulateChanges) {
-            // Turn on the interval changes to the sensorValue
-            that.simulateChangesIntervalId = setInterval(function() {
-                that.applier.change("sensorValue", gpii.sensorPlayer.sensor.randomInt(that.model.sensorMax, that.model.sensorMin));
-            }, that.model.simulateChangesInterval);
-        } else {
-            // Turn off the interval changes to the sensorValue
-            clearInterval(that.simulateChangesIntervalId);
-        }
-    };
 
     // A sensor sonifier that uses the scaling synth
     fluid.defaults("gpii.sensorPlayer.sensorSonifier", {
@@ -369,12 +315,7 @@
         gradeNames: ["fluid.modelComponent"],
         components: {
             sensor: {
-                type: "gpii.sensorPlayer.sensor",
-                options: {
-                    model: {
-                        simulateChanges: true
-                    }
-                }
+                type: "gpii.sensorPlayer.sensor"
             },
             sensorSynthesizer: {
                 type: "gpii.sensorPlayer.sensorSonifier",
@@ -385,24 +326,6 @@
                         sensorMin: "{sensor}.model.sensorMin"
                     }
                 }
-            }
-        }
-    });
-
-    fluid.defaults("gpii.sensorPlayer.pHSensorPlayer", {
-        gradeNames: ["gpii.sensorPlayer"],
-        components: {
-            sensor: {
-                type: "gpii.sensorPlayer.sensor.pHSensor"
-            }
-        }
-    });
-
-    fluid.defaults("gpii.sensorPlayer.temperatureSensorPlayer", {
-        gradeNames: ["gpii.sensorPlayer"],
-        components: {
-            sensor: {
-                type: "gpii.sensorPlayer.sensor.temperatureSensor"
             }
         }
     });
