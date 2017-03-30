@@ -41,7 +41,7 @@
                 sensorSonifierDisplay: {
                     type: "gpii.nexusSensorSonificationPanel.sensorSonifierDisplay",
                     container: "." + sensorContainerClass,
-                    createOnEvent: "{sensorPresenter}.events.onSensorDisplayContainerAppended",
+                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended",
                     options: {
                         listeners: {
                             // Start hidden

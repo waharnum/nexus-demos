@@ -54,7 +54,7 @@
             },
             visualizer: {
                 type: "fluid.viewComponent",
-                createOnEvent: "{sensorPresenter}.events.onSensorDisplayContainerAppended",
+                createOnEvent: "{nexusSensorVisualizer}.events.onSensorDisplayContainerAppended",
                 // Must be specified
                 // container: ""
                 options: {
@@ -110,7 +110,8 @@
 
     gpii.nexusSensorVisualizer.updateVisualization = function (visualizer, change) {
         var circle = visualizer.locate("circle");
-        circle.attr("r", change.value);
+        // circle.attr("r", change.value);
+        circle.animate({"r": change.value}, 500);
     };
 
 }());
