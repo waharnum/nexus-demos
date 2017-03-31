@@ -108,6 +108,18 @@
         return sensorListenerOptions;
     };
 
+    // Function used by the nexusSensorPresentationPanel to remove
+    // dynamically generated container markup when a sensor is
+    // removed
+    gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer = function (nexusSensorPresentationPanel, sensorContainerClass) {
+        console.log(nexusSensorPresentationPanel, sensorContainerClass);
+        var removedSensorContainer = nexusSensorPresentationPanel.container.find("." + sensorContainerClass);
+        console.log(removedSensorContainer);
+        removedSensorContainer.fadeOut(function() {
+            removedSensorContainer.remove();
+        });
+    };
+
     // Function used by a sensorPresenter to check the array of
     // removed sensor IDs and invoke its own destroy function
     // if it matches a removed sensor ID
@@ -122,16 +134,21 @@
         }
     };
 
-    // Function used by the nexusSensorPresentationPanel to remove
-    // dynamically generated container markup when a sensor is
-    // removed
-    gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer = function (nexusSensorPresentationPanel, sensorContainerClass) {
-        console.log(nexusSensorPresentationPanel, sensorContainerClass);
-        var removedSensorContainer = nexusSensorPresentationPanel.container.find("." + sensorContainerClass);
-        console.log(removedSensorContainer);
-        removedSensorContainer.fadeOut(function() {
-            removedSensorContainer.remove();
-        });
-    };
+    // Mix-in grade for viewComponents - start hidden, then fade in
+    fluid.defaults("gpii.nexusSensorPresentationPanel.fadeInPresenter", {
+        listeners: {
+            // Start hidden
+            "onCreate.hideContainer": {
+                "this": "{that}.container",
+                "method": "hide",
+                "args": [0]
+            },
+            // Fade in
+            "onCreate.fadeInContainer": {
+                "this": "{that}.container",
+                "method": "fadeIn"
+            }
+        }
+    });
 
 }());

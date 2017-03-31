@@ -41,22 +41,7 @@
                 sensorSonifierDisplay: {
                     type: "gpii.nexusSensorSonificationPanel.sensorSonifierDisplay",
                     container: "." + sensorContainerClass,
-                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended",
-                    options: {
-                        listeners: {
-                            // Start hidden
-                           "onCreate.hideContainer": {
-                               "this": "{that}.container",
-                               "method": "hide",
-                               "args": [0]
-                           },
-                           // Fade in
-                           "onCreate.fadeInContainer": {
-                               "this": "{that}.container",
-                               "method": "fadeIn"
-                           }
-                        }
-                    }
+                    createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended"
                 }
             }
         };
@@ -64,7 +49,7 @@
     };
 
     fluid.defaults("gpii.nexusSensorSonificationPanel.sensorSonifierDisplay", {
-        gradeNames: ["fluid.viewComponent"],
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "fluid.viewComponent"],
         events: {
             displayTemplateReady: null
         },

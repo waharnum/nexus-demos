@@ -77,7 +77,7 @@
     });
 
     fluid.defaults("gpii.nexusSensorVisualizer.circleRadius", {
-        gradeNames: ["gpii.nexusSensorVisualizer.sensorPercentage", "fluid.viewComponent"],
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "gpii.nexusSensorVisualizer.sensorPercentage", "fluid.viewComponent"],
         selectors: {
             circle: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
         },
@@ -97,16 +97,6 @@
                         args: ["<h2>%description</h2> <br/> <svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circleOutline\" cx=\"100\" cy=\"100\" r=\"100\" fill=\"red\" /><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circle\" cx=\"100\" cy=\"100\" r=\"0\" /></svg>", "{sensor}.model"]
                     }
                 }
-            },
-            "onCreate.hideContainer": {
-                "this": "{that}.container",
-                "method": "hide",
-                "args": [0]
-            },
-            // Fade in
-            "onCreate.fadeInContainer": {
-                "this": "{that}.container",
-                "method": "fadeIn"
             }
         }
     });
