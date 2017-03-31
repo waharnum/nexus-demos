@@ -61,10 +61,10 @@
         }
     });
 
-    fluid.defaults("gpii.nexusSensorVisualizer.circleRadius", {
-        gradeNames: ["fluid.viewComponent"],
+    fluid.defaults("gpii.nexusSensorVisualizer.sensorPercentage", {
+        gradeNames: ["fluid.modelComponent"],
         modelRelay: [{
-            target: "circleRadius",
+            target: "sensorPercentage",
             singleTransform: {
                 type: "gpii.sensorPlayer.transforms.minMaxScale",
                 input: "{sensor}.model.sensorValue",
@@ -73,15 +73,16 @@
                 outputScaleMax: 100,
                 outputScaleMin: 0
             }
-        }],
+        }]
+    });
+
+    fluid.defaults("gpii.nexusSensorVisualizer.circleRadius", {
+        gradeNames: ["gpii.nexusSensorVisualizer.sensorPercentage", "fluid.viewComponent"],
         selectors: {
             circle: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
         },
-        model: {
-            circleRadius: 0
-        },
         modelListeners: {
-            "circleRadius": {
+            "sensorPercentage": {
                 funcName: "gpii.nexusSensorVisualizer.circleRadius.updateVisualization",
                 args: ["{that}", "{change}"]
             }
