@@ -53,64 +53,65 @@
                 type: "fluid.modelComponent"
             },
             visualizer: {
-                type: "fluid.viewComponent",
-                createOnEvent: "{nexusSensorVisualizer}.events.onSensorDisplayContainerAppended",
+                type: "gpii.nexusSensorVisualizer.circleRadius",
+                createOnEvent: "{nexusSensorVisualizer}.events.onSensorDisplayContainerAppended"
                 // Must be specified
                 // container: ""
-                options: {
-                    modelRelay: [{
-                        target: "circleRadius",
-                        singleTransform: {
-                            type: "gpii.sensorPlayer.transforms.minMaxScale",
-                            input: "{sensor}.model.sensorValue",
-                            inputScaleMax: "{sensor}.model.sensorMax",
-                            inputScaleMin: "{sensor}.model.sensorMin",
-                            outputScaleMax: 100,
-                            outputScaleMin: 0
-                        }
-                    }],
-                    selectors: {
-                        circle: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
-                    },
-                    model: {
-                        circleRadius: 0
-                    },
-                    modelListeners: {
-                        "circleRadius": {
-                            funcName: "gpii.nexusSensorVisualizer.updateVisualization",
-                            args: ["{that}", "{change}"]
-                        }
-                    },
-                    listeners: {
-                        "onCreate.appendCircle": {
-                            "this": "{that}.container",
-                            method: "html",
-                            args: {
-                            expander: {
-                                    funcName: "fluid.stringTemplate",
-                                    args: ["<h2>%description</h2> <br/> <svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circleOutline\" cx=\"100\" cy=\"100\" r=\"100\" fill=\"red\" /><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circle\" cx=\"100\" cy=\"100\" r=\"0\" /></svg>", "{sensor}.model"]
-                                }
-                            }
-                        },
-                        "onCreate.hideContainer": {
-                            "this": "{that}.container",
-                            "method": "hide",
-                            "args": [0]
-                        },
-                        // Fade in
-                        "onCreate.fadeInContainer": {
-                            "this": "{that}.container",
-                            "method": "fadeIn"
-                        }
-                    }
-                }
             }
         }
     });
 
-    gpii.nexusSensorVisualizer.updateVisualization = function (visualizer, change) {
+    fluid.defaults("gpii.nexusSensorVisualizer.circleRadius", {
+        gradeNames: ["fluid.viewComponent"],
+        modelRelay: [{
+            target: "circleRadius",
+            singleTransform: {
+                type: "gpii.sensorPlayer.transforms.minMaxScale",
+                input: "{sensor}.model.sensorValue",
+                inputScaleMax: "{sensor}.model.sensorMax",
+                inputScaleMin: "{sensor}.model.sensorMin",
+                outputScaleMax: 100,
+                outputScaleMin: 0
+            }
+        }],
+        selectors: {
+            circle: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
+        },
+        model: {
+            circleRadius: 0
+        },
+        modelListeners: {
+            "circleRadius": {
+                funcName: "gpii.nexusSensorVisualizer.circleRadius.updateVisualization",
+                args: ["{that}", "{change}"]
+            }
+        },
+        listeners: {
+            "onCreate.appendCircle": {
+                "this": "{that}.container",
+                method: "html",
+                args: {
+                expander: {
+                        funcName: "fluid.stringTemplate",
+                        args: ["<h2>%description</h2> <br/> <svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circleOutline\" cx=\"100\" cy=\"100\" r=\"100\" fill=\"red\" /><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circle\" cx=\"100\" cy=\"100\" r=\"0\" /></svg>", "{sensor}.model"]
+                    }
+                }
+            },
+            "onCreate.hideContainer": {
+                "this": "{that}.container",
+                "method": "hide",
+                "args": [0]
+            },
+            // Fade in
+            "onCreate.fadeInContainer": {
+                "this": "{that}.container",
+                "method": "fadeIn"
+            }
+        }
+    });
+
+    gpii.nexusSensorVisualizer.circleRadius.updateVisualization = function (visualizer, change) {
         var circle = visualizer.locate("circle");
-        // circle.attr("r", change.value);
         circle.animate({"r": change.value}, 500);
     };
 
