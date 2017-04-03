@@ -8,7 +8,7 @@
         gradeNames: ["gpii.nexusSensorPresentationPanel"],
         // Key-value pairs of sensorIds / sensorPresenter grades
         perSensorPresentationGrades: {
-            "fakeSensor": "gpii.nexusSensorVisualizer.horizontalBar",
+            "fakeSensor": "gpii.nexusSensorVisualizer.lineChart",
             "fakeSensorPH": "gpii.nexusSensorVisualizer.lineChart"
         },
         defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.circleRadius",
@@ -104,7 +104,8 @@
                 type: "fluid.modelComponent",
                 options: {
                     model: {
-                        sensorValues: []
+                        sensorValues: [],
+                        maxValuesRetained: 50
                     }
                 }
             }
@@ -112,8 +113,15 @@
     });
 
     gpii.nexusSensorVisualizer.lineChart.accumulateSensorValues = function (sensorValueAccumulator, visualizer, change) {
+
+        var maxValuesRetained = fluid.get(sensorValueAccumulator.model, "maxValuesRetained");
+
         var currentSensorValues = fluid.copy(fluid.get(sensorValueAccumulator.model, "sensorValues"));
         var currentTime = new Date();
+
+        if(currentSensorValues.length >= maxValuesRetained) {
+            currentSensorValues.shift();
+        }
 
         var sensorRecord = {
             "date": currentTime,
@@ -121,8 +129,6 @@
         };
 
         currentSensorValues.push(sensorRecord);
-
-        sensorValueAccumulator.applier.change("sensorValues", null, "DELETE");
 
         sensorValueAccumulator.applier.change("sensorValues", currentSensorValues);
 
@@ -132,7 +138,7 @@
     fluid.defaults("gpii.nexusSensorVisualizer.lineChart.visualizer", {
         gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "floe.chartAuthoring.lineChart.timeSeriesSingleDataSet"],
         listeners: {
-            "onCreate.appendSensorTitle": {
+            "onCreate.prependSensorTitle": {
                 "this": "{that}.container",
                 method: "prepend",
                 args: {
