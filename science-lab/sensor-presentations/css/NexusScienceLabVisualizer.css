@@ -14,7 +14,14 @@
     font-size: 11px;
 }
 
-.floe-ca-lineChart-chartLine-area {
-    opacity: 0.2;
-    fill: black;
+.floe-ca-lineChart-chartLine {
+    stroke-width: 3;
+}
+
+.nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensor .floe-ca-lineChart-chartLine {
+    stroke: blue;
+}
+
+.nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorPH .floe-ca-lineChart-chartLine {
+    stroke: red;
 }
