@@ -20,7 +20,7 @@
         "qwerty-hancock": "0.5.1",
         "sensorapijs": "simonbates/p4a-sensorAPI",
         "serialport": "4.0.7",
-        "chartAuthoring": "fluid-project/chartAuthoring"
+        "chartAuthoring": "waharnum/chartAuthoring#GPII-2358"
     },
     "private": true
 }
