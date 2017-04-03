@@ -106,4 +106,34 @@
         circle.animate({"r": change.value}, 500);
     };
 
+    fluid.defaults("gpii.nexusSensorVisualizer.horizontalBar", {
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "gpii.nexusSensorVisualizer.sensorPercentage", "fluid.viewComponent"],
+        selectors: {
+            bar: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-bar"
+        },
+        modelListeners: {
+            "sensorPercentage": {
+                funcName: "gpii.nexusSensorVisualizer.horizontalBar.updateVisualization",
+                args: ["{that}", "{change}"]
+            }
+        },
+        listeners: {
+            "onCreate.appendBar": {
+                "this": "{that}.container",
+                method: "html",
+                args: {
+                expander: {
+                        funcName: "fluid.stringTemplate",
+                        args: ["<h2>%description</h2> <br/> <svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"><rect class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-barBackground\" width=\"200\" height=\"200\" fill=\"red\" /><rect class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-bar\" width=\"0\" height=\"200\" fill=\"blue\" /></svg>", "{sensor}.model"]
+                    }
+                }
+            }
+        }
+    });
+
+    gpii.nexusSensorVisualizer.horizontalBar.updateVisualization = function (visualizer, change) {
+        var circle = visualizer.locate("bar");
+        circle.animate({"width": change.value * 2}, 500);
+    };
+
 }());
