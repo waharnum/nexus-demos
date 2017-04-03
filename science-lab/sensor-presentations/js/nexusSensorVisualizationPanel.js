@@ -81,13 +81,6 @@
                 options: {
                     model: {
                         sensorValues: []
-                    },
-                    modelListeners: {
-                        sensorValues: {
-                            "this": "console",
-                            method: "log",
-                            args: "{that}.model.sensorValues"
-                        }
                     }
                 }
             }
@@ -96,9 +89,6 @@
 
     gpii.nexusSensorVisualizer.accumulateSensorValues = function (sensorValueAccumulator, visualizer, change) {
         var currentSensorValues = fluid.copy(fluid.get(sensorValueAccumulator.model, "sensorValues"));
-
-        console.log(currentSensorValues);
-
         var currentTime = new Date();
 
         var sensorRecord = {
@@ -113,9 +103,6 @@
         sensorValueAccumulator.applier.change("sensorValues", currentSensorValues);
 
         visualizer.applier.change("dataSet", currentSensorValues);
-
-        console.log(sensorValueAccumulator, visualizer, change);
-
     };
 
     fluid.defaults("gpii.nexusSensorVisualizer.sensorPercentage", {
@@ -195,6 +182,18 @@
 
     fluid.defaults("gpii.nexusSensorVisualizer.lineChart", {
         gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "floe.chartAuthoring.lineChart.timeSeriesSingleDataSet"],
+        listeners: {
+            "onCreate.appendSensorTitle": {
+                "this": "{that}.container",
+                method: "prepend",
+                args: {
+                    expander: {
+                        funcName: "fluid.stringTemplate",
+                        args: ["<h2>%description</h2>", "{sensor}.model"]
+                    }
+                }
+            }
+        },
         invokers: {
             transitionChartLine: {
                 funcName: "floe.chartAuthoring.lineChart.timeSeries.line.updateChartLine.defaultTransition"
