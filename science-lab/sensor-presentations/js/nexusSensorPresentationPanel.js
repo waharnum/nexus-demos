@@ -70,6 +70,8 @@
         }
     };
 
+    // Generates common model relay options to let a presenter be
+    // synchronized with a particular sensor model path
     gpii.nexusSensorPresentationPanel.getSensorModelOptions = function (sensorId) {
         var sensorModelOptions = {
             sensorId: sensorId,
