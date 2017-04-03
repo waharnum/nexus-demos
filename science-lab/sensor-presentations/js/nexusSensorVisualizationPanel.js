@@ -7,9 +7,11 @@
     fluid.defaults("gpii.nexusSensorVisualizationPanel", {
         gradeNames: ["gpii.nexusSensorPresentationPanel"],
         // Key-value pairs of sensorIds / sensorPresenter grades
-        perSensorPresentationTypes: {
-            "fakeSensor": "gpii.nexusSensorVisualizer.circleRadius"
+        perSensorPresentationGrades: {
+            "fakeSensor": "gpii.nexusSensorVisualizer.horizontalBar",
+            "fakeSensorPH": "gpii.nexusSensorVisualizer.lineChart"
         },
+        defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.circleRadius",
         dynamicComponents: {
             sensorPresenter: {
                 type: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterType({that}, {arguments}.0)",
@@ -20,11 +22,11 @@
     });
 
     gpii.nexusSensorVisualizationPanel.getSensorPresenterType = function (that, sensorId) {
-        var perSensorPresentationTypes = that.options.perSensorPresentationTypes;
-        if(perSensorPresentationTypes[sensorId]) {
-            return perSensorPresentationTypes[sensorId];
+        var perSensorPresentationGrades = that.options.perSensorPresentationGrades;
+        if(perSensorPresentationGrades[sensorId]) {
+            return perSensorPresentationGrades[sensorId];
         } else {
-            return "gpii.nexusSensorVisualizer.lineChart";
+            return that.options.defaultSensorPresentationGrade;
         }
     };
 

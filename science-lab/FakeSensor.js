@@ -72,7 +72,7 @@ fluid.defaults("gpii.nexus.fakeSensor.pHValue", {
     },
     model: {
         fakeSensorConfig: {
-            updateDelayMs: 10000
+            updateDelayMs: 5000
         },
         sensorData: {
             name: "Fake pH Sensor",
