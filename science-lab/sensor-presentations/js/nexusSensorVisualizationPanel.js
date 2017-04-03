@@ -54,12 +54,69 @@
             },
             visualizer: {
                 type: "gpii.nexusSensorVisualizer.lineChart",
-                createOnEvent: "{nexusSensorVisualizer}.events.onSensorDisplayContainerAppended"
+                createOnEvent: "{nexusSensorVisualizer}.events.onSensorDisplayContainerAppended",
+                options: {
+                    scaleOptions: {
+                        // transform rules to apply to yScale min
+                        yScaleMinTransform: {
+                            "literalValue": "{sensor}.model.sensorMin"
+                        },
+                        // transform rules to apply to yScale max
+                        yScaleMaxTransform: {
+                            "literalValue": "{sensor}.model.sensorMax"
+                        }
+                    },
+                    modelListeners: {
+                        "{sensor}.model.sensorValue": {
+                            func: "gpii.nexusSensorVisualizer.accumulateSensorValues",
+                            args: ["{sensorValueAccumulator}", "{visualizer}", "{change}"]
+                        }
+                    }
+                }
                 // Must be specified
                 // container: ""
+            },
+            sensorValueAccumulator: {
+                type: "fluid.modelComponent",
+                options: {
+                    model: {
+                        sensorValues: []
+                    },
+                    modelListeners: {
+                        sensorValues: {
+                            "this": "console",
+                            method: "log",
+                            args: "{that}.model.sensorValues"
+                        }
+                    }
+                }
             }
         }
     });
+
+    gpii.nexusSensorVisualizer.accumulateSensorValues = function (sensorValueAccumulator, visualizer, change) {
+        var currentSensorValues = fluid.copy(fluid.get(sensorValueAccumulator.model, "sensorValues"));
+
+        console.log(currentSensorValues);
+
+        var currentTime = new Date();
+
+        var sensorRecord = {
+            "date": currentTime,
+            "value": change.value
+        };
+
+        currentSensorValues.push(sensorRecord);
+
+        sensorValueAccumulator.applier.change("sensorValues", null, "DELETE");
+
+        sensorValueAccumulator.applier.change("sensorValues", currentSensorValues);
+
+        visualizer.applier.change("dataSet", currentSensorValues);
+
+        console.log(sensorValueAccumulator, visualizer, change);
+
+    };
 
     fluid.defaults("gpii.nexusSensorVisualizer.sensorPercentage", {
         gradeNames: ["fluid.modelComponent"],
@@ -244,10 +301,7 @@
 ];
 
     fluid.defaults("gpii.nexusSensorVisualizer.lineChart", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "floe.chartAuthoring.lineChart.timeSeriesSingleDataSet"],
-        model: {
-            dataSet: dataSet
-        }
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "floe.chartAuthoring.lineChart.timeSeriesSingleDataSet"]
     });
 
 }());
