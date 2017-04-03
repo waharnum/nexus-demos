@@ -83,13 +83,29 @@
         return sensorModelOptions;
     };
 
+    // Generates common listener options for sensor presenters to handle
+    // their dynamicComponent lifecycle,
+    // specifically:
+    // onCreate.appendSensorDisplayContainer:
+    // appends sensor-specific container markup so that a
+    // new sensor has somewhere to create any viewComponents
+    //
+    // onCreate.fireOnSensorDisplayContainerAppended:
+    // notifies that the display container is appended;
+    // viewComponents associated with the sensor can use this
+    // for their createOnEvent
+    //
+    // {nexusSensorPresentationPanel}.events.onSensorRemoval:
+    // Adds a listener that lets a sensor presentor check if it should
+    // be removed when the onSensorRemoval event is fired by
+    // the presentation panel
+    //
+    // onDestroy.removeSensorDisplayContainer
+    // Calls a function of the nexusSensorPresentation panel
+    // to let it clean up the container after the associated
+    // presenter has been destroyed
     gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions = function (sensorId, sensorContainerClass) {
         var sensorListenerOptions = {
-            "{nexusSensorPresentationPanel}.events.onSensorRemoval": {
-               funcName: "gpii.nexusSensorPresentationPanel.checkForRemoval",
-               args: ["{that}", "{that}.sensor", "{arguments}.0"],
-               namespace: "removeSensorPresenter-"+sensorId
-           },
            "onCreate.appendSensorDisplayContainer": {
                "this": "{nexusSensorPresentationPanel}.container",
                "method": "append",
@@ -99,6 +115,11 @@
                funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
                priority: "after:appendSensorDisplayContainer"
            },
+           "{nexusSensorPresentationPanel}.events.onSensorRemoval": {
+              funcName: "gpii.nexusSensorPresentationPanel.checkForRemoval",
+              args: ["{that}", "{that}.sensor", "{arguments}.0"],
+              namespace: "removeSensorPresenter-"+sensorId
+          },
            "onDestroy.removeSensorDisplayContainer": {
                funcName: "gpii.nexusSensorPresentationPanel.removeSensorDisplayContainer",
                args: ["{nexusSensorPresentationPanel}", sensorContainerClass]
