@@ -9,7 +9,7 @@
         // Key-value pairs of sensorIds / sensorPresenter grades
         perSensorPresentationGrades: {
             "fakeSensor": "gpii.nexusSensorVisualizer.lineChart",
-            "fakeSensorPH": "gpii.nexusSensorVisualizer.lineChart"
+            "fakeSensorPH": "gpii.nexusSensorVisualizer.pHScale"
         },
         defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.circleRadius",
         dynamicComponents: {
@@ -248,5 +248,136 @@
         var circle = visualizer.locate("bar");
         circle.animate({"width": change.value * 2}, 500);
     };
+
+    fluid.defaults("gpii.nexusSensorVisualizer.pHScale", {
+        gradeNames: ["gpii.nexusSensorVisualizerBase"],
+        components: {
+            visualizer: {
+                type: "gpii.nexusSensorVisualizer.pHScale.visualizer",
+                options: {
+                    modelListeners: {
+                        "{pHScale}.sensor.model.sensorValue": {
+                            funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization",
+                            args: ["{that}", "{change}"]
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    fluid.defaults("gpii.nexusSensorVisualizer.pHScale.visualizer", {
+        gradeNames: ["floe.svgDrawingArea"],
+        model: {
+            svgTitle: "An animated pH scale.",
+            svgDescription: "An animated ph scale."
+        },
+        colorScaleOptions: {
+            // Must be 14 colors
+            // This set generated using the tool at https://gka.github.io/palettes/
+            colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"]
+        },
+        listeners: {
+            "onCreate.prependSensorTitle": {
+                "this": "{that}.container",
+                method: "prepend",
+                args: {
+                    expander: {
+                        funcName: "fluid.stringTemplate",
+                        args: ["<h2>%description</h2>", "{sensor}.model"]
+                    }
+                }
+            },
+            "onCreate.createBaseSVGDrawingArea": {
+                func: "{that}.createBaseSVGDrawingArea"
+            },
+            "onCreate.createPHVisualizer": {
+                funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.create",
+                args: ["{that}"],
+                priority: "after:createBaseSVGDrawingArea"
+            }
+        }
+    });
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.create = function (that) {
+
+        var h = that.options.svgOptions.height,
+            w = that.options.svgOptions.width,
+            padding = 20,
+            colors = that.options.colorScaleOptions.colors,
+            svg = that.svg;
+
+        that.yScale = d3.scale
+               .linear()
+               .domain([0,14])
+               .range([h - padding, 0 + padding]);
+
+    that.barHeight = (h - padding) / 14;
+
+    var barHeight = that.barHeight;
+
+    for(var i=0; i< 14; i++) {
+      svg.append("rect")
+         .attr({
+            "x": 75,
+            "y": function() {
+              return that.yScale(i) - barHeight;
+            },
+            "width": 425,
+            "height": barHeight,
+            "fill": colors[i]
+          })
+    };
+
+    for(var i=0; i< 14; i++) {
+      svg.append("text")
+        .text("ph Value " + (i+1))
+        .attr({
+          "fill": "white",
+          "x": 150,
+          "y": function() {
+            return that.yScale(i) - 10;
+          },
+          "font-size": 16
+        })
+    }
+
+    // Draw the PH indicator dot
+
+    var startingPHValue = 7;
+    svg.append("circle")
+       .attr({
+          "class": "phIndicator",
+          "cx": 30,
+          "cy": function() {
+              return that.yScale(startingPHValue) + (barHeight / 2);
+            },
+          "fill": function() {
+              var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
+              return colors[colorIdx];
+          },
+          "r": barHeight / 2,
+          "stroke": "black"
+        });
+
+    };
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
+        var colors = visualizer.options.colorScaleOptions.colors,
+            barHeight = visualizer.barHeight;
+        // Update function
+            d3.select(".phIndicator")
+            .transition()
+            .duration(1000)
+            .attr({
+                "cy": function() {
+                    return visualizer.yScale(change.value) + (barHeight / 2);
+                },
+                "fill": function() {
+                    var colorIdx = Math.floor(change.value-1) > 0 ? Math.floor(change.value-1) : 0;
+                    return colors[colorIdx];
+                }
+            });
+    }
 
 }());
