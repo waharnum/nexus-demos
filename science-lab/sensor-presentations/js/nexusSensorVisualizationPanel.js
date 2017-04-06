@@ -2,6 +2,7 @@
     "use strict";
 
     var gpii = fluid.registerNamespace("gpii");
+    var d3 = fluid.registerNamespace("d3");
 
     // Sonification presentation panel
     fluid.defaults("gpii.nexusSensorVisualizationPanel", {
@@ -325,59 +326,89 @@
             },
             "width": 425,
             "height": barHeight,
-            "fill": colors[i]
+            "fill": colors[i],
+            "stroke": "black"
           })
     };
 
-    for(var i=0; i< 14; i++) {
+    for(i=0; i< 14; i++) {
       svg.append("text")
-        .text("ph Value " + (i+1))
+        .text("ph Value " + i + " - " + (i+1))
         .attr({
           "fill": "white",
           "x": 150,
           "y": function() {
-            return that.yScale(i) - 10;
+            return that.yScale(i) - barHeight / 2;
           },
           "font-size": 16
         })
     }
 
-    // Draw the PH indicator dot
+    // Draw the PH indicator
 
-    var startingPHValue = 7;
-    svg.append("circle")
-       .attr({
-          "class": "phIndicator",
-          "cx": 30,
-          "cy": function() {
-              return that.yScale(startingPHValue) + (barHeight / 2);
-            },
-          "fill": function() {
-              var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
-              return colors[colorIdx];
-          },
-          "r": barHeight / 2,
-          "stroke": "black"
-        });
+    var startingPHValue = 1;
+    var pointLocation = that.yScale(startingPHValue) - 12.5;
 
+    svg.append("polygon")
+    .attr({
+       "class": "phIndicator",
+       "points": "0,0 0,25 25,12.5",
+       "transform": "translate(45, "+ pointLocation +")",
+       "fill": function() {
+           var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
+           return colors[colorIdx];
+       },
+       "stroke": "black"
+     });
+
+    // svg.append("circle")
+    //    .attr({
+    //       "class": "phIndicator",
+    //       "cx": 30,
+    //       "cy": function() {
+    //           return that.yScale(startingPHValue) + (barHeight / 2);
+    //         },
+    //       "fill": function() {
+    //           var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
+    //           return colors[colorIdx];
+    //       },
+    //       "r": barHeight / 2,
+    //       "stroke": "black"
+    //     });
+    //
     };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
         var colors = visualizer.options.colorScaleOptions.colors,
             barHeight = visualizer.barHeight;
-        // Update function
+        // Update function for circle
+            // d3.select(".phIndicator")
+            // .transition()
+            // .duration(1000)
+            // .attr({
+            //     "cy": function() {
+            //         return visualizer.yScale(change.value) + (barHeight / 2);
+            //     },
+            //     "fill": function() {
+            //         var colorIdx = Math.floor(change.value-1) > 0 ? Math.floor(change.value-1) : 0;
+            //         return colors[colorIdx];
+            //     }
+            // });
+
+            var padding = 20;
+            var pointLocation = visualizer.yScale(change.value)  - 12.5;
+
             d3.select(".phIndicator")
             .transition()
             .duration(1000)
             .attr({
-                "cy": function() {
-                    return visualizer.yScale(change.value) + (barHeight / 2);
-                },
+                "transform": "translate(45, "+ pointLocation +")",
                 "fill": function() {
                     var colorIdx = Math.floor(change.value-1) > 0 ? Math.floor(change.value-1) : 0;
                     return colors[colorIdx];
                 }
             });
-    }
+
+    };
 
 }());
