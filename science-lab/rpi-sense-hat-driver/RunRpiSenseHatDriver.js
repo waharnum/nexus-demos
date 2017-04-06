@@ -10,10 +10,12 @@ var program = require("commander");
 
 var nexusHost = "localhost";
 var nexusPort = 9081;
+var senseHatNumber = 1;
 
 program
     .option("-h, --host <hostname>", "Nexus hostname")
     .option("-p, --port <port>", "Nexus port number", parseInt)
+    .option("-n, --number <integer>", "SenseHAT number", parseInt)
     .parse(process.argv);
 
 if (program.host) {
@@ -24,9 +26,18 @@ if (program.port) {
     nexusPort = program.port;
 }
 
+if (program.number) {
+    senseHatNumber = program.number;
+}
+
 var driver = gpii.nexus.rpiSenseHatDriver({
     nexusHost: nexusHost,
     nexusPort: nexusPort,
+    nexusPeerComponentPath: "rpiSenseHatTemp" + senseHatNumber,
+    nexusPeerComponentOptions: {
+        type: "gpii.nexus.rpiSenseHatDriver.tempSensor" + senseHatNumber
+    },
+    sensorName: "Temperature " + senseHatNumber,
     listeners: {
         "onNexusPeerComponentDestroyed.exitProcess": {
             func: function () { process.exit(); }

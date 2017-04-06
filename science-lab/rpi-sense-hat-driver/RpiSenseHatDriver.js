@@ -52,6 +52,11 @@ fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
 
     nexusHost: "localhost",
     nexusPort: 9081,
+    nexusPeerComponentPath: "rpiSenseHatTemp",
+    nexusPeerComponentOptions: {
+        type: "gpii.nexus.rpiSenseHatDriver.tempSensor"
+    },
+    sensorName: "Temperature",
 
     components: {
         sense: {
@@ -70,17 +75,17 @@ fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
                 members: {
                     nexusHost: "{rpiSenseHatDriver}.options.nexusHost",
                     nexusPort: "{rpiSenseHatDriver}.options.nexusPort",
-                    nexusPeerComponentPath: "rpiSenseHatTemp",
-                    nexusPeerComponentOptions: {
-                        type: "gpii.nexus.rpiSenseHatDriver.tempSensor"
-                    },
+                    nexusPeerComponentPath:
+                        "{rpiSenseHatDriver}.options.nexusPeerComponentPath",
+                    nexusPeerComponentOptions:
+                        "{rpiSenseHatDriver}.options.nexusPeerComponentOptions",
                     nexusBoundModelPath: "sensorData",
                     sendsChangesToNexus: true,
                     managesPeer: true
                 },
                 model: {
                     sensorData: {
-                        name: "Temperature",
+                        name: "{rpiSenseHatDriver}.options.sensorName",
                         units: "C",
                         rangeMin: 0,
                         rangeMax: 100,

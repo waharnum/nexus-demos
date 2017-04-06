@@ -52,7 +52,20 @@ fluid.promise.sequence([
         return gpii.writeNexusDefaults(
             nexusHost,
             nexusPort,
-            "gpii.nexus.rpiSenseHatDriver.tempSensor",
+            "gpii.nexus.rpiSenseHatDriver.tempSensor1",
+            {
+                gradeNames: [ "fluid.modelComponent" ],
+                model: {
+                    sensorData: { }
+                }
+            }
+        );
+    },
+    function () {
+        return gpii.writeNexusDefaults(
+            nexusHost,
+            nexusPort,
+            "gpii.nexus.rpiSenseHatDriver.tempSensor2",
             {
                 gradeNames: [ "fluid.modelComponent" ],
                 model: {
@@ -180,7 +193,7 @@ fluid.promise.sequence([
         return gpii.writeNexusDefaults(
             nexusHost,
             nexusPort,
-            "gpii.nexus.scienceLab.sendRpiTempSensor",
+            "gpii.nexus.scienceLab.sendRpiTempSensor1",
             {
                 gradeNames: [ "gpii.nexus.recipeProduct" ],
                 componentPaths: {
@@ -193,7 +206,7 @@ fluid.promise.sequence([
                 },
                 modelRelay: {
                     source: "{tempSensor}.model.sensorData",
-                    target: "{collector}.model.sensors.rpiTempSensor",
+                    target: "{collector}.model.sensors.rpiTempSensor1",
                     forward: {
                         excludeSource: "init"
                     },
@@ -202,9 +215,43 @@ fluid.promise.sequence([
                     }
                 },
                 listeners: {
-                    "onDestroy.removeRpiTempSensor": {
+                    "onDestroy.removeRpiTempSensor1": {
                         listener: "{collector}.applier.change",
-                        args: [ "sensors.rpiTempSensor", null, "DELETE" ]
+                        args: [ "sensors.rpiTempSensor1", null, "DELETE" ]
+                    }
+                }
+            }
+        );
+    },
+    function () {
+        return gpii.writeNexusDefaults(
+            nexusHost,
+            nexusPort,
+            "gpii.nexus.scienceLab.sendRpiTempSensor2",
+            {
+                gradeNames: [ "gpii.nexus.recipeProduct" ],
+                componentPaths: {
+                    tempSensor: null,
+                    collector: null
+                },
+                components: {
+                    tempSensor: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.tempSensor)",
+                    collector: "@expand:fluid.componentForPath({recipeProduct}.options.componentPaths.collector)"
+                },
+                modelRelay: {
+                    source: "{tempSensor}.model.sensorData",
+                    target: "{collector}.model.sensors.rpiTempSensor2",
+                    forward: {
+                        excludeSource: "init"
+                    },
+                    singleTransform: {
+                        type: "fluid.identity"
+                    }
+                },
+                listeners: {
+                    "onDestroy.removeRpiTempSensor2": {
+                        listener: "{collector}.applier.change",
+                        args: [ "sensors.rpiTempSensor2", null, "DELETE" ]
                     }
                 }
             }
@@ -288,12 +335,12 @@ fluid.promise.sequence([
         });
     },
     function () {
-        return gpii.addNexusRecipe(nexusHost, nexusPort, "sendRpiTempSensor", {
+        return gpii.addNexusRecipe(nexusHost, nexusPort, "sendRpiTempSensor1", {
             reactants: {
                 tempSensor: {
                     match: {
                         type: "gradeMatcher",
-                        gradeName: "gpii.nexus.rpiSenseHatDriver.tempSensor"
+                        gradeName: "gpii.nexus.rpiSenseHatDriver.tempSensor1"
                     }
                 },
                 collector: {
@@ -304,9 +351,33 @@ fluid.promise.sequence([
                 }
             },
             product: {
-                path: "sendRpiTempSensor",
+                path: "sendRpiTempSensor1",
                 options: {
-                    type: "gpii.nexus.scienceLab.sendRpiTempSensor"
+                    type: "gpii.nexus.scienceLab.sendRpiTempSensor1"
+                }
+            }
+        });
+    },
+    function () {
+        return gpii.addNexusRecipe(nexusHost, nexusPort, "sendRpiTempSensor2", {
+            reactants: {
+                tempSensor: {
+                    match: {
+                        type: "gradeMatcher",
+                        gradeName: "gpii.nexus.rpiSenseHatDriver.tempSensor2"
+                    }
+                },
+                collector: {
+                    match: {
+                        type: "gradeMatcher",
+                        gradeName: "gpii.nexus.scienceLab.collector"
+                    }
+                }
+            },
+            product: {
+                path: "sendRpiTempSensor2",
+                options: {
+                    type: "gpii.nexus.scienceLab.sendRpiTempSensor2"
                 }
             }
         });
