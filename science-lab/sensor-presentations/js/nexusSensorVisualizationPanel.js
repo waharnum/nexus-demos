@@ -293,14 +293,14 @@
                 func: "{that}.createBaseSVGDrawingArea"
             },
             "onCreate.createPHVisualizer": {
-                funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.create",
+                funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.createPHVisualizer",
                 args: ["{that}"],
                 priority: "after:createBaseSVGDrawingArea"
             }
         }
     });
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.create = function (that) {
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHVisualizer = function (that) {
 
         var h = that.options.svgOptions.height,
             padding = 20,
@@ -349,34 +349,39 @@
 
     // Draw the PH indicator
 
-    var startingPHValue = 1;
-    var pointLocation = that.yScale(startingPHValue) - 12.5;
+    var startingPHValue = 7;
+    var pointLocation = that.yScale(startingPHValue) - 15;
 
-    svg.append("polygon")
+    var pHIndicatorGroup = svg.append("g")
     .attr({
-       "class": "phIndicator",
-       "points": "0,0 0,25 25,12.5",
-       "transform": "translate(45, "+ pointLocation +")",
-       "fill": function() {
-           var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
-           return colors[colorIdx];
-       },
-       "stroke": "black"
-     });
-    };
+        "class" : "phIndicatorGroup",
+        "transform": "translate(25, "+ pointLocation +")",
+        "fill": function() {
+            var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
+            return colors[colorIdx];
+        }
+    });
+
+    pHIndicatorGroup
+    .append("path")
+    .attr({
+        "d": "M20 20 h-40 v-10 h40 v-10 l15 15 l-15 15 v-10",
+        "stroke": "black"
+    });
+ };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
         var colors = visualizer.options.colorScaleOptions.colors,
             barHeight = visualizer.barHeight;
 
             var padding = 20;
-            var pointLocation = visualizer.yScale(change.value)  - 12.5;
+            var pointLocation = visualizer.yScale(change.value)  - 15;
 
-            d3.select(".phIndicator")
+            d3.select(".phIndicatorGroup")
             .transition()
             .duration(1000)
             .attr({
-                "transform": "translate(45, "+ pointLocation +")",
+                "transform": "translate(25, "+ pointLocation +")",
                 "fill": function() {
                     var colorIdx = Math.floor(change.value-1) > 0 ? Math.floor(change.value-1) : 0;
                     return colors[colorIdx];
