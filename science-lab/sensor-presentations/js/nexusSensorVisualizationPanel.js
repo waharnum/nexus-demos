@@ -303,21 +303,22 @@
     gpii.nexusSensorVisualizer.pHScale.visualizer.create = function (that) {
 
         var h = that.options.svgOptions.height,
-            w = that.options.svgOptions.width,
             padding = 20,
             colors = that.options.colorScaleOptions.colors,
             svg = that.svg;
 
+        var colorScaleLength = colors.length;
+
         that.yScale = d3.scale
                .linear()
-               .domain([0,14])
+               .domain([0,colorScaleLength])
                .range([h - padding, 0 + padding]);
 
-    that.barHeight = (h - padding) / 14;
+    that.barHeight = (h - padding) / colorScaleLength;
 
     var barHeight = that.barHeight;
 
-    for(var i=0; i< 14; i++) {
+    for(var i=0; i< colorScaleLength; i++) {
       svg.append("rect")
          .attr({
             "x": 75,
@@ -328,15 +329,17 @@
             "height": barHeight,
             "fill": colors[i],
             "stroke": "black"
-          })
-    };
+        });
+    }
 
-    for(i=0; i< 14; i++) {
+    for(i=0; i< colorScaleLength; i++) {
       svg.append("text")
-        .text("ph Value " + i + " - " + (i+1))
+        .text("pH Value " + i + " - " + (i+1))
         .attr({
+          "text-anchor": "middle",
+          "transform": "translate(75)",
           "fill": "white",
-          "x": 150,
+          "x": 212.5,
           "y": function() {
             return that.yScale(i) - barHeight / 2;
           },
@@ -360,40 +363,11 @@
        },
        "stroke": "black"
      });
-
-    // svg.append("circle")
-    //    .attr({
-    //       "class": "phIndicator",
-    //       "cx": 30,
-    //       "cy": function() {
-    //           return that.yScale(startingPHValue) + (barHeight / 2);
-    //         },
-    //       "fill": function() {
-    //           var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
-    //           return colors[colorIdx];
-    //       },
-    //       "r": barHeight / 2,
-    //       "stroke": "black"
-    //     });
-    //
     };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
         var colors = visualizer.options.colorScaleOptions.colors,
             barHeight = visualizer.barHeight;
-        // Update function for circle
-            // d3.select(".phIndicator")
-            // .transition()
-            // .duration(1000)
-            // .attr({
-            //     "cy": function() {
-            //         return visualizer.yScale(change.value) + (barHeight / 2);
-            //     },
-            //     "fill": function() {
-            //         var colorIdx = Math.floor(change.value-1) > 0 ? Math.floor(change.value-1) : 0;
-            //         return colors[colorIdx];
-            //     }
-            // });
 
             var padding = 20;
             var pointLocation = visualizer.yScale(change.value)  - 12.5;
