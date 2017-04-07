@@ -318,41 +318,41 @@
 
         var barHeight = that.barHeight;
 
-        for(var i=0; i< colorScaleLength; i++) {
-          svg.append("rect")
-             .attr({
-                "x": 75,
-                "y": function() {
-                  return that.yScale(i) - barHeight;
-                },
-                "width": 425,
-                "height": barHeight,
-                "fill": colors[i],
-                "stroke": "#FCC"
-            });
-        }
+        fluid.each(colors, function(color, index) {
+            svg.append("rect")
+               .attr({
+                  "x": 75,
+                  "y": function() {
+                    return that.yScale(index) - barHeight;
+                  },
+                  "width": 425,
+                  "height": barHeight,
+                  "fill": color,
+                  "stroke": "#FCC"
+              });
+        });
 
     };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScaleText = function (that) {
 
-        var colorScaleLength = that.options.colorScaleOptions.colors.length,
+        var colors = that.options.colorScaleOptions.colors,
             svg = that.svg;
 
-        for(var i=0; i< colorScaleLength; i++) {
-          svg.append("text")
-            .text("pH Value " + i + " - " + (i+1))
-            .attr({
-              "text-anchor": "middle",
-              "transform": "translate(75)",
-              "fill": "white",
-              "x": 212.5,
-              "y": function() {
-                return that.yScale(i) - that.barHeight / 2;
-              },
-              "font-size": that.barHeight / 2
-          });
-        }
+        fluid.each(colors, function(color, index) {
+            svg.append("text")
+              .text("pH Value " + index + " - " + (index+1))
+              .attr({
+                "text-anchor": "middle",
+                "transform": "translate(75)",
+                "fill": "white",
+                "x": 212.5,
+                "y": function() {
+                  return that.yScale(index) - that.barHeight / 2;
+                },
+                "font-size": that.barHeight / 2
+            });
+        });
     };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.createPHIndicator = function (that) {
@@ -405,7 +405,7 @@
  };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
-        var colors = visualizer.options.colorScaleOptions.colors;            
+        var colors = visualizer.options.colorScaleOptions.colors;
 
             var pointLocation = visualizer.yScale(change.value)  - 15;
 
