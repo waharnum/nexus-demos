@@ -276,8 +276,12 @@
         colorScaleOptions: {
             // This set generated using the tool at https://gka.github.io/palettes/
             colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
-            // Padding when creating the scale
-            padding: 20
+            // All-around padding when creating the scale
+            padding: 20,
+            leftPadding: 75
+        },
+        indicatorOptions: {
+            startingValue: 7
         },
         listeners: {
             "onCreate.prependSensorTitle": {
@@ -303,7 +307,9 @@
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScale = function (that) {
         var h = that.options.svgOptions.height,
+            w = that.options.svgOptions.width,
             padding = that.options.colorScaleOptions.padding,
+            leftPadding = that.options.colorScaleOptions.leftPadding,
             colors = that.options.colorScaleOptions.colors,
             svg = that.svg;
 
@@ -321,11 +327,11 @@
         fluid.each(colors, function(color, index) {
             svg.append("rect")
                .attr({
-                  "x": 75,
+                  "x": leftPadding,
                   "y": function() {
                     return that.yScale(index) - barHeight;
                   },
-                  "width": 425,
+                  "width": w - leftPadding,
                   "height": barHeight,
                   "fill": color,
                   "stroke": "#FCC"
@@ -337,6 +343,8 @@
     gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScaleText = function (that) {
 
         var colors = that.options.colorScaleOptions.colors,
+            leftPadding = that.options.colorScaleOptions.leftPadding,
+            w = that.options.svgOptions.width,
             svg = that.svg;
 
         fluid.each(colors, function(color, index) {
@@ -344,9 +352,9 @@
               .text("pH Value " + index + " - " + (index+1))
               .attr({
                 "text-anchor": "middle",
-                "transform": "translate(75)",
+                "transform": "translate(" + leftPadding + ")",
                 "fill": "white",
-                "x": 212.5,
+                "x": (w - leftPadding) / 2,
                 "y": function() {
                   return that.yScale(index) - that.barHeight / 2;
                 },
@@ -361,15 +369,16 @@
         var colors = that.options.colorScaleOptions.colors,
             svg = that.svg;
 
-        var startingPHValue = 7;
-        var pointLocation = that.yScale(startingPHValue) - 15;
+        var startingValue = that.options.indicatorOptions.startingValue;
+        // Where the point of the arrow should be aligned
+        var pointLocation = that.yScale(startingValue) - 15;
 
         var pHIndicatorGroup = svg.append("g")
         .attr({
             "class" : "phIndicatorGroup",
-            "transform": "translate(25, "+ pointLocation +")",
+            "transform": "translate(40, "+ pointLocation +")",
             "fill": function() {
-                var colorIdx = Math.ceil(startingPHValue-1) > 0 ? Math.ceil(startingPHValue-1) : 0;
+                var colorIdx = Math.ceil(startingValue-1) > 0 ? Math.ceil(startingValue-1) : 0;
                 return colors[colorIdx];
             }
         });
@@ -413,7 +422,7 @@
             .transition()
             .duration(1000)
             .attr({
-                "transform": "translate(25, "+ pointLocation +")",
+                "transform": "translate(40, "+ pointLocation +")",
                 "fill": function() {
                     var colorIdx = Math.ceil(change.value-1) > 0 ? Math.ceil(change.value-1) : 0;
                     return colors[colorIdx];
