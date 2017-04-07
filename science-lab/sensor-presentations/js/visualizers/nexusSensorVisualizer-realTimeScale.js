@@ -12,7 +12,7 @@
                 options: {
                     scaleOptions: {
                         min: "{realTimeScale}.sensor.model.sensorMin",
-                        max: "{realTimeScale}.sensor.model.sensorMax"
+                        max: "{realTimeScale}.sensor.model.sensorMax",
                     },
                     indicatorOptions: {
                         startingValue: "{realTimeScale}.sensor.model.sensorValue"
@@ -34,6 +34,10 @@
             svgTitle: "An animated real-time scale.",
             svgDescription: "An animated real-time scale."
         },
+        svgOptions: {
+            height: 500,
+            width: 250
+        },
         selectors: {
             "sensorValueIndicator": ".sensorValueIndicator"
         },
@@ -41,7 +45,8 @@
             // All-around padding when creating the scale
             padding: 20,
             min: 0,
-            max: 100
+            max: 100,
+            leftPadding: 75
         },
         indicatorOptions: {
             startingValue: 7
@@ -80,7 +85,7 @@
            .attr({
               "class": "sensorValueIndicator",
               "x": leftPadding,
-              "width": w - 75,
+              "width": w - (leftPadding+padding*2),
               "y": function() {
                 return that.yScale(startingValue);
               },
@@ -109,25 +114,22 @@
  };
 
  gpii.nexusSensorVisualizer.realTimeScale.visualizer.createYAxis = function (that) {
-     var yAxis = d3.svg.axis().scale(that.yScale).orient("left");
+     var leftPadding = that.options.scaleOptions.leftPadding;
+
+     var yAxis = d3.svg.axis().scale(that.yScale).orient("left").innerTickSize(25);
      that.svg.append("g")
         .call(yAxis)
-        .attr("transform", "translate(500)");
+        .attr("transform", "translate(" + leftPadding + ")");
  };
 
     gpii.nexusSensorVisualizer.realTimeScale.visualizer.updateVisualization = function (visualizer, change) {
 
         var h = visualizer.options.svgOptions.height,
-            w = visualizer.options.svgOptions.width,
-            padding = visualizer.options.scaleOptions.padding,
-            leftPadding = visualizer.options.scaleOptions.leftPadding,
-            svg = visualizer.svg;
+            padding = visualizer.options.scaleOptions.padding;
 
-            var sensorValueIndicator = visualizer.locate("sensorValueIndicator");
+            var sensorValueIndicator = visualizer.jQueryToD3(visualizer.locate("sensorValueIndicator"));
 
-            var sensorValueIndicatorD3 = visualizer.jQueryToD3(sensorValueIndicator);
-
-            sensorValueIndicatorD3
+            sensorValueIndicator
             .transition()
             .duration(1000)
             .attr({
