@@ -274,9 +274,10 @@
             svgDescription: "An animated ph scale."
         },
         colorScaleOptions: {
-            // Must be 14 colors
             // This set generated using the tool at https://gka.github.io/palettes/
-            colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"]
+            colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
+            // Padding when creating the scale
+            padding: 20
         },
         listeners: {
             "onCreate.prependSensorTitle": {
@@ -300,10 +301,9 @@
         }
     });
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHVisualizer = function (that) {
-
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScale = function (that) {
         var h = that.options.svgOptions.height,
-            padding = 20,
+            padding = that.options.colorScaleOptions.padding,
             colors = that.options.colorScaleOptions.colors,
             svg = that.svg;
 
@@ -314,67 +314,99 @@
                .domain([0,colorScaleLength])
                .range([h - padding, 0 + padding]);
 
-    that.barHeight = (h - padding) / colorScaleLength;
+        that.barHeight = (h - padding) / colorScaleLength;
 
-    var barHeight = that.barHeight;
+        var barHeight = that.barHeight;
 
-    for(var i=0; i< colorScaleLength; i++) {
-      svg.append("rect")
-         .attr({
-            "x": 75,
-            "y": function() {
-              return that.yScale(i) - barHeight;
-            },
-            "width": 425,
-            "height": barHeight,
-            "fill": colors[i],
+        for(var i=0; i< colorScaleLength; i++) {
+          svg.append("rect")
+             .attr({
+                "x": 75,
+                "y": function() {
+                  return that.yScale(i) - barHeight;
+                },
+                "width": 425,
+                "height": barHeight,
+                "fill": colors[i],
+                "stroke": "#FCC"
+            });
+        }
+
+    };
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScaleText = function (that) {
+
+        var colorScaleLength = that.options.colorScaleOptions.colors.length,
+            svg = that.svg;
+
+        for(var i=0; i< colorScaleLength; i++) {
+          svg.append("text")
+            .text("pH Value " + i + " - " + (i+1))
+            .attr({
+              "text-anchor": "middle",
+              "transform": "translate(75)",
+              "fill": "white",
+              "x": 212.5,
+              "y": function() {
+                return that.yScale(i) - that.barHeight / 2;
+              },
+              "font-size": that.barHeight / 2
+          });
+        }
+    };
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHIndicator = function (that) {
+        // Draw the PH indicator
+
+        var colors = that.options.colorScaleOptions.colors,
+            svg = that.svg;
+
+        var startingPHValue = 7;
+        var pointLocation = that.yScale(startingPHValue) - 15;
+
+        var pHIndicatorGroup = svg.append("g")
+        .attr({
+            "class" : "phIndicatorGroup",
+            "transform": "translate(25, "+ pointLocation +")",
+            "fill": function() {
+                var colorIdx = Math.ceil(startingPHValue-1) > 0 ? Math.ceil(startingPHValue-1) : 0;
+                return colors[colorIdx];
+            }
+        });
+
+        pHIndicatorGroup
+        .append("path")
+        .attr({
+            "d": "M20 20 h-40 v-10 h40 v-10 l15 15 l-15 15 v-10",
             "stroke": "black"
         });
-    }
+    };
 
-    for(i=0; i< colorScaleLength; i++) {
-      svg.append("text")
-        .text("pH Value " + i + " - " + (i+1))
-        .attr({
-          "text-anchor": "middle",
-          "transform": "translate(75)",
-          "fill": "white",
-          "x": 212.5,
-          "y": function() {
-            return that.yScale(i) - barHeight / 2;
-          },
-          "font-size": 16
-        })
-    }
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHVisualizer = function (that) {
 
-    // Draw the PH indicator
+        var h = that.options.svgOptions.height,
+            padding = that.options.colorScaleOptions.padding,
+            colors = that.options.colorScaleOptions.colors;
 
-    var startingPHValue = 7;
-    var pointLocation = that.yScale(startingPHValue) - 15;
+        var colorScaleLength = colors.length;
 
-    var pHIndicatorGroup = svg.append("g")
-    .attr({
-        "class" : "phIndicatorGroup",
-        "transform": "translate(25, "+ pointLocation +")",
-        "fill": function() {
-            var colorIdx = Math.floor(startingPHValue-1) > 0 ? Math.floor(startingPHValue-1) : 0;
-            return colors[colorIdx];
-        }
-    });
+        that.yScale = d3.scale
+               .linear()
+               .domain([0,colorScaleLength])
+               .range([h - padding, 0 + padding]);
 
-    pHIndicatorGroup
-    .append("path")
-    .attr({
-        "d": "M20 20 h-40 v-10 h40 v-10 l15 15 l-15 15 v-10",
-        "stroke": "black"
-    });
+    that.barHeight = (h - padding) / colorScaleLength;
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScale(that);
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScaleText(that);
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHIndicator(that);
  };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
-        var colors = visualizer.options.colorScaleOptions.colors,
-            barHeight = visualizer.barHeight;
+        var colors = visualizer.options.colorScaleOptions.colors;            
 
-            var padding = 20;
             var pointLocation = visualizer.yScale(change.value)  - 15;
 
             d3.select(".phIndicatorGroup")
@@ -383,7 +415,7 @@
             .attr({
                 "transform": "translate(25, "+ pointLocation +")",
                 "fill": function() {
-                    var colorIdx = Math.floor(change.value-1) > 0 ? Math.floor(change.value-1) : 0;
+                    var colorIdx = Math.ceil(change.value-1) > 0 ? Math.ceil(change.value-1) : 0;
                     return colors[colorIdx];
                 }
             });
