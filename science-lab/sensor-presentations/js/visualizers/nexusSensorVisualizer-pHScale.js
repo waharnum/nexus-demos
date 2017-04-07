@@ -4,6 +4,23 @@
     var gpii = fluid.registerNamespace("gpii");
     var d3 = fluid.registerNamespace("d3");
 
+    fluid.defaults("gpii.nexusSensorVisualizer.pHScale", {
+        gradeNames: ["gpii.nexusSensorVisualizerBase"],
+        components: {
+            visualizer: {
+                type: "gpii.nexusSensorVisualizer.pHScale.visualizer",
+                options: {
+                    modelListeners: {
+                        "{pHScale}.sensor.model.sensorValue": {
+                            funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization",
+                            args: ["{that}", "{change}"]
+                        }
+                    }
+                }
+            }
+        }
+    });
+
     fluid.defaults("gpii.nexusSensorVisualizer.pHScale.visualizer", {
         gradeNames: ["floe.svgDrawingArea"],
         model: {
@@ -42,6 +59,20 @@
         }
     });
 
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createYScale = function (that) {
+
+        var h = that.options.svgOptions.height,
+            padding = that.options.colorScaleOptions.padding,
+            colors = that.options.colorScaleOptions.colors;
+
+        var colorScaleLength = colors.length;
+
+        that.yScale = d3.scale
+               .linear()
+               .domain([0,colorScaleLength])
+               .range([h - padding, 0 + padding]);
+    };
+
     gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScale = function (that) {
         var h = that.options.svgOptions.height,
             w = that.options.svgOptions.width,
@@ -51,11 +82,6 @@
             svg = that.svg;
 
         var colorScaleLength = colors.length;
-
-        that.yScale = d3.scale
-               .linear()
-               .domain([0,colorScaleLength])
-               .range([h - padding, 0 + padding]);
 
         that.barHeight = (h - padding) / colorScaleLength;
 
@@ -136,12 +162,9 @@
 
         var colorScaleLength = colors.length;
 
-        that.yScale = d3.scale
-               .linear()
-               .domain([0,colorScaleLength])
-               .range([h - padding, 0 + padding]);
-
     that.barHeight = (h - padding) / colorScaleLength;
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createYScale(that);
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.createColorScale(that);
 

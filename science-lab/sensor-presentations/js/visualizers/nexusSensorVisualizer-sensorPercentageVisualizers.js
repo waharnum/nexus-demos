@@ -94,22 +94,4 @@
         var circle = visualizer.locate("bar");
         circle.animate({"width": change.value * 2}, 500);
     };
-
-    fluid.defaults("gpii.nexusSensorVisualizer.pHScale", {
-        gradeNames: ["gpii.nexusSensorVisualizerBase"],
-        components: {
-            visualizer: {
-                type: "gpii.nexusSensorVisualizer.pHScale.visualizer",
-                options: {
-                    modelListeners: {
-                        "{pHScale}.sensor.model.sensorValue": {
-                            funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization",
-                            args: ["{that}", "{change}"]
-                        }
-                    }
-                }
-            }
-        }
-    });
-
 }());

@@ -8,10 +8,11 @@
         gradeNames: ["gpii.nexusSensorPresentationPanel"],
         // Key-value pairs of sensorIds / sensorPresenter grades
         perSensorPresentationGrades: {
-            "fakeSensor": "gpii.nexusSensorVisualizer.lineChart",
-            "fakeSensorPH": "gpii.nexusSensorVisualizer.pHScale"
+            "fakeSensor": "gpii.nexusSensorVisualizer.realTimeScale",
+            "fakeSensorPH": "gpii.nexusSensorVisualizer.pHScale",
+            "phSensor": "gpii.nexusSensorVisualizer.pHScale"
         },
-        defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.circleRadius",
+        defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.realTimeScale",
         dynamicComponents: {
             sensorPresenter: {
                 type: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterType({that}, {arguments}.0)",

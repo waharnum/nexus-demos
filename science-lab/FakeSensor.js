@@ -123,14 +123,14 @@ gpii.nexus.fakeSensor.randomFloat = function(min, max) {
     return Math.random() * (max - min) + min;
 };
 
-// var fakeSensor = gpii.nexus.fakeSensor.sinValue();
+var fakeSensor = gpii.nexus.fakeSensor.sinValue();
 
 var fakeSensorPH = gpii.nexus.fakeSensor.pHValue();
 
 process.on("SIGINT", function () {
-//    fakeSensor.destroyNexusPeerComponent();
+   fakeSensor.destroyNexusPeerComponent();
     fakeSensorPH.destroyNexusPeerComponent();
 });
 
-// fakeSensor.update();
+fakeSensor.update();
 fakeSensorPH.update();
