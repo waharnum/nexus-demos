@@ -31,6 +31,8 @@
             pHIndicator: ".nexusc-pHIndicator"
         },
         scaleOptions: {
+            min: 0,
+            max: 14,
             // This set generated using the tool at https://gka.github.io/palettes/
             colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
             textOptions: {
@@ -46,7 +48,7 @@
                     7: "Pure Water",
                     8.1: "Sea Water",
                     12: "Soapy Water",
-                    14: "Drain Cleaner",
+                    14: "Drain Cleaner"
                 }
             },
             // All-around padding when creating the scale
@@ -82,13 +84,12 @@
 
         var h = that.options.svgOptions.height,
             padding = that.options.scaleOptions.padding,
-            colors = that.options.scaleOptions.colors;
-
-        var colorScaleLength = colors.length;
+            scaleMin = that.options.scaleOptions.min,
+            scaleMax = that.options.scaleOptions.max;
 
         that.yScale = d3.scale
                .linear()
-               .domain([0,colorScaleLength])
+               .domain([scaleMin,scaleMax])
                .range([h - padding, 0 + padding]);
     };
 
@@ -98,11 +99,18 @@
             padding = that.options.scaleOptions.padding,
             leftPadding = that.options.scaleOptions.leftPadding,
             colors = that.options.scaleOptions.colors,
+            scaleMax = that.options.scaleOptions.max,
             svg = that.svg;
 
         var colorScaleLength = colors.length;
 
-        that.barHeight = (h - padding) / colorScaleLength;
+        that.barHeightMultiplier = scaleMax / colorScaleLength;
+
+        var barHeightMultiplier = that.barHeightMultiplier;
+
+        console.log(barHeightMultiplier);
+
+        that.barHeight = ((h - padding) / colorScaleLength) * barHeightMultiplier;
 
         var barHeight = that.barHeight;
 
@@ -111,7 +119,7 @@
                .attr({
                   "x": leftPadding,
                   "y": function() {
-                    return that.yScale(index) - barHeight;
+                    return that.yScale(index * barHeightMultiplier) - barHeight;
                   },
                   "width": w - leftPadding,
                   "height": barHeight,
@@ -128,7 +136,9 @@
             textOptions = that.options.scaleOptions.textOptions,
             leftPadding = that.options.scaleOptions.leftPadding,
             w = that.options.svgOptions.width,
-            svg = that.svg;
+            svg = that.svg,
+            barHeight = that.barHeight,
+            barHeightMultiplier = that.barHeightMultiplier;
 
         fluid.each(colors, function(color, index) {
             svg.append("text")
@@ -139,9 +149,9 @@
                 "fill": "white",
                 "x": (w - leftPadding) / 2,
                 "y": function() {
-                  return that.yScale(index) - that.barHeight / 3;
+                  return that.yScale(index * barHeightMultiplier) - barHeight / 3;
                 },
-                "font-size": that.barHeight / 2
+                "font-size": barHeight / 2
             });
         });
     };
