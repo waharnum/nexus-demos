@@ -129,7 +129,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
             sensorName: "Conductivity",
             units: "μS/cm",
             rangeMin: 0,
-            rangeMax: 10000,
+            rangeMax: 20000,
             nexusPeerComponentPath: "ecSensor",
             nexusPeerComponentOptions: {
                 type: "gpii.nexus.atlasScientificDriver.ecSensor"

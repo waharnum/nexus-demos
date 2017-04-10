@@ -96,3 +96,25 @@ Get the Nexus Demos
     $ git clone https://github.com/simonbates/nexus-demos.git
     $ cd nexus-demos
     $ npm install
+
+Start the Sense HAT driver at boot with systemd
+-----------------------------------------------
+
+Create a systemd service at /etc/systemd/system/nexus_sense_hat_driver.service:
+
+    [Unit]
+    Description=Nexus Sense HAT driver
+
+    [Service]
+    WorkingDirectory=/home/pi/nexus-demos/science-lab/rpi-sense-hat-driver
+    ExecStart=/opt/node-v6.10.2-linux-armv7l/bin/node RunRpiSenseHatDriver.js --host HOSTNAME --number NUMBER
+    User=pi
+    Group=pi
+    Restart=on-failure
+
+    [Install]
+    WantedBy=multi-user.target
+
+And enable the service:
+
+    $ sudo systemctl enable nexus_sense_hat_driver.service
