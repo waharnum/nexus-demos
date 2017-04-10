@@ -27,6 +27,9 @@
             svgTitle: "An animated pH scale.",
             svgDescription: "An animated ph scale."
         },
+        selectors: {
+            pHIndicator: ".nexusc-pHIndicator"
+        },
         colorScaleOptions: {
             // This set generated using the tool at https://gka.github.io/palettes/
             colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
@@ -136,19 +139,15 @@
         // Where the point of the arrow should be aligned
         var pointLocation = that.yScale(startingValue) - 15;
 
-        var pHIndicatorGroup = svg.append("g")
+        that.pHIndicator =
+        svg.append("path")
         .attr({
-            "class" : "phIndicatorGroup",
+            "class" : "nexusc-pHIndicator",
             "transform": "translate(40, "+ pointLocation +")",
             "fill": function() {
                 var colorIdx = Math.ceil(startingValue-1) > 0 ? Math.ceil(startingValue-1) : 0;
                 return colors[colorIdx];
-            }
-        });
-
-        pHIndicatorGroup
-        .append("path")
-        .attr({
+            },
             "d": "M20 20 h-40 v-10 h40 v-10 l15 15 l-15 15 v-10",
             "stroke": "black"
         });
@@ -178,7 +177,7 @@
 
             var pointLocation = visualizer.yScale(change.value)  - 15;
 
-            d3.select(".phIndicatorGroup")
+            visualizer.pHIndicator
             .transition()
             .duration(1000)
             .attr({

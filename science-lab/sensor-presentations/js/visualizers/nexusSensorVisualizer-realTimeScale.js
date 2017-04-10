@@ -39,7 +39,7 @@
             width: 250
         },
         selectors: {
-            "sensorValueIndicator": ".sensorValueIndicator"
+            "sensorValueIndicator": ".nexusc-sensorValueIndicator"
         },
         scaleOptions: {
             // All-around padding when creating the scale
@@ -81,9 +81,10 @@
             startingValue = that.options.indicatorOptions.startingValue,
             svg = that.svg;
 
+        that.sensorValueIndicator =
         svg.append("rect")
            .attr({
-              "class": "sensorValueIndicator",
+              "class": "nexusc-sensorValueIndicator",
               "x": leftPadding,
               "width": w - (leftPadding+padding*2),
               "y": function() {
@@ -127,9 +128,7 @@
         var h = visualizer.options.svgOptions.height,
             padding = visualizer.options.scaleOptions.padding;
 
-            var sensorValueIndicator = visualizer.jQueryToD3(visualizer.locate("sensorValueIndicator"));
-
-            sensorValueIndicator
+            visualizer.sensorValueIndicator
             .transition()
             .duration(1000)
             .attr({
