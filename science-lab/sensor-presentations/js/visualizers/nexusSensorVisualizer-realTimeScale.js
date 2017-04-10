@@ -12,7 +12,7 @@
                 options: {
                     scaleOptions: {
                         min: "{realTimeScale}.sensor.model.sensorMin",
-                        max: "{realTimeScale}.sensor.model.sensorMax",
+                        max: "{realTimeScale}.sensor.model.sensorMax"
                     },
                     indicatorOptions: {
                         startingValue: "{realTimeScale}.sensor.model.sensorValue"
