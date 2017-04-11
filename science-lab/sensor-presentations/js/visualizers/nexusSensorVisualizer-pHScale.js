@@ -41,7 +41,7 @@
             min: 0,
             max: 14,
             // This set generated using the tool at https://gka.github.io/palettes/
-            colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
+            colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200"],
             // ,"#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"
             textOptions: {
                 // Creates labels for each point of the scale
@@ -112,9 +112,9 @@
 
         var colorScaleLength = colors.length;
 
-        that.barHeightToScaleRatio = scaleMax / colorScaleLength;
+        that.barNumberToScaleRatio = scaleMax / colorScaleLength;
 
-        var barHeightToScaleRatio = that.barHeightToScaleRatio;
+        var barNumberToScaleRatio = that.barNumberToScaleRatio;
 
         that.barHeight = ((h - padding) / (colorScaleLength));
 
@@ -125,7 +125,7 @@
                .attr({
                   "x": leftPadding,
                   "y": function() {
-                    return that.yScale(index * barHeightToScaleRatio) - barHeight;
+                    return that.yScale(index * barNumberToScaleRatio) - barHeight;
                   },
                   "width": w - leftPadding,
                   "height": barHeight,
@@ -144,30 +144,30 @@
             w = that.options.svgOptions.width,
             svg = that.svg,
             barHeight = that.barHeight,
-            barHeightToScaleRatio = that.barHeightToScaleRatio;
+            barNumberToScaleRatio = that.barNumberToScaleRatio;
 
         fluid.each(colors, function(color, index) {
             svg.append("text")
-              .text(gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText(index, textOptions, barHeightToScaleRatio))
+              .text(gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText(index, textOptions, barNumberToScaleRatio))
               .attr({
                 "text-anchor": "middle",
                 "transform": "translate(" + leftPadding + ")",
                 "fill": "white",
                 "x": (w - leftPadding) / 2,
                 "y": function() {
-                  return that.yScale(index * barHeightToScaleRatio) - barHeight / 3;
+                  return that.yScale(index * barNumberToScaleRatio) - barHeight / 3;
                 },
                 "font-size": barHeight / (2)
             });
         });
     };
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText = function (index, textOptions, barHeightToScaleRatio) {
+    gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText = function (index, textOptions, barNumberToScaleRatio) {
         var template = textOptions.labels.template;
         // What is the starting value of this color band to the scale
-        var bandStart = index * barHeightToScaleRatio;
+        var bandStart = index * barNumberToScaleRatio;
         // What is the ending value of this color band to the scale
-        var bandEnd = (index+1) * barHeightToScaleRatio;
+        var bandEnd = (index+1) * barNumberToScaleRatio;
         var templateValues = {
             bandStart: bandStart,
             bandEnd: bandEnd
@@ -180,7 +180,7 @@
     gpii.nexusSensorVisualizer.pHScale.visualizer.createPositionedText = function (that) {
         var positionedTextValues = that.options.scaleOptions.textOptions.positionedText,
             leftPadding = that.options.scaleOptions.leftPadding,
-            barHeightToScaleRatio = that.barHeightToScaleRatio,
+            barNumberToScaleRatio = that.barNumberToScaleRatio,
             w = that.options.svgOptions.width,
             svg = that.svg;
 
@@ -218,7 +218,7 @@
                   return that.yScale(key);
                 },
                 // Keeps these at an even size
-                "font-size": that.barHeight / (3*barHeightToScaleRatio),
+                "font-size": that.barHeight / (3*barNumberToScaleRatio),
                 "dominant-baseline": "central"
             });
         });
@@ -268,13 +268,16 @@
     gpii.nexusSensorVisualizer.pHScale.visualizer.createIndicator(that);
  };
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor = function (value, colors) {
-        var colorIdx = Math.ceil(value-1) > 0 ? Math.ceil(value-1) : 0;
+    gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor = function (value, colors, colorToScaleRatio) {
+        console.log(value);
+        var scaledValue = value / colorToScaleRatio;
+        var colorIdx = Math.ceil(scaledValue-1) > 0 ? Math.ceil(scaledValue-1) : 0;
         return colors[colorIdx];
     };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
-        var colors = visualizer.options.scaleOptions.colors;
+        var colors = visualizer.options.scaleOptions.colors,
+            barNumberToScaleRatio = visualizer.barNumberToScaleRatio;
 
             var pointLocation = visualizer.yScale(change.value)  - 15;
 
@@ -284,7 +287,7 @@
             .attr({
                 "transform": "translate(40, "+ pointLocation +")",
                 "fill": function() {
-                    return gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor(change.value, colors);
+                    return gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor(change.value, colors, barNumberToScaleRatio);
                 }
             });
 
