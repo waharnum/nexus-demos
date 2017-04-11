@@ -4,21 +4,21 @@
     var gpii = fluid.registerNamespace("gpii");
     var d3 = fluid.registerNamespace("d3");
 
-    fluid.defaults("gpii.nexusSensorVisualizer.pHScale", {
+    fluid.defaults("gpii.nexusSensorVisualizer.colorScale", {
         gradeNames: ["gpii.nexusSensorVisualizerBase"],
         components: {
             visualizer: {
-                type: "gpii.nexusSensorVisualizer.pHScale.visualizer",
+                type: "gpii.nexusSensorVisualizer.colorScale.visualizer",
                 options: {
                     scaleOptions: {
-                        min: "{pHScale}.sensor.model.sensorMin",
-                        max: "{pHScale}.sensor.model.sensorMax"
+                        min: "{colorScale}.sensor.model.sensorMin",
+                        max: "{colorScale}.sensor.model.sensorMax"
                     },
                     indicatorOptions: {
-                        startingValue: "{pHScale}.sensor.model.sensorValue"
+                        startingValue: "{colorScale}.sensor.model.sensorValue"
                     },
                     modelListeners: {
-                        "{pHScale}.sensor.model.sensorValue": {
+                        "{colorScale}.sensor.model.sensorValue": {
                             funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization",
                             args: ["{that}", "{change}"]
                         }
@@ -28,43 +28,53 @@
         }
     });
 
-    fluid.defaults("gpii.nexusSensorVisualizer.pHScale.visualizer", {
+    fluid.defaults("gpii.nexusSensorVisualizer.pHScale", {
+        gradeNames: ["gpii.nexusSensorVisualizer.colorScale"],
+        components: {
+            visualizer: {
+                type: "gpii.nexusSensorVisualizer.pHScale.visualizer"
+            }
+        }
+    });
+
+    // A generic color scale with an indicator
+    fluid.defaults("gpii.nexusSensorVisualizer.colorScale.visualizer", {
         gradeNames: ["floe.svgDrawingArea"],
         model: {
-            svgTitle: "An animated pH scale.",
-            svgDescription: "An animated ph scale."
+            svgTitle: "An animated scale.",
+            svgDescription: "An animated scale."
         },
         selectors: {
             indicator: ".nexusc-indicator"
         },
         scaleOptions: {
             min: 0,
-            max: 14,
-            // This set generated using the tool at https://gka.github.io/palettes/
-            colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200"],
-            // ,"#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"
+            max: 100,
+            colors: ["#FF0000", "#00FF00", "#0000FF"],
             textOptions: {
                 // Creates labels for each point of the scale
                 labels: {
-                    template: "pH Value %bandStart - %bandEnd"
-                },
-                // Creates precisely positioned text relative to the scale
-                positionedText: {
-                    0: "Battery Acid",
-                    3: "Orange Juice",
-                    6.5: "Milk",
-                    7: "Pure Water",
-                    8.1: "Sea Water",
-                    12: "Soapy Water",
-                    14: "Drain Cleaner"
+                    template: "Value %bandStart - %bandEnd",
+                    // Scales the font size relative to the
+                    // bar height - this may need tweaking
+                    // dependent on the number of bars and
+                    // the length of the template
+                    labelTextScalingToBarHeight: 0.25,
+                    valueDecimalPlaces: 2
                 }
+                // Creates precisely positioned text relative to the scale
+                // positionedText: {
+                //     0: "0",
+                //     50: "50",
+                //     100: "100"
+                // }
             },
             // All-around padding when creating the scale
             padding: 20,
             leftPadding: 75
         },
         indicatorOptions: {
-            startingValue: 7
+            startingValue: 50
         },
         listeners: {
             "onCreate.prependSensorTitle": {
@@ -88,6 +98,41 @@
         }
     });
 
+    fluid.defaults("gpii.nexusSensorVisualizer.pHScale.visualizer", {
+        gradeNames: ["gpii.nexusSensorVisualizer.colorScale.visualizer"],
+        model: {
+            svgTitle: "An animated pH scale.",
+            svgDescription: "An animated ph scale."
+        },
+        scaleOptions: {
+            min: 0,
+            max: 14,
+            // This set generated using the tool at https://gka.github.io/palettes/
+            colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
+            textOptions: {
+                // Creates labels for each point of the scale
+                labels: {
+                    template: "pH Value %bandStart - %bandEnd",
+                    labelTextScalingToBarHeight: 0.5,
+                    valueDecimalPlaces: 0
+                },
+                // Creates precisely positioned text relative to the scale
+                positionedText: {
+                    0: "Battery Acid",
+                    3: "Orange Juice",
+                    6.5: "Milk",
+                    7: "Pure Water",
+                    8.1: "Sea Water",
+                    12: "Soapy Water",
+                    14: "Drain Cleaner"
+                }
+            }
+        },
+        indicatorOptions: {
+            startingValue: 7
+        }
+    });
+
     gpii.nexusSensorVisualizer.pHScale.visualizer.createYScale = function (that) {
 
         var h = that.options.svgOptions.height,
@@ -107,25 +152,37 @@
             padding = that.options.scaleOptions.padding,
             leftPadding = that.options.scaleOptions.leftPadding,
             colors = that.options.scaleOptions.colors,
+            scaleMin = that.options.scaleOptions.min,
             scaleMax = that.options.scaleOptions.max,
             svg = that.svg;
 
         var colorScaleLength = colors.length;
 
-        that.barNumberToScaleRatio = scaleMax / colorScaleLength;
+        // Ordinal scale used for positioning color bands
+        that.colorScale = d3.scale.ordinal()
+        .domain(colors)
+        .rangeBands([h - padding, 0 + padding]);
 
-        var barNumberToScaleRatio = that.barNumberToScaleRatio;
+        // Quantize scale used for converting a scaled
+        // value into a color
+        that.valueToColorScale = d3.scale.quantize()
+        .domain([scaleMin, scaleMax])
+        .range(colors);
+
+        var colorScale = that.colorScale;
+
+        that.barNumberToScaleRatio = scaleMax / colorScaleLength;
 
         that.barHeight = ((h - padding) / (colorScaleLength));
 
         var barHeight = that.barHeight;
 
-        fluid.each(colors, function(color, index) {
+        fluid.each(colors, function(color) {
             svg.append("rect")
                .attr({
                   "x": leftPadding,
                   "y": function() {
-                    return that.yScale(index * barNumberToScaleRatio) - barHeight;
+                    return colorScale(color);
                   },
                   "width": w - leftPadding,
                   "height": barHeight,
@@ -141,33 +198,53 @@
         var colors = that.options.scaleOptions.colors,
             textOptions = that.options.scaleOptions.textOptions,
             leftPadding = that.options.scaleOptions.leftPadding,
+            scaleMin = that.options.scaleOptions.min,
+            scaleMax = that.options.scaleOptions.max,
             w = that.options.svgOptions.width,
             svg = that.svg,
             barHeight = that.barHeight,
-            barNumberToScaleRatio = that.barNumberToScaleRatio;
+            labelTextScalingToBarHeight =  that.options.scaleOptions.textOptions.labels.labelTextScalingToBarHeight;
+
+        var colorScale = that.colorScale;
+
+
+
+        // Helps figure out which label should go with which color
+        var colorLabelScale = d3.scale.ordinal()
+        .domain(colors)
+        .rangeBands([scaleMin, scaleMax]);
+
+        // Get an array with the range values, plus the max, for use in labeling
+        var colorLabelScaleRange = colorLabelScale.range();
+        colorLabelScaleRange.push(scaleMax);
 
         fluid.each(colors, function(color, index) {
             svg.append("text")
-              .text(gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText(index, textOptions, barNumberToScaleRatio))
+              .text(gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText(index, textOptions, colorLabelScaleRange))
               .attr({
                 "text-anchor": "middle",
                 "transform": "translate(" + leftPadding + ")",
                 "fill": "white",
                 "x": (w - leftPadding) / 2,
                 "y": function() {
-                  return that.yScale(index * barNumberToScaleRatio) - barHeight / 3;
+                  return colorScale(color) + barHeight / 2;
                 },
-                "font-size": barHeight / (2)
+                "font-size": barHeight * labelTextScalingToBarHeight
             });
         });
     };
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText = function (index, textOptions, barNumberToScaleRatio) {
-        var template = textOptions.labels.template;
+    gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText = function (index, textOptions, colorLabelScaleRange) {
+
+        var template = textOptions.labels.template,
+            valueDecimalPlaces = textOptions.labels.valueDecimalPlaces;
+
         // What is the starting value of this color band to the scale
-        var bandStart = index * barNumberToScaleRatio;
+        var bandStart = colorLabelScaleRange[index].toFixed(valueDecimalPlaces);
+
         // What is the ending value of this color band to the scale
-        var bandEnd = (index+1) * barNumberToScaleRatio;
+        var bandEnd = colorLabelScaleRange[index+1].toFixed(valueDecimalPlaces);
+
         var templateValues = {
             bandStart: bandStart,
             bandEnd: bandEnd
@@ -180,7 +257,6 @@
     gpii.nexusSensorVisualizer.pHScale.visualizer.createPositionedText = function (that) {
         var positionedTextValues = that.options.scaleOptions.textOptions.positionedText,
             leftPadding = that.options.scaleOptions.leftPadding,
-            barNumberToScaleRatio = that.barNumberToScaleRatio,
             w = that.options.svgOptions.width,
             svg = that.svg;
 
@@ -218,7 +294,7 @@
                   return that.yScale(key);
                 },
                 // Keeps these at an even size
-                "font-size": that.barHeight / (3*barNumberToScaleRatio),
+                "font-size": that.barHeight / 3,
                 "dominant-baseline": "central"
             });
         });
@@ -227,10 +303,12 @@
     gpii.nexusSensorVisualizer.pHScale.visualizer.createIndicator = function (that) {
         // Draw the PH indicator
 
-        var colors = that.options.scaleOptions.colors,
-            svg = that.svg;
+        var svg = that.svg,
+            valueToColorScale = that.valueToColorScale;
 
         var startingValue = that.options.indicatorOptions.startingValue;
+        console.log(valueToColorScale(startingValue));
+
         // Where the point of the arrow should be aligned
         var pointLocation = that.yScale(startingValue) - 15;
 
@@ -240,7 +318,7 @@
             "class" : "nexusc-indicator",
             "transform": "translate(40, "+ pointLocation +")",
             "fill": function() {
-                return gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor(startingValue, colors);
+                return valueToColorScale(startingValue);
             },
             "d": "M20 20 h-40 v-10 h40 v-10 l15 15 l-15 15 v-10",
             "stroke": "black"
@@ -269,26 +347,23 @@
  };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor = function (value, colors, colorToScaleRatio) {
-        console.log(value);
         var scaledValue = value / colorToScaleRatio;
         var colorIdx = Math.ceil(scaledValue-1) > 0 ? Math.ceil(scaledValue-1) : 0;
         return colors[colorIdx];
     };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
-        var colors = visualizer.options.scaleOptions.colors,
-            barNumberToScaleRatio = visualizer.barNumberToScaleRatio;
+        var valueToColorScale = visualizer.valueToColorScale;
 
-            var pointLocation = visualizer.yScale(change.value)  - 15;
+            var newIndicatorLocation = visualizer.yScale(change.value) - 15;
+            var newIndicatorColor = valueToColorScale(change.value);
 
             visualizer.indicator
             .transition()
             .duration(1000)
             .attr({
-                "transform": "translate(40, "+ pointLocation +")",
-                "fill": function() {
-                    return gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor(change.value, colors, barNumberToScaleRatio);
-                }
+                "transform": "translate(40, "+ newIndicatorLocation +")",
+                "fill": newIndicatorColor
             });
 
     };
