@@ -10,6 +10,13 @@
             visualizer: {
                 type: "gpii.nexusSensorVisualizer.pHScale.visualizer",
                 options: {
+                    scaleOptions: {
+                        min: "{pHScale}.sensor.model.sensorMin",
+                        max: "{pHScale}.sensor.model.sensorMax"
+                    },
+                    indicatorOptions: {
+                        startingValue: "{pHScale}.sensor.model.sensorValue"
+                    },
                     modelListeners: {
                         "{pHScale}.sensor.model.sensorValue": {
                             funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization",
@@ -28,17 +35,18 @@
             svgDescription: "An animated ph scale."
         },
         selectors: {
-            pHIndicator: ".nexusc-pHIndicator"
+            indicator: ".nexusc-indicator"
         },
         scaleOptions: {
             min: 0,
             max: 14,
             // This set generated using the tool at https://gka.github.io/palettes/
             colors: ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
+            // ,"#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"
             textOptions: {
                 // Creates labels for each point of the scale
                 labels: {
-                    template: "pH Value %index - %nextIndex"
+                    template: "pH Value %bandStart - %bandEnd"
                 },
                 // Creates precisely positioned text relative to the scale
                 positionedText: {
@@ -72,8 +80,8 @@
             "onCreate.createBaseSVGDrawingArea": {
                 func: "{that}.createBaseSVGDrawingArea"
             },
-            "onCreate.createPHVisualizer": {
-                funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.createPHVisualizer",
+            "onCreate.createVisualizer": {
+                funcName: "gpii.nexusSensorVisualizer.pHScale.visualizer.createVisualizer",
                 args: ["{that}"],
                 priority: "after:createBaseSVGDrawingArea"
             }
@@ -104,13 +112,11 @@
 
         var colorScaleLength = colors.length;
 
-        that.barHeightMultiplier = scaleMax / colorScaleLength;
+        that.barHeightToScaleRatio = scaleMax / colorScaleLength;
 
-        var barHeightMultiplier = that.barHeightMultiplier;
+        var barHeightToScaleRatio = that.barHeightToScaleRatio;
 
-        console.log(barHeightMultiplier);
-
-        that.barHeight = ((h - padding) / colorScaleLength) * barHeightMultiplier;
+        that.barHeight = ((h - padding) / (colorScaleLength));
 
         var barHeight = that.barHeight;
 
@@ -119,7 +125,7 @@
                .attr({
                   "x": leftPadding,
                   "y": function() {
-                    return that.yScale(index * barHeightMultiplier) - barHeight;
+                    return that.yScale(index * barHeightToScaleRatio) - barHeight;
                   },
                   "width": w - leftPadding,
                   "height": barHeight,
@@ -138,29 +144,33 @@
             w = that.options.svgOptions.width,
             svg = that.svg,
             barHeight = that.barHeight,
-            barHeightMultiplier = that.barHeightMultiplier;
+            barHeightToScaleRatio = that.barHeightToScaleRatio;
 
         fluid.each(colors, function(color, index) {
             svg.append("text")
-              .text(gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText(index, textOptions))
+              .text(gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText(index, textOptions, barHeightToScaleRatio))
               .attr({
                 "text-anchor": "middle",
                 "transform": "translate(" + leftPadding + ")",
                 "fill": "white",
                 "x": (w - leftPadding) / 2,
                 "y": function() {
-                  return that.yScale(index * barHeightMultiplier) - barHeight / 3;
+                  return that.yScale(index * barHeightToScaleRatio) - barHeight / 3;
                 },
-                "font-size": barHeight / 2
+                "font-size": barHeight / (2)
             });
         });
     };
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText = function (index, textOptions) {
+    gpii.nexusSensorVisualizer.pHScale.visualizer.getColorScaleLabelText = function (index, textOptions, barHeightToScaleRatio) {
         var template = textOptions.labels.template;
+        // What is the starting value of this color band to the scale
+        var bandStart = index * barHeightToScaleRatio;
+        // What is the ending value of this color band to the scale
+        var bandEnd = (index+1) * barHeightToScaleRatio;
         var templateValues = {
-            index: index,
-            nextIndex: index+1
+            bandStart: bandStart,
+            bandEnd: bandEnd
         };
 
         return fluid.stringTemplate(template, templateValues);
@@ -170,6 +180,7 @@
     gpii.nexusSensorVisualizer.pHScale.visualizer.createPositionedText = function (that) {
         var positionedTextValues = that.options.scaleOptions.textOptions.positionedText,
             leftPadding = that.options.scaleOptions.leftPadding,
+            barHeightToScaleRatio = that.barHeightToScaleRatio,
             w = that.options.svgOptions.width,
             svg = that.svg;
 
@@ -186,7 +197,9 @@
             });
 
             filter.append("feFlood")
-            .attr("flood-color", "black");
+            .attr({
+                "flood-color": "black"
+            });
 
             filter.append("feComposite")
             .attr("in", "SourceGraphic");
@@ -204,13 +217,14 @@
                 "y": function() {
                   return that.yScale(key);
                 },
-                "font-size": that.barHeight / 3,
+                // Keeps these at an even size
+                "font-size": that.barHeight / (3*barHeightToScaleRatio),
                 "dominant-baseline": "central"
             });
         });
     };
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHIndicator = function (that) {
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createIndicator = function (that) {
         // Draw the PH indicator
 
         var colors = that.options.scaleOptions.colors,
@@ -220,21 +234,20 @@
         // Where the point of the arrow should be aligned
         var pointLocation = that.yScale(startingValue) - 15;
 
-        that.pHIndicator =
+        that.indicator =
         svg.append("path")
         .attr({
-            "class" : "nexusc-pHIndicator",
+            "class" : "nexusc-indicator",
             "transform": "translate(40, "+ pointLocation +")",
             "fill": function() {
-                var colorIdx = Math.ceil(startingValue-1) > 0 ? Math.ceil(startingValue-1) : 0;
-                return colors[colorIdx];
+                return gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor(startingValue, colors);
             },
             "d": "M20 20 h-40 v-10 h40 v-10 l15 15 l-15 15 v-10",
             "stroke": "black"
         });
     };
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHVisualizer = function (that) {
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createVisualizer = function (that) {
 
         var h = that.options.svgOptions.height,
             padding = that.options.scaleOptions.padding,
@@ -252,22 +265,26 @@
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.createPositionedText(that);
 
-    gpii.nexusSensorVisualizer.pHScale.visualizer.createPHIndicator(that);
+    gpii.nexusSensorVisualizer.pHScale.visualizer.createIndicator(that);
  };
+
+    gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor = function (value, colors) {
+        var colorIdx = Math.ceil(value-1) > 0 ? Math.ceil(value-1) : 0;
+        return colors[colorIdx];
+    };
 
     gpii.nexusSensorVisualizer.pHScale.visualizer.updateVisualization = function (visualizer, change) {
         var colors = visualizer.options.scaleOptions.colors;
 
             var pointLocation = visualizer.yScale(change.value)  - 15;
 
-            visualizer.pHIndicator
+            visualizer.indicator
             .transition()
             .duration(1000)
             .attr({
                 "transform": "translate(40, "+ pointLocation +")",
                 "fill": function() {
-                    var colorIdx = Math.ceil(change.value-1) > 0 ? Math.ceil(change.value-1) : 0;
-                    return colors[colorIdx];
+                    return gpii.nexusSensorVisualizer.pHScale.visualizer.getIndicatorColor(change.value, colors);
                 }
             });
 
