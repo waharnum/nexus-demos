@@ -159,7 +159,7 @@
         var colorScaleLength = colors.length;
 
         // Ordinal scale used for positioning color bands
-        that.colorScale = d3.scale.ordinal()
+        that.colorToPositionScale = d3.scale.ordinal()
         .domain(colors)
         .rangeBands([h - padding, 0 + padding]);
 
@@ -169,7 +169,7 @@
         .domain([scaleMin, scaleMax])
         .range(colors);
 
-        var colorScale = that.colorScale;
+        var colorToPositionScale = that.colorToPositionScale;
 
         that.barNumberToScaleRatio = scaleMax / colorScaleLength;
 
@@ -182,7 +182,7 @@
                .attr({
                   "x": leftPadding,
                   "y": function() {
-                    return colorScale(color);
+                    return colorToPositionScale(color);
                   },
                   "width": w - leftPadding,
                   "height": barHeight,
@@ -205,9 +205,7 @@
             barHeight = that.barHeight,
             labelTextScalingToBarHeight =  that.options.scaleOptions.textOptions.labels.labelTextScalingToBarHeight;
 
-        var colorScale = that.colorScale;
-
-
+        var colorToPositionScale = that.colorToPositionScale;
 
         // Helps figure out which label should go with which color
         var colorLabelScale = d3.scale.ordinal()
@@ -227,7 +225,7 @@
                 "fill": "white",
                 "x": (w - leftPadding) / 2,
                 "y": function() {
-                  return colorScale(color) + barHeight / 2;
+                  return colorToPositionScale(color) + barHeight / 2;
                 },
                 "font-size": barHeight * labelTextScalingToBarHeight
             });
@@ -307,7 +305,6 @@
             valueToColorScale = that.valueToColorScale;
 
         var startingValue = that.options.indicatorOptions.startingValue;
-        console.log(valueToColorScale(startingValue));
 
         // Where the point of the arrow should be aligned
         var pointLocation = that.yScale(startingValue) - 15;
