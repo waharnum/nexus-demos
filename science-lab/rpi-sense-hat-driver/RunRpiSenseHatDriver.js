@@ -30,6 +30,10 @@ if (program.number) {
     senseHatNumber = program.number;
 }
 
+var sensorNames = [];
+sensorNames[1] = "Temperature A";
+sensorNames[2] = "Temperature B";
+
 var driver = gpii.nexus.rpiSenseHatDriver({
     nexusHost: nexusHost,
     nexusPort: nexusPort,
@@ -37,7 +41,7 @@ var driver = gpii.nexus.rpiSenseHatDriver({
     nexusPeerComponentOptions: {
         type: "gpii.nexus.rpiSenseHatDriver.tempSensor" + senseHatNumber
     },
-    sensorName: "Temperature " + senseHatNumber,
+    sensorName: sensorNames[senseHatNumber],
     listeners: {
         "onNexusPeerComponentDestroyed.exitProcess": {
             func: function () { process.exit(); }
