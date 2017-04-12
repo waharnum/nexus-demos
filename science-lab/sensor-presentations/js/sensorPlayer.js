@@ -184,7 +184,7 @@
             muteControl: ".flc-muteControl"
         },
         strings: {
-            template: "<div class=\"flc-descriptionDisplay\"></div><div class=\"flc-sensorMaxValue\"></div><div class=\"flc-sensorMinValue\"></div><div class=\"flc-sensorValue\"></div><div class=\"flc-freqValue\"></div><form> <label>Play Sensor Midpoint Tone<input class=\"flc-midpointToneControl\" type=\"checkbox\"/></label><br/> <label><strong>Mute Synthesizer</strong><input class=\"flc-muteControl\" type=\"checkbox\"/></label> </form>"
+            template: "<div class=\"flc-descriptionDisplay\"></div><div class=\"flc-sensorMaxValue\"></div><div class=\"flc-sensorMinValue\"></div><div class=\"flc-sensorValue\"></div><div class=\"flc-freqValue\"></div>"
         },
         listeners: {
             "onCreate.appendDisplayTemplate": {
@@ -207,7 +207,7 @@
                 container: "{sensorDisplayDebug}.dom.descriptionDisplay",
                 options: {
                     model: {
-                        value: "{sensor}.model.description"
+                        value: "{sensorSonifier}.model.description"
                     },
                     strings: {
                         template: "<strong>Sensor Description:</strong> <span class=\"flc-valueDisplay-value\"></span>"
@@ -220,7 +220,7 @@
                 container: "{sensorDisplayDebug}.dom.sensorMinDisplay",
                 options: {
                     model: {
-                        value: "{sensor}.model.sensorMin"
+                        value: "{sensorSonifier}.model.sensorMin"
                     },
                     strings: {
                         template: "<strong>Sensor Min Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
@@ -233,7 +233,7 @@
                 container: "{sensorDisplayDebug}.dom.sensorMaxDisplay",
                 options: {
                     model: {
-                        value: "{sensor}.model.sensorMax"
+                        value: "{sensorSonifier}.model.sensorMax"
                     },
                     strings: {
                         template: "<strong>Sensor Max Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
@@ -246,7 +246,7 @@
                 container: "{sensorDisplayDebug}.dom.sensorValueDisplay",
                 options: {
                     model: {
-                        value: "{sensor}.model.sensorValue"
+                        value: "{sensorSonifier}.model.sensorValue"
                     },
                     strings: {
                         template: "<strong>Sensor Current Value:</strong> <span class=\"flc-valueDisplay-value\"></span>"
@@ -259,7 +259,7 @@
                 container: "{sensorDisplayDebug}.dom.synthFreqDisplay",
                 options: {
                     model: {
-                        value: "{sensorSynthesizer}.model.inputs.carrier.freq"
+                        value: "{scalingSynth}.model.inputs.carrier.freq"
                     },
                     strings: {
                         template: "<strong>Synthesizer frequency:</strong> <span class=\"flc-valueDisplay-value\"></span>"

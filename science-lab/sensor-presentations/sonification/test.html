@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Sonification</title>
+
+        <link rel="stylesheet" type="text/css" href="../../dashboard/css/NexusScienceLabDashboard.css" />
+
+        <link rel="stylesheet" type="text/css" href="../css/NexusScienceLabSonifier.css" />
+
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/components/textToSpeech/js/TextToSpeech.js"></script>
+
+        <script type="text/javascript" src="../../../../node_modules/flocking/dist/flocking-base.js"></script>
+
+        <script type="text/javascript"
+        src="../../../../node_modules/flocking/src/ugens/core.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/oscillators.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/math.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/envelopes.js"></script>
+
+        <script type="text/javascript" src="../../../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
+
+        <script type="text/javascript" src="../js/sensorPlayer.js"></script>
+        <script type="text/javascript" src="../js/nexusSensorPresentationPanel.js"></script>
+        <script type="text/javascript" src="../js/nexusSensorSonificationPanel.js"></script>
+
+    </head>
+    <body>
+        <div class="debugContainer">
+
+        </div>
+
+        <script>
+
+            var environment = flock.init();
+            environment.start();
+
+            var sensorSonifier = gpii.sensorPlayer.sensorSonifier({
+                    components: {
+                        sensorDisplayDebug: {
+                            type: "gpii.sensorPlayer.sensorDisplayDebug",
+                            container: ".debugContainer"
+                        }
+                    }
+            });
+        </script>
+    </body>
+</html>
