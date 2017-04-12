@@ -17,3 +17,12 @@
 .floe-ca-lineChart-chartLine {
     stroke-width: 3;
 }
+
+.nexus-nexusSensorPresentationPanel-sensorDisplay .tick line {
+    stroke-width: 1;
+    stroke: black;
+}
+
+.nexus-nexusSensorPresentationPanel-sensorDisplay .domain {
+    display: none;
+}

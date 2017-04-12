@@ -143,7 +143,8 @@
                   "width": w - leftPadding,
                   "height": barHeight,
                   "fill": color,
-                  "stroke": "#FCC"
+                  "stroke": "#FCC",
+                  "stroke-width": 0
               });
         });
 
@@ -290,6 +291,8 @@
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.createYScale(that);
 
+    gpii.nexusSensorVisualizer.colorScale.visualizer.createYAxis(that);
+
     gpii.nexusSensorVisualizer.colorScale.visualizer.createColorScale(that);
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.createColorScaleLabels(that);
@@ -320,6 +323,15 @@
             });
     };
 
+    gpii.nexusSensorVisualizer.colorScale.visualizer.createYAxis = function (that) {
+        var leftPadding = that.options.scaleOptions.leftPadding;
+
+        var yAxis = d3.svg.axis().scale(that.yScale).orient("left").innerTickSize(25);
+        that.svg.append("g")
+           .call(yAxis)
+           .attr("transform", "translate(" + leftPadding + ")");
+    };
+
     // A specifically formatted pH color scale, based on universal
     // indicator colors, and with some positioned example text
     fluid.defaults("gpii.nexusSensorVisualizer.pHScale", {
@@ -341,13 +353,13 @@
             min: 0,
             max: 14,
             colors:
-            ["#fe0002", "#ff6600", "#f8c50a", "#ffff01", "#b2fb0c", "#60fe2f", "#02de00", "#35a43b", "#00b46b", "#00b9b4", "#0099ff", "#0000fe", "#5d05fa", "#6600cd", "#440089"],
+            ["#fe0002", "#ff6600", "#f8c50a", "#ffff01", "#b2fb0c", "#60fe2f", "#02de00", "#35a43b", "#00b46b", "#00b9b4", "#0099ff", "#0000fe", "#5d05fa", "#6600cd"],
             // This set generated using the tool at https://gka.github.io/palettes/
             //  ["#ff0000","#ff7100","#f49b00","#d9b100","#b3b500","#81ab00","#409200","#3a7539","#576071","#604b95","#6636a8","#6e20ab","#78079d","#800080"],
             textOptions: {
                 // Creates labels for each point of the scale
                 labels: {
-                    template: "pH Value %bandStart – %bandEnd",
+                    template: "",
                     labelTextScalingToBarHeight: 0.5,
                     valueDecimalPlaces: 0
                 },
