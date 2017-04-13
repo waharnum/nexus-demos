@@ -401,16 +401,16 @@
     });
 
     // A specifically formatted heat scale,
-    fluid.defaults("gpii.nexusSensorVisualizer.heatScale", {
+    fluid.defaults("gpii.nexusSensorVisualizer.temperature", {
         gradeNames: ["gpii.nexusSensorVisualizer.colorScale"],
         components: {
             visualizer: {
-                type: "gpii.nexusSensorVisualizer.heatScale.visualizer"
+                type: "gpii.nexusSensorVisualizer.temperature.visualizer"
             }
         }
     });
 
-    fluid.defaults("gpii.nexusSensorVisualizer.heatScale.visualizer", {
+    fluid.defaults("gpii.nexusSensorVisualizer.temperature.visualizer", {
         gradeNames: ["gpii.nexusSensorVisualizer.colorScale.visualizer"],
         model: {
             svgTitle: "An animated heat scale.",
@@ -433,13 +433,13 @@
         },
         invokers: {
             getIndicatorColor: {
-                funcName: "gpii.nexusSensorVisualizer.heatScale.visualizer.getIndicatorColor",
+                funcName: "gpii.nexusSensorVisualizer.temperature.visualizer.getIndicatorColor",
                 args: ["{that}", "{arguments}.0"]
             }
         }
     });
 
-    gpii.nexusSensorVisualizer.heatScale.visualizer.getIndicatorColor = function(that, indicatorValue) {
+    gpii.nexusSensorVisualizer.temperature.visualizer.getIndicatorColor = function(that, indicatorValue) {
         var thresholdScale = d3.scale.linear().domain([10,25,40]).range(["blue", "white", "red"]);
         return thresholdScale(indicatorValue);
     };

@@ -9,7 +9,7 @@
         // Key-value pairs of sensorIds / sensorPresenter grades
         perSensorPresentationGrades: {
             "fakeSensorPH": "gpii.nexusSensorVisualizer.pHScale",
-            "fakeSensorTemperature": "gpii.nexusSensorVisualizer.heatScale",
+            "fakeSensorTemperature": "gpii.nexusSensorVisualizer.temperature",
             "phSensor": "gpii.nexusSensorVisualizer.pHScale"
         },
         defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.realTimeScale",
