@@ -88,6 +88,33 @@ fluid.defaults("gpii.nexus.fakeSensor.pHValue", {
     }
 });
 
+
+fluid.defaults("gpii.nexus.fakeSensor.temperature", {
+    gradeNames: ["gpii.nexus.fakeSensor"],
+    members: {
+        nexusPeerComponentPath: "fakeSensorTemperature",
+        nexusPeerComponentOptions: {
+            type: "gpii.nexus.fakeSensorTemperature"
+        }
+    },
+    model: {
+        fakeSensorConfig: {
+            updateDelayMs: 5000
+        },
+        sensorData: {
+            name: "Fake Temperature Sensor",
+            rangeMin: 10,
+            rangeMax: 40,
+            value: 15
+        }
+    },
+        invokers: {
+        "getFakeSensorValue": {
+            "funcName": "gpii.nexus.fakeSensor.getFakeSensorValueTemperature"
+        }
+    }
+});
+
 gpii.nexus.fakeSensor.exitProcess = function () {
     process.exit();
 };
@@ -113,6 +140,10 @@ gpii.nexus.fakeSensor.getFakeSensorValuePH = function () {
     return gpii.nexus.fakeSensor.randomFloat(0,14);
 };
 
+gpii.nexus.fakeSensor.getFakeSensorValueTemperature = function () {
+    return gpii.nexus.fakeSensor.randomFloat(10,40);
+};
+
 gpii.nexus.fakeSensor.randomInt = function(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -127,10 +158,14 @@ var fakeSensor = gpii.nexus.fakeSensor.sinValue();
 
 var fakeSensorPH = gpii.nexus.fakeSensor.pHValue();
 
+var fakeSensorTemperature = gpii.nexus.fakeSensor.temperature();
+
 process.on("SIGINT", function () {
    fakeSensor.destroyNexusPeerComponent();
     fakeSensorPH.destroyNexusPeerComponent();
+    fakeSensorTemperature.destroyNexusPeerComponent();
 });
 
 fakeSensor.update();
 fakeSensorPH.update();
+fakeSensorTemperature.update();

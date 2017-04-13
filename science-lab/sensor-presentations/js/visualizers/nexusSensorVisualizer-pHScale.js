@@ -28,7 +28,7 @@
         }
     });
 
-    // A generic color scale with an indicator
+    // A generic color scale with an indicator, y-axis and labels
     fluid.defaults("gpii.nexusSensorVisualizer.colorScale.visualizer", {
         gradeNames: ["floe.svgDrawingArea"],
         model: {
@@ -41,7 +41,14 @@
         scaleOptions: {
             min: 0,
             max: 100,
-            colors: ["#FF0000", "#00FF00", "#0000FF"],
+            // Define gradients for use in the color scale
+            // For now, they use the SVG gradient syntax
+            // described at https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Gradients
+            gradientMarkup: {
+                // Gradient1: "<linearGradient id=\"Gradient1\" x1=\"0\" x2=\"0\" y1=\"0\" y2=\"1\"> <stop offset=\"0%\" stop-color=\"red\"/> <stop offset=\"50%\" stop-color=\"black\" stop-opacity=\"0\"/> <stop offset=\"100%\" stop-color=\"blue\"/> </linearGradient>"
+            },
+            colors: [],
+            // colors: ["#FF0000","#00FF00", "#0000FF"]
             textOptions: {
                 // Creates labels for each point of the scale
                 labels: {
@@ -143,8 +150,7 @@
                   "width": w - leftPadding,
                   "height": barHeight,
                   "fill": color,
-                  "stroke": "#FCC",
-                  "stroke-width": 0
+                  "stroke": "#FCC"
               });
         });
 
@@ -279,6 +285,14 @@
         });
     };
 
+    gpii.nexusSensorVisualizer.colorScale.visualizer.createGradients = function (that) {
+        var gradientMarkup = that.options.scaleOptions.gradientMarkup;
+        var defs = that.svg.append("defs");
+        fluid.each(gradientMarkup, function(gradient) {
+            defs.html(gradient);
+        });
+    };
+
     gpii.nexusSensorVisualizer.colorScale.visualizer.createVisualizer = function (that) {
 
         var h = that.options.svgOptions.height,
@@ -291,6 +305,8 @@
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.createYScale(that);
 
+    gpii.nexusSensorVisualizer.colorScale.visualizer.createGradients(that);
+
     gpii.nexusSensorVisualizer.colorScale.visualizer.createYAxis(that);
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.createColorScale(that);
@@ -301,12 +317,6 @@
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.createIndicator(that);
  };
-
-    gpii.nexusSensorVisualizer.colorScale.visualizer.getIndicatorColor = function (value, colors, colorToScaleRatio) {
-        var scaledValue = value / colorToScaleRatio;
-        var colorIdx = Math.ceil(scaledValue-1) > 0 ? Math.ceil(scaledValue-1) : 0;
-        return colors[colorIdx];
-    };
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.updateVisualization = function (visualizer, change) {
         var valueToColorScale = visualizer.valueToColorScale;
@@ -352,6 +362,7 @@
         scaleOptions: {
             min: 0,
             max: 14,
+            gradientMarkup: null,
             colors:
             ["#fe0002", "#ff6600", "#f8c50a", "#ffff01", "#b2fb0c", "#60fe2f", "#02de00", "#35a43b", "#00b46b", "#00b9b4", "#0099ff", "#0000fe", "#5d05fa", "#6600cd"],
             // This set generated using the tool at https://gka.github.io/palettes/
@@ -359,9 +370,7 @@
             textOptions: {
                 // Creates labels for each point of the scale
                 labels: {
-                    template: "",
-                    labelTextScalingToBarHeight: 0.5,
-                    valueDecimalPlaces: 0
+                    template: ""
                 },
                 // Creates precisely positioned text relative to the scale
                 positionedText: {
@@ -377,6 +386,39 @@
         },
         indicatorOptions: {
             startingValue: 7
+        }
+    });
+
+    // A specifically formatted heat scale,
+    fluid.defaults("gpii.nexusSensorVisualizer.heatScale", {
+        gradeNames: ["gpii.nexusSensorVisualizer.colorScale"],
+        components: {
+            visualizer: {
+                type: "gpii.nexusSensorVisualizer.heatScale.visualizer"
+            }
+        }
+    });
+
+    fluid.defaults("gpii.nexusSensorVisualizer.heatScale.visualizer", {
+        gradeNames: ["gpii.nexusSensorVisualizer.colorScale.visualizer"],
+        model: {
+            svgTitle: "An animated heat scale.",
+            svgDescription: "An animated heat scale."
+        },
+        scaleOptions: {
+            min: 0,
+            max: 14,
+            gradientMarkup: {
+                temperatureGradient: "<linearGradient id=\"TemperatureGradient\" x1=\"0\" x2=\"0\" y1=\"0\" y2=\"1\"> <stop offset=\"20%\" stop-color=\"red\"/> <stop offset=\"40%\" stop-color=\"white\" stop-opacity=\"0\"/> <stop offset=\"80%\" stop-color=\"blue\"/> </linearGradient>"
+            },
+            colors:
+            ["url(#TemperatureGradient)"],
+            textOptions: {
+                // Creates labels for each point of the scale
+                labels: {
+                    template: ""
+                }
+            }
         }
     });
 

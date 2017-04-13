@@ -8,8 +8,9 @@
         gradeNames: ["gpii.nexusSensorPresentationPanel"],
         // Key-value pairs of sensorIds / sensorPresenter grades
         perSensorPresentationGrades: {
-            "fakeSensor": "gpii.nexusSensorVisualizer.colorScale",
+            "fakeSensor": "gpii.nexusSensorVisualizer.realTimeScale",
             "fakeSensorPH": "gpii.nexusSensorVisualizer.pHScale",
+            "fakeSensorTemperature": "gpii.nexusSensorVisualizer.heatScale",
             "phSensor": "gpii.nexusSensorVisualizer.pHScale"
         },
         defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.realTimeScale",
