@@ -20,11 +20,20 @@ if (program.device) {
     devicePath = program.device;
 }
 
+gpii.nexus.atlasScientificDriver.logErrorAndExit = function (error) {
+    console.log(error.message);
+    process.exit();
+};
+
 var driver = gpii.nexus.atlasScientificDriver({
     devicePath: devicePath,
     nexusHost: nexusHost,
     nexusPort: nexusPort,
     listeners: {
+        "onErrorConstructingPeer.exitProcess": {
+            funcName: "gpii.nexus.atlasScientificDriver.logErrorAndExit",
+            args: ["{arguments}.0"]
+        },
         "onNexusPeerComponentDestroyed.exitProcess": {
             func: function () { process.exit(); }
         }

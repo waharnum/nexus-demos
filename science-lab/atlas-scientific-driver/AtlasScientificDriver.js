@@ -49,7 +49,7 @@ fluid.defaults("gpii.nexus.atlasScientificConnection", {
             "this": "{that}.serialPort",
             method: "write",
             // TODO: Provide callback for error notification
-            args: ["I\r"]
+            args: ["\rI\r"]
         }
     },
 
@@ -248,6 +248,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     }
                 },
                 events: {
+                    onErrorConstructingPeer: "{atlasScientificDriver}.events.onErrorConstructingPeer",
                     onPeerDestroyed: "{atlasScientificDriver}.events.onNexusPeerComponentDestroyed"
                 },
                 listeners: {
@@ -272,6 +273,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
     },
 
     events: {
+        onErrorConstructingPeer: null,
         doDestroyNexusPeer: null,
         onNexusPeerComponentDestroyed: null
     }

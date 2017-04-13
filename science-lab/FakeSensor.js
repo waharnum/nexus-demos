@@ -12,6 +12,11 @@ var sinPeriodMs = 10000;
 
 fluid.registerNamespace("gpii.nexus.fakeSensor");
 
+gpii.nexus.fakeSensor.logErrorAndExit = function (error) {
+    console.log(error.message);
+    process.exit();
+};
+
 gpii.nexus.fakeSensor.exitProcess = function () {
     process.exit();
 };
@@ -37,6 +42,10 @@ var sensor = gpii.nexusWebSocketBoundComponent({
         }
     },
     listeners: {
+        "onErrorConstructingPeer.exitProcess": {
+            funcName: "gpii.nexus.fakeSensor.logErrorAndExit",
+            args: ["{arguments}.0"]
+        },
         "onPeerDestroyed.exitProcess": {
             funcName: "gpii.nexus.fakeSensor.exitProcess"
         }
