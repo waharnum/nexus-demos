@@ -10,6 +10,8 @@
         perSensorPresentationGrades: {
             "fakeSensorPH": "gpii.nexusSensorVisualizer.pHScale",
             "fakeSensorTemperature": "gpii.nexusSensorVisualizer.temperature",
+            "rpiTempSensor1": "gpii.nexusSensorVisualizer.temperature",
+            "rpiTempSensor2": "gpii.nexusSensorVisualizer.temperature",
             "phSensor": "gpii.nexusSensorVisualizer.pHScale"
         },
         defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.realTimeScale",
