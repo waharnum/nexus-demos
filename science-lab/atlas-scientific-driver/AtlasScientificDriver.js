@@ -49,7 +49,7 @@ fluid.defaults("gpii.nexus.atlasScientificConnection", {
             "this": "{that}.serialPort",
             method: "write",
             // TODO: Provide callback for error notification
-            args: ["I\r"]
+            args: ["\rI\r"]
         }
     },
 
@@ -129,7 +129,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
             sensorName: "Conductivity",
             units: "μS/cm",
             rangeMin: 0,
-            rangeMax: 10000,
+            rangeMax: 20000,
             nexusPeerComponentPath: "ecSensor",
             nexusPeerComponentOptions: {
                 type: "gpii.nexus.atlasScientificDriver.ecSensor"
@@ -248,6 +248,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
                     }
                 },
                 events: {
+                    onErrorConstructingPeer: "{atlasScientificDriver}.events.onErrorConstructingPeer",
                     onPeerDestroyed: "{atlasScientificDriver}.events.onNexusPeerComponentDestroyed"
                 },
                 listeners: {
@@ -272,6 +273,7 @@ fluid.defaults("gpii.nexus.atlasScientificDriver", {
     },
 
     events: {
+        onErrorConstructingPeer: null,
         doDestroyNexusPeer: null,
         onNexusPeerComponentDestroyed: null
     }

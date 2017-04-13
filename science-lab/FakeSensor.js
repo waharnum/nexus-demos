@@ -31,6 +31,10 @@ fluid.defaults("gpii.nexus.fakeSensor", {
     listeners: {
         "onPeerDestroyed.exitProcess": {
             funcName: "gpii.nexus.fakeSensor.exitProcess"
+        },
+        "onErrorConstructingPeer.exitProcess": {
+            funcName: "gpii.nexus.fakeSensor.logErrorAndExit",
+            args: ["{arguments}.0"]
         }
     }
 });
@@ -114,6 +118,10 @@ fluid.defaults("gpii.nexus.fakeSensor.temperature", {
         }
     }
 });
+gpii.nexus.fakeSensor.logErrorAndExit = function (error) {
+    console.log(error.message);
+    process.exit();
+};
 
 gpii.nexus.fakeSensor.exitProcess = function () {
     process.exit();

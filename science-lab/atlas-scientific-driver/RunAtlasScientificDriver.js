@@ -20,7 +20,8 @@ if (program.device) {
     devicePath = program.device;
 }
 
-gpii.nexus.atlasScientificDriver.exitProcess = function () {
+gpii.nexus.atlasScientificDriver.logErrorAndExit = function (error) {
+    console.log(error.message);
     process.exit();
 };
 
@@ -29,8 +30,12 @@ var driver = gpii.nexus.atlasScientificDriver({
     nexusHost: nexusHost,
     nexusPort: nexusPort,
     listeners: {
+        "onErrorConstructingPeer.exitProcess": {
+            funcName: "gpii.nexus.atlasScientificDriver.logErrorAndExit",
+            args: ["{arguments}.0"]
+        },
         "onNexusPeerComponentDestroyed.exitProcess": {
-            funcName: "gpii.nexus.atlasScientificDriver.exitProcess"
+            func: function () { process.exit(); }
         }
     }
 });

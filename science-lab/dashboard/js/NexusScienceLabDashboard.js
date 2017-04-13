@@ -3,8 +3,7 @@
 
     var gpii = fluid.registerNamespace("gpii");
 
-    // TODO: Add a hidden h1 "Dashboard"
-    // TODO: Add ARIA live region markup
+    // TODO: Add ARIA live region markup?
 
     fluid.defaults("gpii.nexusScienceLabDashboard", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent", "fluid.viewComponent"],
