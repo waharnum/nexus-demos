@@ -93,6 +93,7 @@ fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
                     }
                 },
                 events: {
+                    onErrorConstructingPeer: "{rpiSenseHatDriver}.events.onErrorConstructingPeer",
                     onPeerDestroyed: "{rpiSenseHatDriver}.events.onNexusPeerComponentDestroyed"
                 },
                 listeners: {
@@ -116,6 +117,7 @@ fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
     },
 
     events: {
+        onErrorConstructingPeer: null,
         doDestroyNexusPeer: null,
         onNexusPeerComponentDestroyed: null
     }

@@ -110,7 +110,8 @@ Create a systemd service at /etc/systemd/system/nexus_sense_hat_driver.service:
     ExecStart=/opt/node-v6.10.2-linux-armv7l/bin/node RunRpiSenseHatDriver.js --host HOSTNAME --number NUMBER
     User=pi
     Group=pi
-    Restart=on-failure
+    Restart=always
+    RestartSec=5
 
     [Install]
     WantedBy=multi-user.target

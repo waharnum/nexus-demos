@@ -34,6 +34,11 @@ var sensorNames = [];
 sensorNames[1] = "Temperature A";
 sensorNames[2] = "Temperature B";
 
+gpii.nexus.rpiSenseHatDriver.logErrorAndExit = function (error) {
+    console.log(error.message);
+    process.exit(1);
+};
+
 var driver = gpii.nexus.rpiSenseHatDriver({
     nexusHost: nexusHost,
     nexusPort: nexusPort,
@@ -43,6 +48,10 @@ var driver = gpii.nexus.rpiSenseHatDriver({
     },
     sensorName: sensorNames[senseHatNumber],
     listeners: {
+        "onErrorConstructingPeer.exitProcess": {
+            funcName: "gpii.nexus.rpiSenseHatDriver.logErrorAndExit",
+            args: ["{arguments}.0"]
+        },
         "onNexusPeerComponentDestroyed.exitProcess": {
             func: function () { process.exit(); }
         }
@@ -50,5 +59,9 @@ var driver = gpii.nexus.rpiSenseHatDriver({
 });
 
 process.on("SIGINT", function () {
+    driver.destroyNexusPeerComponent();
+});
+
+process.on("SIGTERM", function () {
     driver.destroyNexusPeerComponent();
 });
