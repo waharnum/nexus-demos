@@ -87,9 +87,9 @@ fluid.defaults("gpii.nexus.rpiSenseHatDriver", {
                     sensorData: {
                         name: "{rpiSenseHatDriver}.options.sensorName",
                         units: "C",
-                        rangeMin: 0,
-                        rangeMax: 100,
-                        value: 0
+                        rangeMin: 10,
+                        rangeMax: 40,
+                        value: 25
                     }
                 },
                 events: {
