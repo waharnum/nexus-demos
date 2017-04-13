@@ -19,7 +19,7 @@
             sensorPresenter: {
                 type: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterType({that}, {arguments}.0)",
                 createOnEvent: "onSensorAppearance",
-                options: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions({arguments}.0)"
+                options: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions({arguments}.0, {arguments}.1)"
             }
         }
     });
@@ -33,13 +33,14 @@
         }
     };
 
-    gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions = function (sensorId) {
+    gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions = function (sensorId, sensorName) {
 
+        console.log(sensorName);
         var sensorModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
 
         var sensorContainerClass = "nexus-nexusSensorVisualizationPanel-sensorDisplay-" + sensorId;
 
-        var sensorVisualizerListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorContainerClass);
+        var sensorVisualizerListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorContainerClass, sensorName);
 
         var sensorVisualizerOptions = {
                 events: {

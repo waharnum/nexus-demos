@@ -10,7 +10,7 @@
             sensorPresenter: {
                 type: "gpii.sensorPlayer",
                 createOnEvent: "onSensorAppearance",
-                options: "@expand:gpii.nexusSensorSonificationPanel.getSensorPresenterOptions({arguments}.0)"
+                options: "@expand:gpii.nexusSensorSonificationPanel.getSensorPresenterOptions({arguments}.0, {arguments}.1)"
             }
         }
     });
@@ -18,13 +18,13 @@
     // expander function; used to generate sensor sonifiers as sensors
     // are attached; dynamically configures model characteristics and
     // container for display / controls based on the sensorId
-    gpii.nexusSensorSonificationPanel.getSensorPresenterOptions = function (sensorId) {
+    gpii.nexusSensorSonificationPanel.getSensorPresenterOptions = function (sensorId, sensorName) {
 
         var sensorModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
 
         var sensorContainerClass = "nexus-nexusSensorSonificationPanel-sensorDisplay-" + sensorId;
 
-        var sensorPlayerListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorContainerClass);
+        var sensorPlayerListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorContainerClass, sensorName);
 
         var sensorPlayerOptions =
         {

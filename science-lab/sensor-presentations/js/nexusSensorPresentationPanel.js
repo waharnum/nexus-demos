@@ -16,7 +16,8 @@
             receivesChangesFromNexus: true,
             sendsChangesToNexus: false,
             // Member variable for tracking attached sensor state
-            attachedSensors: {}
+            attachedSensors: {},
+            attachedContainers: []
         },
         modelListeners: {
             sensors: {
@@ -47,10 +48,10 @@
 
         // Add loop for new sensors
         fluid.each(sensorsArray, function (sensor) {
-            var sensorId = sensor.sensorId;
+            var sensorId = sensor.sensorId,
+                sensorName = sensor.name;
             if(! that.attachedSensors[sensorId]) {
-                console.log(sensorId);
-                that.events.onSensorAppearance.fire(sensorId);
+                that.events.onSensorAppearance.fire(sensorId, sensorName);
                 that.attachedSensors[sensorId] = true;
             }
         });
@@ -106,12 +107,11 @@
     // Calls a function of the nexusSensorPresentation panel
     // to let it clean up the container after the associated
     // presenter has been destroyed
-    gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions = function (sensorId, sensorContainerClass) {
+    gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions = function (sensorId, sensorContainerClass, sensorName) {
         var sensorListenerOptions = {
            "onCreate.appendSensorDisplayContainer": {
-               "this": "{nexusSensorPresentationPanel}.container",
-               "method": "append",
-               "args": ["<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>"]
+               funcName: "gpii.nexusSensorPresentationPanel.addSensorDisplayContainer",
+               args: ["{nexusSensorPresentationPanel}", sensorContainerClass, sensorName]
            },
            "onCreate.fireOnSensorDisplayContainerAppended": {
                funcName: "{that}.events.onSensorDisplayContainerAppended.fire",
@@ -129,6 +129,33 @@
         };
 
         return sensorListenerOptions;
+    };
+
+    gpii.nexusSensorPresentationPanel.addSensorDisplayContainer = function (nexusSensorPresentationPanel, sensorContainerClass, sensorName) {
+        var attachedContainers = nexusSensorPresentationPanel.attachedContainers;
+
+        attachedContainers.push ({"sensorName": sensorName, "containerClass": sensorContainerClass});
+
+        // A-Z sort on sensor name
+        var compare = function (containerInfoA, containerInfoB) {
+            return containerInfoA.sensorName.localeCompare(containerInfoB.sensorName);
+        };
+
+        attachedContainers.sort(compare);
+
+        var attachedContainerIndex = attachedContainers.findIndex(function (container) {
+            return container.sensorName === sensorName;
+        });
+
+        // Prepend if 0 (right at start)
+        if(attachedContainerIndex === 0) {
+            nexusSensorPresentationPanel.container.prepend("<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>");
+        // Append after previous container that already exists
+        } else {
+            var previousSiblingContainer = nexusSensorPresentationPanel.container.find("." + attachedContainers[attachedContainerIndex-1].containerClass);
+            console.log(previousSiblingContainer);
+            previousSiblingContainer.after("<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>");
+        }
     };
 
     // Function used by the nexusSensorPresentationPanel to remove
