@@ -74,6 +74,12 @@
         indicatorOptions: {
             startingValue: 50
         },
+        invokers: {
+            getIndicatorColor: {
+                funcName: "gpii.nexusSensorVisualizer.colorScale.visualizer.getIndicatorColor",
+                args: ["{that}", "{arguments}.0"]
+            }
+        },
         listeners: {
             "onCreate.prependSensorTitle": {
                 "this": "{that}.container",
@@ -278,7 +284,7 @@
             "class" : "nexusc-indicator",
             "transform": "translate(40, "+ pointLocation +")",
             "fill": function() {
-                return valueToColorScale(startingValue);
+                return that.getIndicatorColor(startingValue);
             },
             "d": "M20 20 h-40 v-10 h40 v-10 l15 15 l-15 15 v-10",
             "stroke": "black"
@@ -287,8 +293,8 @@
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.createGradients = function (that) {
         var gradientMarkup = that.options.scaleOptions.gradientMarkup;
-        var defs = that.svg.append("defs");
         fluid.each(gradientMarkup, function(gradient) {
+            var defs = that.svg.append("defs");
             defs.html(gradient);
         });
     };
@@ -318,19 +324,24 @@
     gpii.nexusSensorVisualizer.colorScale.visualizer.createIndicator(that);
  };
 
-    gpii.nexusSensorVisualizer.colorScale.visualizer.updateVisualization = function (visualizer, change) {
-        var valueToColorScale = visualizer.valueToColorScale;
+    gpii.nexusSensorVisualizer.colorScale.visualizer.updateVisualization = function (that, change) {
+        var valueToColorScale = that.valueToColorScale;
 
-            var newIndicatorLocation = visualizer.yScale(change.value) - 15;
-            var newIndicatorColor = valueToColorScale(change.value);
+            var newIndicatorLocation = that.yScale(change.value) - 15;
+            var newIndicatorColor = that.getIndicatorColor(change.value);
 
-            visualizer.indicator
+            that.indicator
             .transition()
             .duration(1000)
             .attr({
                 "transform": "translate(40, "+ newIndicatorLocation +")",
                 "fill": newIndicatorColor
             });
+    };
+
+    gpii.nexusSensorVisualizer.colorScale.visualizer.getIndicatorColor = function (that, indicatorValue) {
+        var valueToColorScale = that.valueToColorScale;
+        return valueToColorScale(indicatorValue);
     };
 
     gpii.nexusSensorVisualizer.colorScale.visualizer.createYAxis = function (that) {
@@ -406,8 +417,8 @@
             svgDescription: "An animated heat scale."
         },
         scaleOptions: {
-            min: 0,
-            max: 14,
+            min: 10,
+            max: 40,
             gradientMarkup: {
                 temperatureGradient: "<linearGradient id=\"TemperatureGradient\" x1=\"0\" x2=\"0\" y1=\"0\" y2=\"1\"> <stop offset=\"20%\" stop-color=\"red\"/> <stop offset=\"40%\" stop-color=\"white\" stop-opacity=\"0\"/> <stop offset=\"80%\" stop-color=\"blue\"/> </linearGradient>"
             },
@@ -419,7 +430,18 @@
                     template: ""
                 }
             }
+        },
+        invokers: {
+            getIndicatorColor: {
+                funcName: "gpii.nexusSensorVisualizer.heatScale.visualizer.getIndicatorColor",
+                args: ["{that}", "{arguments}.0"]
+            }
         }
     });
+
+    gpii.nexusSensorVisualizer.heatScale.visualizer.getIndicatorColor = function(that, indicatorValue) {
+        var thresholdScale = d3.scale.linear().domain([10,25,40]).range(["blue", "white", "red"]);
+        return thresholdScale(indicatorValue);
+    };
 
 }());
