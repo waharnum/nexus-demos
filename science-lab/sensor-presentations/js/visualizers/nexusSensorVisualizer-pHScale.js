@@ -370,7 +370,7 @@
                         "onCreate.appendControls": {
                             "this": "{that}.container",
                             method: "append",
-                            args: "<form class='gpiic-visualizer-controls'><label>Show Examples<input class='gpiic-visualizer-displayExamples' type='checkbox' checked /></label></form>"
+                            args: "<form class='gpiic-visualizer-controls'><label>Show Examples <input class='gpiic-visualizer-displayExamples' type='checkbox' checked /></label></form>"
                         },
                         "onCreate.bindControls": {
                             "this": "{that}.dom.displayExamplesCheckbox",

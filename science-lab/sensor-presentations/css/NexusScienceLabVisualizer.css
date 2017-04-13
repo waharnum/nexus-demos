@@ -26,3 +26,12 @@
 .nexus-nexusSensorPresentationPanel-sensorDisplay .domain {
     display: none;
 }
+
+.gpiic-visualizer-controls {
+    text-align: center;
+    padding-left: 8%;
+}
+
+.gpiic-visualizer-controls label {
+    font-size: 125%;
+}
