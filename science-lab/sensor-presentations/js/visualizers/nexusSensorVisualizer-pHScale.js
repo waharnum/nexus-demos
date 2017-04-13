@@ -253,6 +253,7 @@
             .text(text)
             .attr({
                 "text-anchor": "end",
+                "class": "positionedText",
                 "transform": "translate(" + leftPadding + ")",
                 "fill": "white",
                 "filter": "url(#solid)",
@@ -359,10 +360,43 @@
         gradeNames: ["gpii.nexusSensorVisualizer.colorScale"],
         components: {
             visualizer: {
-                type: "gpii.nexusSensorVisualizer.pHScale.visualizer"
+                type: "gpii.nexusSensorVisualizer.pHScale.visualizer",
+                options: {
+                    selectors: {
+                        "displayExamplesCheckbox": ".gpiic-visualizer-displayExamples",
+                        "pHScaleExamples": ".positionedText"
+                    },
+                    listeners: {
+                        "onCreate.appendControls": {
+                            "this": "{that}.container",
+                            method: "append",
+                            args: "<form class='gpiic-visualizer-controls'><label>Show Examples<input class='gpiic-visualizer-displayExamples' type='checkbox' checked /></label></form>"
+                        },
+                        "onCreate.bindControls": {
+                            "this": "{that}.dom.displayExamplesCheckbox",
+                            method: "click",
+                            args: "{that}.toggleExamples"
+                        }
+                    },
+                    invokers: {
+                        toggleExamples: {
+                            funcName: "gpii.nexusSensorVisualizer.pHScale.toggleExamples",
+                            args: ["{that}"]
+                        }
+                    }
+                }
             }
         }
     });
+
+    gpii.nexusSensorVisualizer.pHScale.toggleExamples = function (that) {
+        var checked = that.locate("displayExamplesCheckbox").prop("checked");
+        if(checked) {
+            that.locate("pHScaleExamples").show()
+        } else {
+            that.locate("pHScaleExamples").hide();
+        }
+    };
 
     fluid.defaults("gpii.nexusSensorVisualizer.pHScale.visualizer", {
         gradeNames: ["gpii.nexusSensorVisualizer.colorScale.visualizer"],
