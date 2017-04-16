@@ -32,3 +32,7 @@
 .nexus-sensorSonifierControls-checkboxContainer label input[type="checkbox"]:focus + i:before, .nexus-sensorSonifierControls-checkboxContainer label input[type="checkbox"]:hover + i:before {
     border-color: #CCC;
 }
+
+.nexus-nexusSensorSonificationPanel-sensorDisplay-phSensor .nexusc-midpointToneControlContainer, .nexus-nexusSensorSonificationPanel-sensorDisplay-fakeSensorPH .nexusc-midpointToneControlContainer {
+    display: none !important;
+}
