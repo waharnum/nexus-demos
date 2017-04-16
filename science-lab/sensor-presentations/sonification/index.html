@@ -26,8 +26,15 @@
         <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/oscillators.js"></script>
         <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/math.js"></script>
         <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/envelopes.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/random.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/granular.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/flocking/src/ugens/distortion.js"></script>
 
         <script type="text/javascript" src="../../../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
+
+        <script type="text/javascript" src="../../../../node_modules/nexus-science-lab-synths/src/buffer-loader.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/nexus-science-lab-synths/src/ph-synth.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/nexus-science-lab-synths/src/ph-sonification.js"></script>
 
         <script type="text/javascript" src="../js/sensorPlayer.js"></script>
         <script type="text/javascript" src="../js/nexusSensorPresentationPanel.js"></script>
@@ -48,6 +55,22 @@
                     nexusHost: window.location.hostname
                 }
             });
+
+            pHSynth = floe.scienceLab.phSonification({
+                components: {
+                    bufferLoader: {
+                        options: {
+                            bufferDefs: [
+                                {
+                                    id: "rhodes-chord",
+                                    src: "../../../../node_modules/nexus-science-lab-synths/audio/rhodes-chord-mono.mp3"
+                                }
+                            ]
+                        }
+                    }
+                }
+            });
+
         </script>
     </body>
 </html>

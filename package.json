@@ -15,6 +15,7 @@
         "grunt-jsonlint": "1.0.7",
         "infusion": "2.0.0",
         "nexus-client": "simonbates/nexus-client",
+        "nexus-science-lab-synths": "colinbdclark/nexus-science-lab-synths",
         "node-static": "0.7.7",
         "nodeimu": "2.1.9",
         "p5": "0.4.24",
