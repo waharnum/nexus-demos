@@ -72,7 +72,7 @@
             },
             "onCreate.bindSynthControls": {
                 func: "gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls",
-                args: ["{that}", "{sensorSynthesizer}"]
+                args: ["{that}", "{sensorSonifier}"]
             }
         },
         components: {

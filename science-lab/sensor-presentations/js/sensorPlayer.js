@@ -94,6 +94,17 @@
                 outputScaleMax: 5.0,
                 outputScaleMin: 1.0
             }
+        },
+        {
+            target: "inputs.granulator.speed",
+            singleTransform: {
+                type: "gpii.sensorPlayer.transforms.minMaxScale",
+                input: "{that}.model.valueInformation.current",
+                inputScaleMax: "{that}.model.valueInformation.max",
+                inputScaleMin: "{that}.model.valueInformation.min",
+                outputScaleMax: 0.4,
+                outputScaleMin: 4
+            }
         }]
     });
 
@@ -300,7 +311,7 @@
             },
             "onCreate.bindSynthControls": {
                 func: "gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls",
-                args: ["{that}", "{sensorSynthesizer}"]
+                args: ["{that}", "{sensorPlayer}"]
             }
         },
         components: {
@@ -372,14 +383,15 @@
         }
     });
 
-    gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSynthesizer) {
+    gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSonifier) {
+        console.log(that, sensorSonifier);
         var muteControl = that.locate("muteControl");
         var midpointToneControl = that.locate("midpointToneControl");
 
         muteControl.click(function () {
             var checked = muteControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.scalingSynth.set("sum.mul", {
+                sensorSonifier.synth.set("sum.mul", {
                     id: "fader",
                    ugen: "flock.ugen.line",
                    rate: "control",
@@ -389,7 +401,7 @@
                 });
             }
             else {
-                sensorSynthesizer.scalingSynth.set("sum.mul", {
+                sensorSonifier.synth.set("sum.mul", {
                     id: "fader",
                    ugen: "flock.ugen.line",
                    rate: "control",
@@ -405,10 +417,10 @@
         midpointToneControl.click(function () {
             var checked = midpointToneControl.is(":checked");
             if(checked) {
-                sensorSynthesizer.scalingSynth.applier.change("inputs.midpoint.mul", 0.12);
+                sensorSonifier.synth.applier.change("inputs.midpoint.mul", 0.12);
             }
             else {
-                sensorSynthesizer.scalingSynth.applier.change("inputs.midpoint.mul", 0);
+                sensorSonifier.synth.applier.change("inputs.midpoint.mul", 0);
             }
 
         });
@@ -421,7 +433,7 @@
                 type: "gpii.sensorPlayer.sensor"
             },
             sensorSonifier: {
-                type: "gpii.sensorPlayer.sensorSonifier.pH",
+                type: "gpii.sensorPlayer.sensorSonifier.scaling",
                 options: {
                     model: {
                         sensorValue: "{sensor}.model.sensorValue",
