@@ -33,6 +33,7 @@
     border-color: #CCC;
 }
 
+/* TODO: this needs a better solution */
 .nexus-nexusSensorSonificationPanel-sensorDisplay-phSensor .nexusc-midpointToneControlContainer, .nexus-nexusSensorSonificationPanel-sensorDisplay-fakeSensorPH .nexusc-midpointToneControlContainer {
     display: none !important;
 }
