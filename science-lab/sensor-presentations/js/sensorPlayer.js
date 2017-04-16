@@ -426,6 +426,7 @@
         });
     };
 
+    // Base
     fluid.defaults("gpii.sensorPlayer", {
         gradeNames: ["fluid.modelComponent"],
         components: {
@@ -441,6 +442,15 @@
                         sensorMin: "{sensor}.model.sensorMin"
                     }
                 }
+            }
+        }
+    });
+
+    fluid.defaults("gpii.sensorPlayer.pH", {
+        gradeNames: ["gpii.sensorPlayer"],
+        components: {
+            sensorSonifier: {
+                type: "gpii.sensorPlayer.sensorSonifier.pH"
             }
         }
     });
