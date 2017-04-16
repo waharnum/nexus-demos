@@ -153,7 +153,6 @@
         // Append after previous container that already exists
         } else {
             var previousSiblingContainer = nexusSensorPresentationPanel.container.find("." + attachedContainers[attachedContainerIndex-1].containerClass);
-            console.log(previousSiblingContainer);
             previousSiblingContainer.after("<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>");
         }
     };

@@ -102,8 +102,8 @@
                 input: "{that}.model.valueInformation.current",
                 inputScaleMax: "{that}.model.valueInformation.max",
                 inputScaleMin: "{that}.model.valueInformation.min",
-                outputScaleMax: 0.4,
-                outputScaleMin: 4
+                outputScaleMax: 4,
+                outputScaleMin: 0.4
             }
         }]
     });
@@ -246,7 +246,6 @@
             // Return the percentage of the variance added to the min
 
             var returnValue = outputScaleMin + (maxOutputVariance * percentageFromInputMidpoint / 100);
-            console.log(returnValue);
 
             return returnValue;
     };
