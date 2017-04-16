@@ -12,8 +12,8 @@
         }
     });
 
-    // A sensor sonifier that uses the scaling synth
-    fluid.defaults("gpii.sensorPlayer.sensorSonifier", {
+    // Base sonifier definition
+    fluid.defaults("gpii.sensorPlayer.sensorSonifier.base", {
         gradeNames: ["fluid.modelComponent"],
         model: {
             sensorMax: 100,
@@ -21,8 +21,7 @@
             sensorValue: 50
         },
         components: {
-            scalingSynth: {
-                type: "gpii.sensorPlayer.scalingSynth",
+            synth: {
                 options: {
                     model: {
                         valueInformation: {
@@ -32,6 +31,16 @@
                         }
                     }
                 }
+            }
+        }
+    });
+
+    // A sensor sonifier that uses the scaling synth
+    fluid.defaults("gpii.sensorPlayer.sensorSonifier.scaling", {
+        gradeNames: ["gpii.sensorPlayer.sensorSonifier.base"],
+        components: {
+            synth: {
+                type: "gpii.sensorPlayer.scalingSynth"
             }
         }
     });
@@ -317,8 +326,8 @@
             sensor: {
                 type: "gpii.sensorPlayer.sensor"
             },
-            sensorSynthesizer: {
-                type: "gpii.sensorPlayer.sensorSonifier",
+            sensorSonifier: {
+                type: "gpii.sensorPlayer.sensorSonifier.scaling",
                 options: {
                     model: {
                         sensorValue: "{sensor}.model.sensorValue",
