@@ -392,9 +392,9 @@
     gpii.nexusSensorVisualizer.pHScale.toggleExamples = function (that) {
         var checked = that.locate("displayExamplesCheckbox").prop("checked");
         if(checked) {
-            that.locate("pHScaleExamples").show()
+            that.locate("pHScaleExamples").fadeIn();
         } else {
-            that.locate("pHScaleExamples").hide();
+            that.locate("pHScaleExamples").fadeOut();
         }
     };
 
@@ -420,10 +420,12 @@
                 // Creates precisely positioned text relative to the scale
                 positionedText: {
                     0: "Battery Acid",
-                    3: "Orange Juice",
+                    2.4: "White Vinegar",
+                    3.4: "Orange Juice",
                     6.5: "Milk",
                     7: "Pure Water",
                     8.1: "Sea Water",
+                    9: "Baking Soda",
                     12: "Soapy Water",
                     14: "Drain Cleaner"
                 }
