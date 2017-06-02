@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Visualization</title>
+
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+
+        <script src="../../../../node_modules/d3/d3.js"></script>
+
+        <script src="../../../../node_modules/chartAuthoring/src/js/d3Utils.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/d3ViewComponent.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/svgDrawingArea.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/valueBinding.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/percentage.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/transformations.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/totalRelaying.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/axis.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/xAxis.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/xAxisTimeSeries.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/yAxis.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/lineChartTimeSeriesLine.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/lineChartTimeSeriesArea.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/lineChartTimeSeriesPoints.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/lineChartTimeSeriesMultiDataSet.js"></script>
+        <script src="../../../../node_modules/chartAuthoring/src/js/lineChartTimeSeriesSingleDataSet.js"></script>
+
+        <script type="text/javascript" src="../../../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
+
+        <script type="text/javascript" src="../../js/sensorPlayer.js"></script>
+        <script type="text/javascript" src="../../js/nexusSensorPresentationPanel.js"></script>
+        <script type="text/javascript" src="../../js/nexusSensorVisualizationPanel.js"></script>
+
+        <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-lineChart.js"></script>
+        <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-sensorPercentageVisualizers.js"></script>
+        <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-realTimeScale.js"></script>
+        <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-colorScale.js"></script>
+        <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-pHScale.js"></script>
+        <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-temperatureScale.js"></script>
+
+        <link rel="stylesheet" media="screen" href="../../../../node_modules/infusion/tests/lib/qunit/css/qunit.css" />
+
+        <script src="../../../../node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+        <script src="../../../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
+
+        <script type="text/javascript" src="../js/mocks.js"></script>
+
+        <script type="text/javascript" src="../js/nexusSensorPresentationPanelTests.js"></script>
+
+    </head>
+
+    <body>
+        <h1 id="qunit-header">Nexus Sensor Presentation Panel Tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+
+        <div class="nexus-nexusSensorVisualizationPanel fl-nexus-science-lab-dashboard">
+        </div>
+    </body>
+</html>

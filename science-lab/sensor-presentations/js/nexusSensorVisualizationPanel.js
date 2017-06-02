@@ -35,7 +35,6 @@
 
     gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions = function (sensorId, sensorName) {
 
-        console.log(sensorName);
         var sensorModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
 
         var sensorContainerClass = "nexus-nexusSensorVisualizationPanel-sensorDisplay-" + sensorId;
