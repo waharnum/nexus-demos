@@ -10,6 +10,9 @@
             onSensorAppearance: null,
             onSensorRemoval: null
         },
+        dynamicComponentContainerOptions: {
+            containerFadeoutDuration: 400
+        },
         members: {
             nexusPeerComponentPath: "scienceLabCollector",
             nexusBoundModelPath: "sensors",
@@ -168,15 +171,14 @@
         // Remove from the attached containers index
         var attachedContainers = nexusSensorPresentationPanel.attachedContainers;
         fluid.remove_if(attachedContainers, function (containerInfo) {
-            console.log(containerInfo);
             return containerInfo.containerClass === sensorContainerClass;
         });
-        console.log(attachedContainers);
 
-        console.log(nexusSensorPresentationPanel, sensorContainerClass);
         var removedSensorContainer = nexusSensorPresentationPanel.container.find("." + sensorContainerClass);
-        console.log(removedSensorContainer);
-        removedSensorContainer.fadeOut(function() {
+
+        var containerFadeoutDuration = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.containerFadeoutDuration;
+
+        removedSensorContainer.fadeOut(containerFadeoutDuration, function() {
             removedSensorContainer.remove();
         });
     };

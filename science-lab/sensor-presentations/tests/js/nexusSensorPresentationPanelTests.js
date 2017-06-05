@@ -24,7 +24,7 @@
             name: "Test sensor presentation panel",
             tests: [{
                 name: "Test presentation panel sensor create and remove behaviour",
-                expect: 8,
+                expect: 12,
                 sequence: [{
                     func: "gpii.tests.sensorPresentationPanelTester.testCreateSensor",
                     args: ["{sensorPresentationPanel}"]
@@ -39,7 +39,7 @@
             name: "Test sensor ordering",
             tests: [{
                 name: "Test presentation panel sensor ordering",
-                expect: 6,
+                expect: 8,
                 sequence: [{
                     func: "gpii.tests.sensorPresentationPanelTester.testSensorOrdering",
                     args: ["{sensorPresentationPanel}"]
@@ -82,8 +82,22 @@
       }
   };
 
+    gpii.tests.sensorPresentationPanelTester.verifySensorContainer = function(sensorPresentationPanel, sensorContainerClass, verifyAbsence) {
+
+        var verifyLength = verifyAbsence ? 0 : 1;
+
+        var verifyText = verifyAbsence ? "absent" : "present";
+
+        var sensorContainer = sensorPresentationPanel.container.find(sensorContainerClass);
+
+        console.log(sensorContainer);
+
+        jqUnit.assertTrue("Container with class " + sensorContainerClass + " " + verifyText, sensorContainer.length === verifyLength);
+    };
+
     gpii.tests.sensorPresentationPanelTester.testCreateSensor = function (sensorPresentationPanel) {
 
+        // Add a first sensor
         sensorPresentationPanel.applier.change("sensors.fakeSensorPH",
         fakeSensors.fakeSensorPH);
 
@@ -91,9 +105,15 @@
 
         jqUnit.assertNotUndefined("attachedSensors object contains fakeSensorPH", sensorPresentationPanel.attachedSensors.fakeSensorPH);
 
+        // PH Sensor container is locatable
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, ".nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorPH");
+
         // Add a second sensor
         sensorPresentationPanel.applier.change("sensors.fakeSensorTemperature",
         fakeSensors.fakeSensorTemperature);
+
+        // Temperature Sensor container is locatable
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, ".nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorTemperature");
 
         jqUnit.assertTrue("attachedContainers array is at expected length of 2", sensorPresentationPanel.attachedContainers.length === 2);
 
@@ -108,19 +128,24 @@
 
         jqUnit.assertUndefined("attachedSensors object does not contain fakeSensorPH", sensorPresentationPanel.attachedSensors.fakeSensorPH);
 
+        // PH Sensor container is gone
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, ".nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorPH", true);
+
         sensorPresentationPanel.applier.change("sensors.fakeSensorTemperature", null, "DELETE");
 
         jqUnit.assertTrue("attachedContainers array is at expected length of 0", sensorPresentationPanel.attachedContainers.length === 0);
 
         jqUnit.assertUndefined("attachedSensors object does not contain fakeSensorTemperature", sensorPresentationPanel.attachedSensors.fakeSensorTemperature);
+
+        // Temperature Sensor container is gone
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, ".nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorTemperature", true);
+
     };
 
     gpii.tests.sensorPresentationPanelTester.testSensorOrdering = function (sensorPresentationPanel) {
 
         sensorPresentationPanel.applier.change("sensors.fakeSensorBeta",
         fakeSensors.fakeSensorBeta);
-
-        console.log(sensorPresentationPanel.attachedContainers[0]);
 
         jqUnit.assertEquals("fakeSensorBeta at start of attachedContainers array", sensorPresentationPanel.attachedContainers[0].sensorName, fakeSensors.fakeSensorBeta.name);
 
@@ -139,6 +164,13 @@
         jqUnit.assertEquals("fakeSensorAlpha at first position of attachedContainers array", sensorPresentationPanel.attachedContainers[0].sensorName, fakeSensors.fakeSensorAlpha.name);
 
         jqUnit.assertEquals("fakeSensorBeta at second position of attachedContainers array", sensorPresentationPanel.attachedContainers[1].sensorName, fakeSensors.fakeSensorBeta.name);
+
+        sensorPresentationPanel.applier.change("sensors.fakeSensorBeta",
+        null, "DELETE");
+
+        jqUnit.assertEquals("fakeSensorGamma at second position of attachedContainers array", sensorPresentationPanel.attachedContainers[1].sensorName, fakeSensors.fakeSensorGamma.name);
+
+        jqUnit.assertEquals("fakeSensorAlpha at first position of attachedContainers array", sensorPresentationPanel.attachedContainers[0].sensorName, fakeSensors.fakeSensorAlpha.name);
 
     };
 

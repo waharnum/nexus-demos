@@ -46,11 +46,12 @@ gpii.nexusWebSocketBoundComponentMock.registerModelListener = function (shouldRe
 };
 
     fluid.defaults("gpii.nexusSensorPresentationPanelMock", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel", "gpii.nexusWebSocketBoundComponentMock"]
-    });
-
-    fluid.defaults("gpii.nexusSensorPresentationPanelMock", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel", "gpii.nexusWebSocketBoundComponentMock", "fluid.viewComponent"]
+        gradeNames: ["gpii.nexusSensorPresentationPanel", "gpii.nexusWebSocketBoundComponentMock", "fluid.viewComponent"],
+        // Eases testing, since we don't have to pause to wait for
+        // the fade-out animation
+        dynamicComponentContainerOptions: {
+            containerFadeoutDuration: 0
+        }
     });
 
     fluid.defaults("gpii.nexusSensorVisualizationPanelMock", {
