@@ -131,6 +131,9 @@
         return sensorListenerOptions;
     };
 
+
+    // Adds sensor display containers in alphabetical order by
+    // sensor name
     gpii.nexusSensorPresentationPanel.addSensorDisplayContainer = function (nexusSensorPresentationPanel, sensorContainerClass, sensorName) {
         var attachedContainers = nexusSensorPresentationPanel.attachedContainers;
 
