@@ -6,7 +6,8 @@
     // behaviours from the PoV of a grade using it
     //
     // Having the Nexus "send" is a matter of updating the
-    // appropriate model path
+    // appropriate model path intended to be attached via the
+    // nexusBoundModelPath member
 
     fluid.defaults("gpii.nexusWebSocketBoundComponentMock", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent"],

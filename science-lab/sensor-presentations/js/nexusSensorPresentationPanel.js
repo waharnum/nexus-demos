@@ -63,7 +63,7 @@
         fluid.each(that.attachedSensors, function (attachedSensor, attachedSensorId) {
             if (! sensors[attachedSensorId]) {
                 removedSensorIds.push(attachedSensorId);
-                that.attachedSensors[attachedSensorId] = false;
+                delete that.attachedSensors[attachedSensorId];
             }
         });
         if(removedSensorIds.length > 0) {
