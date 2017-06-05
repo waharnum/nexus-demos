@@ -3,7 +3,10 @@
 
     // A mock nexus web socket bound component that doesn't
     // actually connect to the Nexus, but has the same
-    // behaviours
+    // behaviours from the PoV of a grade using it
+    //
+    // Having the Nexus "send" is a matter of updating the
+    // appropriate model path
 
     fluid.defaults("gpii.nexusWebSocketBoundComponentMock", {
         gradeNames: ["gpii.nexusWebSocketBoundComponent"],
