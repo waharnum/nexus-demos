@@ -1,4 +1,4 @@
-/* global fluid, floe, jqUnit */
+/* global fluid, jqUnit */
 
 (function () {
 
@@ -90,8 +90,6 @@
 
         var sensorContainer = sensorPresentationPanel.container.find(sensorContainerClass);
 
-        console.log(sensorContainer);
-
         jqUnit.assertTrue("Container with class " + sensorContainerClass + " " + verifyText, sensorContainer.length === verifyLength);
     };
 
@@ -142,36 +140,54 @@
 
     };
 
+    var sensorOrderSpecs = {
+        betaFirst: [
+            {name: fakeSensors.fakeSensorBeta.name}
+        ],
+        alphaFirstBetaSecond: [
+            {name: fakeSensors.fakeSensorAlpha.name},
+            {name: fakeSensors.fakeSensorBeta.name}
+        ],
+        alphaFirstBetaSecondGammaThird: [
+            {name: fakeSensors.fakeSensorAlpha.name},
+            {name: fakeSensors.fakeSensorBeta.name},
+            {name: fakeSensors.fakeSensorGamma.name}
+        ],
+        alphaFirstGammaSecond: [
+            {name: fakeSensors.fakeSensorAlpha.name},
+            {name: fakeSensors.fakeSensorGamma.name}
+        ]
+    };
+
+    gpii.tests.sensorPresentationPanelTester.verifySensorOrdering = function (sensorPresentationPanel, sensorOrderSpec) {
+        fluid.each(sensorOrderSpec, function (sensor, idx) {
+            jqUnit.assertEquals(sensor.name + " at position " + idx + " of attachedContainers array", sensorPresentationPanel.attachedContainers[idx].sensorName, sensor.name);
+        });
+    };
+
     gpii.tests.sensorPresentationPanelTester.testSensorOrdering = function (sensorPresentationPanel) {
 
         sensorPresentationPanel.applier.change("sensors.fakeSensorBeta",
         fakeSensors.fakeSensorBeta);
 
-        jqUnit.assertEquals("fakeSensorBeta at start of attachedContainers array", sensorPresentationPanel.attachedContainers[0].sensorName, fakeSensors.fakeSensorBeta.name);
+        gpii.tests.sensorPresentationPanelTester.verifySensorOrdering(sensorPresentationPanel, sensorOrderSpecs.betaFirst);
+
+        var sensorContainers = sensorPresentationPanel.container.find( ".nexus-nexusSensorPresentationPanel-sensorDisplay");
 
         sensorPresentationPanel.applier.change("sensors.fakeSensorAlpha",
         fakeSensors.fakeSensorAlpha);
 
-        jqUnit.assertEquals("fakeSensorAlpha at first position of attachedContainers array", sensorPresentationPanel.attachedContainers[0].sensorName, fakeSensors.fakeSensorAlpha.name);
-
-        jqUnit.assertEquals("fakeSensorBeta at second position of attachedContainers array", sensorPresentationPanel.attachedContainers[1].sensorName, fakeSensors.fakeSensorBeta.name);
+        gpii.tests.sensorPresentationPanelTester.verifySensorOrdering(sensorPresentationPanel, sensorOrderSpecs.alphaFirstBetaSecond);
 
         sensorPresentationPanel.applier.change("sensors.fakeSensorGamma",
         fakeSensors.fakeSensorGamma);
 
-        jqUnit.assertEquals("fakeSensorGamma at third position of attachedContainers array", sensorPresentationPanel.attachedContainers[2].sensorName, fakeSensors.fakeSensorGamma.name);
-
-        jqUnit.assertEquals("fakeSensorAlpha at first position of attachedContainers array", sensorPresentationPanel.attachedContainers[0].sensorName, fakeSensors.fakeSensorAlpha.name);
-
-        jqUnit.assertEquals("fakeSensorBeta at second position of attachedContainers array", sensorPresentationPanel.attachedContainers[1].sensorName, fakeSensors.fakeSensorBeta.name);
+        gpii.tests.sensorPresentationPanelTester.verifySensorOrdering(sensorPresentationPanel, sensorOrderSpecs.alphaFirstBetaSecondGammaThird);
 
         sensorPresentationPanel.applier.change("sensors.fakeSensorBeta",
         null, "DELETE");
 
-        jqUnit.assertEquals("fakeSensorGamma at second position of attachedContainers array", sensorPresentationPanel.attachedContainers[1].sensorName, fakeSensors.fakeSensorGamma.name);
-
-        jqUnit.assertEquals("fakeSensorAlpha at first position of attachedContainers array", sensorPresentationPanel.attachedContainers[0].sensorName, fakeSensors.fakeSensorAlpha.name);
-
+        gpii.tests.sensorPresentationPanelTester.verifySensorOrdering(sensorPresentationPanel, sensorOrderSpecs.alphaFirstGammaSecond);
     };
 
     gpii.tests.sensorPresentationPanelTests();
