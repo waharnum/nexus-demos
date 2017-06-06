@@ -177,7 +177,7 @@
 
         var sensorContainers = sensorPresentationPanel.container.find( ".nexus-nexusSensorPresentationPanel-sensorDisplay");
 
-        jqUnit.assertTrue("Number of sensor containers as expected", sensorContainers.length === sensorOrderSpec.length)
+        jqUnit.assertTrue("Number of sensor containers as expected", sensorContainers.length === sensorOrderSpec.length);
 
         fluid.each(sensorOrderSpec, function (sensor, idx) {
 

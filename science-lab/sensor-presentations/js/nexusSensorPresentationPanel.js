@@ -11,7 +11,8 @@
             onSensorRemoval: null
         },
         dynamicComponentContainerOptions: {
-            containerFadeoutDuration: 400
+            fadeoutDuration: 400,
+            containerClass: "nexus-nexusSensorPresentationPanel-sensorDisplay"
         },
         members: {
             nexusPeerComponentPath: "scienceLabCollector",
@@ -153,13 +154,17 @@
             return container.sensorName === sensorName;
         });
 
+        var containerClasses = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.containerClass + " " + sensorContainerClass;
+
+        var containerMarkup = fluid.stringTemplate("<div class='%containerClasses'></div>", {containerClasses: containerClasses});
+
         // Prepend if 0 (right at start)
         if(attachedContainerIndex === 0) {
-            nexusSensorPresentationPanel.container.prepend("<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>");
+            nexusSensorPresentationPanel.container.prepend(containerMarkup);
         // Append after previous container that already exists
         } else {
             var previousSiblingContainer = nexusSensorPresentationPanel.container.find("." + attachedContainers[attachedContainerIndex-1].containerClass);
-            previousSiblingContainer.after("<div class='nexus-nexusSensorPresentationPanel-sensorDisplay " + sensorContainerClass + "'></div>");
+            previousSiblingContainer.after(containerMarkup);
         }
     };
 
@@ -176,9 +181,9 @@
 
         var removedSensorContainer = nexusSensorPresentationPanel.container.find("." + sensorContainerClass);
 
-        var containerFadeoutDuration = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.containerFadeoutDuration;
+        var fadeoutDuration = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.fadeoutDuration;
 
-        removedSensorContainer.fadeOut(containerFadeoutDuration, function() {
+        removedSensorContainer.fadeOut(fadeoutDuration, function() {
             removedSensorContainer.remove();
         });
     };

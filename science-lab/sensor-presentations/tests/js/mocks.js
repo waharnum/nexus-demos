@@ -51,7 +51,7 @@ gpii.nexusWebSocketBoundComponentMock.registerModelListener = function (shouldRe
         // the fade-out animation before testing that the container
         // is removed
         dynamicComponentContainerOptions: {
-            containerFadeoutDuration: 0
+            fadeoutDuration: 0
         }
     });
 
