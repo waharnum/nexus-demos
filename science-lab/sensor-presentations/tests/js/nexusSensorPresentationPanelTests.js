@@ -107,51 +107,46 @@
         jqUnit.assertTrue("Container with class " + sensorContainerClass + " " + verifyText, sensorContainer.length === verifyLength);
     };
 
+    gpii.tests.sensorPresentationPanelTester.verifySensorPresenterCreation = function (sensorPresentationPanel, sensorKey, expectedAttachedContainersLength) {
+
+        gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, sensorKey);
+
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors[sensorKey].containerClass);
+
+        jqUnit.assertTrue("attachedContainers array is at expected length of " + expectedAttachedContainersLength, sensorPresentationPanel.attachedContainers.length === expectedAttachedContainersLength);
+    };
+
+    gpii.tests.sensorPresentationPanelTester.verifySensorPresenterRemoval = function (sensorPresentationPanel, sensorKey, expectedAttachedContainersLength) {
+        gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, sensorKey, true);
+
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors[sensorKey].containerClass, true);
+
+        jqUnit.assertTrue("attachedContainers array is at expected length of " + expectedAttachedContainersLength, sensorPresentationPanel.attachedContainers.length === expectedAttachedContainersLength);
+    };
+
     gpii.tests.sensorPresentationPanelTester.testCreateSensor = function (sensorPresentationPanel) {
 
         // Add a first sensor
         sensorPresentationPanel.applier.change("sensors.fakeSensorPH",
         fakeSensors.fakeSensorPH);
 
-        jqUnit.assertTrue("attachedContainers array is at expected length of 1", sensorPresentationPanel.attachedContainers.length === 1);
-
-        gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, "fakeSensorPH");
-
-        // PH Sensor container is locatable
-        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors.fakeSensorPH.containerClass);
+        gpii.tests.sensorPresentationPanelTester.verifySensorPresenterCreation(sensorPresentationPanel, "fakeSensorPH", 1);
 
         // Add a second sensor
         sensorPresentationPanel.applier.change("sensors.fakeSensorTemperature",
         fakeSensors.fakeSensorTemperature);
 
-        // Temperature Sensor container is locatable
-        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors.fakeSensorTemperature.containerClass);
-
-        jqUnit.assertTrue("attachedContainers array is at expected length of 2", sensorPresentationPanel.attachedContainers.length === 2);
-
-        gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, "fakeSensorTemperature");
-
+        gpii.tests.sensorPresentationPanelTester.verifySensorPresenterCreation(sensorPresentationPanel, "fakeSensorTemperature", 2);
     };
 
     gpii.tests.sensorPresentationPanelTester.testRemoveSensor = function (sensorPresentationPanel) {
         sensorPresentationPanel.applier.change("sensors.fakeSensorPH", null, "DELETE");
 
-        jqUnit.assertTrue("attachedContainers array is at expected length of 1", sensorPresentationPanel.attachedContainers.length === 1);
-
-        gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, "fakeSensorPH", true);
-
-        // PH Sensor container is gone
-        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors.fakeSensorPH.containerClass, true);
+        gpii.tests.sensorPresentationPanelTester.verifySensorPresenterRemoval(sensorPresentationPanel, "fakeSensorPH", 1);
 
         sensorPresentationPanel.applier.change("sensors.fakeSensorTemperature", null, "DELETE");
 
-        jqUnit.assertTrue("attachedContainers array is at expected length of 0", sensorPresentationPanel.attachedContainers.length === 0);
-
-        gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, "fakeSensorTemperature", true);
-
-        // Temperature Sensor container is gone
-        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors.fakeSensorTemperature.containerClass, true);
-
+        gpii.tests.sensorPresentationPanelTester.verifySensorPresenterRemoval(sensorPresentationPanel, "fakeSensorTemperature", 0);
     };
 
     var sensorOrderSpecs = {
