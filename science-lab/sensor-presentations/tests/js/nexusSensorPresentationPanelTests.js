@@ -7,13 +7,37 @@
     fluid.defaults("gpii.tests.sensorPresentationPanelTests", {
         gradeNames: ["fluid.test.testEnvironment"],
         components: {
+            sensorPresentationPanelTester: {
+                type: "gpii.tests.sensorPresentationPanelTester"
+            }
+        }
+    });
+
+    fluid.defaults("gpii.tests.sensorVisualizationPanelTests", {
+        gradeNames: ["gpii.tests.sensorPresentationPanelTests"],
+
+        components: {
             sensorPresentationPanel: {
                 type: "gpii.nexusSensorVisualizationPanelMock",
                 container: ".nexus-nexusSensorVisualizationPanel",
-                createOnEvent: "{sensorPresentationPanelTester}.events.onTestCaseStart"
-            },
-            sensorPresentationPanelTester: {
-                type: "gpii.tests.sensorPresentationPanelTester"
+                createOnEvent: "{sensorPresentationPanelTester}.events.onTestCaseStart",
+                options: {
+                    containerClassKey: "visualizerClass"
+                }
+            }
+        }
+    });
+
+    fluid.defaults("gpii.tests.sensorSonificationPanelTests", {
+        gradeNames: ["gpii.tests.sensorPresentationPanelTests"],
+        components: {
+            sensorPresentationPanel: {
+                type: "gpii.nexusSensorSonificationPanelMock",
+                container: ".nexus-nexusSensorSonificationPanel",
+                createOnEvent: "{sensorPresentationPanelTester}.events.onTestCaseStart",
+                options: {
+                    containerClassKey: "sonifierClass"
+                }
             }
         }
     });
@@ -55,35 +79,40 @@
           "value": 7,
           "rangeMax": 14,
           "rangeMin": 0,
-          "containerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorPH"
+          "visualizerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorPH",
+          "sonifierClass": "nexus-nexusSensorSonificationPanel-sensorDisplay-fakeSensorPH"
       },
       fakeSensorTemperature: {
           "name": "Fake Temperature Sensor",
           "value": 15,
           "rangeMax": 50,
           "rangeMin": 0,
-          "containerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorTemperature"
+          "visualizerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorTemperature",
+          "sonifierClass": "nexus-nexusSensorSonificationPanel-sensorDisplay-fakeSensorTemperature"
       },
       fakeSensorAlpha: {
           "name": "Fake Alpha Sensor",
           "value": 6,
           "rangeMax": 10,
           "rangeMin": 1,
-          "containerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorAlpha"
+          "visualizerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorAlpha",
+          "sonifierClass": "nexus-nexusSensorSonificationPanel-sensorDisplay-fakeSensorAlpha"
       },
       fakeSensorBeta: {
           "name": "Fake Beta Sensor",
-          "value": 6,
+          "value": 3,
           "rangeMax": 10,
           "rangeMin": 1,
-          "containerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorBeta"
+          "visualizerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorBeta",
+          "sonifierClass": "nexus-nexusSensorSonificationPanel-sensorDisplay-fakeSensorBeta"
       },
       fakeSensorGamma: {
           "name": "Fake Gamma Sensor",
-          "value": 6,
+          "value": 8,
           "rangeMax": 10,
           "rangeMin": 1,
-          "containerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorGamma"
+          "visualizerClass": "nexus-nexusSensorVisualizationPanel-sensorDisplay-fakeSensorGamma",
+          "sonifierClass": "nexus-nexusSensorSonificationPanel-sensorDisplay-fakeSensorGamma"
       }
   };
 
@@ -96,30 +125,36 @@
         jqUnit[verifyFunction]("attachedSensors object " + verifyText + " " + sensorKey, sensorPresentationPanel.attachedSensors[sensorKey]);
     };
 
-    gpii.tests.sensorPresentationPanelTester.verifySensorContainer = function(sensorPresentationPanel, sensorContainerClass, verifyAbsence) {
+    gpii.tests.sensorPresentationPanelTester.verifySensorContainer = function(sensorPresentationPanel, sensorvisualizerClass, verifyAbsence) {
 
         var verifyLength = verifyAbsence ? 0 : 1;
 
         var verifyText = verifyAbsence ? "absent" : "present";
 
-        var sensorContainer = sensorPresentationPanel.container.find(sensorContainerClass);
+        var sensorContainer = sensorPresentationPanel.container.find(sensorvisualizerClass);
+        console.log(sensorContainer);
 
-        jqUnit.assertTrue("Container with class " + sensorContainerClass + " " + verifyText, sensorContainer.length === verifyLength);
+        jqUnit.assertTrue("Container with class " + sensorvisualizerClass + " " + verifyText, sensorContainer.length === verifyLength);
     };
 
     gpii.tests.sensorPresentationPanelTester.verifySensorPresenterCreation = function (sensorPresentationPanel, sensorKey, expectedAttachedContainersLength) {
 
+        var containerClassKey = sensorPresentationPanel.options.containerClassKey;
+        // console.log(fakeSensors[sensorKey][containerClassKey]);
         gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, sensorKey);
 
-        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors[sensorKey].containerClass);
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors[sensorKey][containerClassKey]);
 
         jqUnit.assertTrue("attachedContainers array is at expected length of " + expectedAttachedContainersLength, sensorPresentationPanel.attachedContainers.length === expectedAttachedContainersLength);
     };
 
     gpii.tests.sensorPresentationPanelTester.verifySensorPresenterRemoval = function (sensorPresentationPanel, sensorKey, expectedAttachedContainersLength) {
+
+        var containerClassKey = sensorPresentationPanel.options.containerClassKey;
+
         gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, sensorKey, true);
 
-        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors[sensorKey].containerClass, true);
+        gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors[sensorKey][containerClassKey], true);
 
         jqUnit.assertTrue("attachedContainers array is at expected length of " + expectedAttachedContainersLength, sensorPresentationPanel.attachedContainers.length === expectedAttachedContainersLength);
     };
@@ -170,7 +205,11 @@
 
     gpii.tests.sensorPresentationPanelTester.verifySensorOrdering = function (sensorPresentationPanel, sensorOrderSpec) {
 
+        var containerClassKey = sensorPresentationPanel.options.containerClassKey;
+
         var sensorContainers = sensorPresentationPanel.container.find( ".nexus-nexusSensorPresentationPanel-sensorDisplay");
+
+        console.log(sensorContainers);
 
         jqUnit.assertTrue("Number of sensor containers as expected", sensorContainers.length === sensorOrderSpec.length);
 
@@ -178,7 +217,7 @@
 
             jqUnit.assertEquals(sensor.name + " at position " + idx + " of attachedContainers array", sensorPresentationPanel.attachedContainers[idx].sensorName, sensor.name);
 
-            jqUnit.assertTrue("Sensor container at position " + idx + " in DOM ordering has expected class of " + sensor.containerClass, $(sensorContainers[idx]).hasClass(sensor.containerClass));
+            jqUnit.assertTrue("Sensor container at position " + idx + " in DOM ordering has expected class of " + sensor[containerClassKey], $(sensorContainers[idx]).hasClass(sensor[containerClassKey]));
 
         });
     };
@@ -206,6 +245,8 @@
         gpii.tests.sensorPresentationPanelTester.verifySensorOrdering(sensorPresentationPanel, sensorOrderSpecs.alphaFirstGammaSecond);
     };
 
-    gpii.tests.sensorPresentationPanelTests();
+    gpii.tests.sensorVisualizationPanelTests();
+
+    gpii.tests.sensorSonificationPanelTests();
 
 }());

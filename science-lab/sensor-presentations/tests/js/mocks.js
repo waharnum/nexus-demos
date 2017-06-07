@@ -51,12 +51,16 @@ gpii.nexusWebSocketBoundComponentMock.registerModelListener = function (shouldRe
         // the fade-out animation before testing that the container
         // is removed
         dynamicComponentContainerOptions: {
-            fadeoutDuration: 0
+            fadeOut: false
         }
     });
 
     fluid.defaults("gpii.nexusSensorVisualizationPanelMock", {
         gradeNames: ["gpii.nexusSensorVisualizationPanel", "gpii.nexusSensorPresentationPanelMock"]
+    });
+
+    fluid.defaults("gpii.nexusSensorSonificationPanelMock", {
+        gradeNames: ["gpii.nexusSensorSonificationPanel", "gpii.nexusSensorPresentationPanelMock"]
     });
 
 }());

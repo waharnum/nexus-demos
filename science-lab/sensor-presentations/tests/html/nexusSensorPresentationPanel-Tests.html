@@ -37,10 +37,29 @@
 
         <script type="text/javascript" src="../../../../node_modules/gpii-nexus-client/src/NexusWebSocketBoundComponent.js"></script>
 
-        <script type="text/javascript" src="../../js/sensorPlayer.js"></script>
         <script type="text/javascript" src="../../js/nexusSensorPresentationPanel.js"></script>
-        <script type="text/javascript" src="../../js/nexusSensorVisualizationPanel.js"></script>
 
+        <script type="text/javascript" src="../../../../../node_modules/flocking/dist/flocking-base.js"></script>
+
+        <script type="text/javascript"
+        src="../../../../../node_modules/flocking/src/ugens/core.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/flocking/src/ugens/oscillators.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/flocking/src/ugens/math.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/flocking/src/ugens/envelopes.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/flocking/src/ugens/random.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/flocking/src/ugens/granular.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/flocking/src/ugens/distortion.js"></script>
+
+        <script type="text/javascript" src="../../../../../node_modules/nexus-science-lab-synths/src/buffer-loader.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/nexus-science-lab-synths/src/ph-synth.js"></script>
+        <script type="text/javascript" src="../../../../../node_modules/nexus-science-lab-synths/src/ph-sonification.js"></script>
+
+        <script type="text/javascript" src="../../js/sensorPlayer.js"></script>
+        <script type="text/javascript" src="../../js/nexusSensorSonificationPanel.js"></script>
+
+
+
+        <script type="text/javascript" src="../../js/nexusSensorVisualizationPanel.js"></script>
         <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-lineChart.js"></script>
         <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-sensorPercentageVisualizers.js"></script>
         <script type="text/javascript" src="../../js/visualizers/nexusSensorVisualizer-realTimeScale.js"></script>
@@ -68,7 +87,11 @@
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
 
-        <div class="nexus-nexusSensorVisualizationPanel fl-nexus-science-lab-dashboard">
+        <div class="nexus-nexusSensorVisualizationPanel">
         </div>
+
+        <div class="nexus-nexusSensorSonificationPanel">
+        </div>
+
     </body>
 </html>

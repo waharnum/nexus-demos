@@ -11,8 +11,8 @@
             onSensorRemoval: null
         },
         dynamicComponentContainerOptions: {
-            fadeoutDuration: 400,
-            containerClass: "nexus-nexusSensorPresentationPanel-sensorDisplay"
+            fadeOut: true,
+            containerGlobalClass: "nexus-nexusSensorPresentationPanel-sensorDisplay"
         },
         members: {
             nexusPeerComponentPath: "scienceLabCollector",
@@ -154,7 +154,7 @@
             return container.sensorName === sensorName;
         });
 
-        var containerClasses = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.containerClass + " " + sensorContainerClass;
+        var containerClasses = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.containerGlobalClass + " " + sensorContainerClass;
 
         var containerMarkup = fluid.stringTemplate("<div class='%containerClasses'></div>", {containerClasses: containerClasses});
 
@@ -181,11 +181,15 @@
 
         var removedSensorContainer = nexusSensorPresentationPanel.container.find("." + sensorContainerClass);
 
-        var fadeoutDuration = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.fadeoutDuration;
+        var fadeOut = nexusSensorPresentationPanel.options.dynamicComponentContainerOptions.fadeOut;
 
-        removedSensorContainer.fadeOut(fadeoutDuration, function() {
+        if(fadeOut) {
+            removedSensorContainer.fadeOut(function() {
+                removedSensorContainer.remove();
+            });
+        } else {
             removedSensorContainer.remove();
-        });
+        }
     };
 
     // Function used by a sensorPresenter to check the array of

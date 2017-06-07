@@ -382,8 +382,7 @@
         }
     });
 
-    gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSonifier) {
-        console.log(that, sensorSonifier);
+    gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSonifier) {        
         var muteControl = that.locate("muteControl");
         var midpointToneControl = that.locate("midpointToneControl");
 
