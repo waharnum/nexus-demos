@@ -17,21 +17,12 @@
         defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.realTimeScale",
         dynamicComponents: {
             sensorPresenter: {
-                type: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterType({that}, {arguments}.0)",
+                type: "@expand:gpii.nexusSensorPresentationPanel.getSensorPresenterType({that}, {arguments}.0)",
                 createOnEvent: "onSensorAppearance",
                 options: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions({arguments}.0, {arguments}.1)"
             }
         }
     });
-
-    gpii.nexusSensorVisualizationPanel.getSensorPresenterType = function (that, sensorId) {
-        var perSensorPresentationGrades = that.options.perSensorPresentationGrades;
-        if(perSensorPresentationGrades[sensorId]) {
-            return perSensorPresentationGrades[sensorId];
-        } else {
-            return that.options.defaultSensorPresentationGrade;
-        }
-    };
 
     gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions = function (sensorId, sensorName) {
 

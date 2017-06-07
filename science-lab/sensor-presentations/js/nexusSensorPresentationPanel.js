@@ -39,6 +39,17 @@
         }
     });
 
+    // Allows specific grades for specific sensors
+    // See visualization or sonification panels for implementation structure
+    gpii.nexusSensorPresentationPanel.getSensorPresenterType = function (that, sensorId) {
+        var perSensorPresentationGrades = that.options.perSensorPresentationGrades;
+        if(perSensorPresentationGrades[sensorId]) {
+            return perSensorPresentationGrades[sensorId];
+        } else {
+            return that.options.defaultSensorPresentationGrade;
+        }
+    };
+
     // Add / remove function for sensor changes. Handles the following:
     // 1) Fires an event when a sensor is added, argument is the sensor ID
     // 2) Fires an aggregrate event when sensors are removed, argument is
