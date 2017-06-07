@@ -24,6 +24,9 @@
                 options: {
                     containerClassKey: "visualizerClass"
                 }
+            },
+            sensorPresentationPanelTester: {
+                type: "gpii.tests.sensorVisualizationPanelTester"
             }
         }
     });
@@ -38,6 +41,9 @@
                 options: {
                     containerClassKey: "sonifierClass"
                 }
+            },
+            sensorPresentationPanelTester: {
+                type: "gpii.tests.sensorSonificationPanelTester"
             }
         }
     });
@@ -69,6 +75,26 @@
                     args: ["{sensorPresentationPanel}"]
                 }]
             }]
+        }]
+    });
+
+    fluid.defaults("gpii.tests.sensorVisualizationPanelTester", {
+        gradeNames: ["gpii.tests.sensorPresentationPanelTester"],
+        modules: [{
+            name: "Test sensor visualization panel"
+        },
+        {
+            name: "Test sensor visualization panel ordering"
+        }]
+    });
+
+    fluid.defaults("gpii.tests.sensorSonificationPanelTester", {
+        gradeNames: ["gpii.tests.sensorPresentationPanelTester"],
+        modules: [{
+            name: "Test sensor sonification panel"
+        },
+        {
+            name: "Test sensor sonification panel ordering"
         }]
     });
 
@@ -132,7 +158,6 @@
         var verifyText = verifyAbsence ? "absent" : "present";
 
         var sensorContainer = sensorPresentationPanel.container.find(sensorvisualizerClass);
-        console.log(sensorContainer);
 
         jqUnit.assertTrue("Container with class " + sensorvisualizerClass + " " + verifyText, sensorContainer.length === verifyLength);
     };
@@ -140,7 +165,7 @@
     gpii.tests.sensorPresentationPanelTester.verifySensorPresenterCreation = function (sensorPresentationPanel, sensorKey, expectedAttachedContainersLength) {
 
         var containerClassKey = sensorPresentationPanel.options.containerClassKey;
-        // console.log(fakeSensors[sensorKey][containerClassKey]);
+
         gpii.tests.sensorPresentationPanelTester.verifyAttachedSensorTracking(sensorPresentationPanel, sensorKey);
 
         gpii.tests.sensorPresentationPanelTester.verifySensorContainer(sensorPresentationPanel, "." + fakeSensors[sensorKey][containerClassKey]);
@@ -208,8 +233,6 @@
         var containerClassKey = sensorPresentationPanel.options.containerClassKey;
 
         var sensorContainers = sensorPresentationPanel.container.find( ".nexus-nexusSensorPresentationPanel-sensorDisplay");
-
-        console.log(sensorContainers);
 
         jqUnit.assertTrue("Number of sensor containers as expected", sensorContainers.length === sensorOrderSpec.length);
 
