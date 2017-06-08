@@ -14,42 +14,49 @@
             "rpiTempSensor2": "gpii.nexusSensorVisualizer.temperature",
             "phSensor": "gpii.nexusSensorVisualizer.pHScale"
         },
+        dynamicComponentContainerOptions: {
+            // fluid.stringTemplate
+            containerIndividualClassTemplate: "nexus-nexusSensorSonificationPanel-sensorDisplay-%sensorId"
+        },
         defaultSensorPresentationGrade: "gpii.nexusSensorVisualizer.realTimeScale",
-        dynamicComponents: {
-            sensorPresenter: {
-                type: "@expand:gpii.nexusSensorPresentationPanel.getSensorPresenterType({that}, {arguments}.0)",
-                createOnEvent: "onSensorAppearance",
-                options: "@expand:gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions({arguments}.0, {arguments}.1)"
+        invokers: {
+            "generatePresenterOptionsBlock": {
+                funcName: "gpii.nexusSensorVisualizationPanel.getSensorPresenterOptionsBlock",
+                args: ["{arguments}.0", "{arguments}.1", "{arguments}.2"]
             }
         }
     });
 
-    gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions = function (sensorId, sensorName) {
+    gpii.nexusSensorVisualizationPanel.getSensorPresenterOptions = function (sensorId, sensorName, sensorPresentationPanel) {
 
-        var sensorModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
+        var sensorPresenterModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
 
-        var sensorContainerClass = "nexus-nexusSensorVisualizationPanel-sensorDisplay-" + sensorId;
+        var sensorPresenterContainerClass = fluid.stringTemplate(sensorPresentationPanel.options.dynamicComponentContainerOptions.containerIndividualClassTemplate, {sensorId: sensorId});
 
-        var sensorVisualizerListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorContainerClass, sensorName);
+        var sensorPresenterListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorPresenterContainerClass, sensorName);
 
-        var sensorVisualizerOptions = {
+        return sensorPresentationPanel.generatePresenterOptionsBlock(sensorPresenterModelOptions, sensorPresenterListenerOptions, sensorPresenterContainerClass);
+    };
+
+    gpii.nexusSensorVisualizationPanel.getSensorPresenterOptionsBlock = function (sensorPresenterModelOptions, sensorPresenterListenerOptions, sensorPresenterContainerClass) {
+        var optionsBlock = {
                 events: {
                     onSensorDisplayContainerAppended: null
                 },
-                listeners: sensorVisualizerListenerOptions,
+                listeners: sensorPresenterListenerOptions,
                 components: {
                     sensor: {
                         options: {
-                            model: sensorModelOptions
+                            model: sensorPresenterModelOptions
                         }
                     },
                     visualizer: {
-                        container: "." + sensorContainerClass
+                        container: "." + sensorPresenterContainerClass
                     }
                 }
         };
 
-        return sensorVisualizerOptions;
+        return optionsBlock;
     };
 
     // Abstract grade used by visualizers

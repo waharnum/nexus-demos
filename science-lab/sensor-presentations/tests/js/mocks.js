@@ -56,11 +56,19 @@ gpii.nexusWebSocketBoundComponentMock.registerModelListener = function (shouldRe
     });
 
     fluid.defaults("gpii.nexusSensorVisualizationPanelMock", {
-        gradeNames: ["gpii.nexusSensorVisualizationPanel", "gpii.nexusSensorPresentationPanelMock"]
+        gradeNames: ["gpii.nexusSensorVisualizationPanel", "gpii.nexusSensorPresentationPanelMock"],
+        dynamicComponentContainerOptions: {
+            // fluid.stringTemplate
+            containerIndividualClassTemplate: "nexus-nexusSensorVisualizationPanel-sensorDisplay-%sensorId"
+        }
     });
 
     fluid.defaults("gpii.nexusSensorSonificationPanelMock", {
-        gradeNames: ["gpii.nexusSensorSonificationPanel", "gpii.nexusSensorPresentationPanelMock"]
+        gradeNames: ["gpii.nexusSensorSonificationPanel", "gpii.nexusSensorPresentationPanelMock"],
+        dynamicComponentContainerOptions: {
+            // fluid.stringTemplate
+            containerIndividualClassTemplate: "nexus-nexusSensorSonificationPanel-sensorDisplay-%sensorId"
+        }
     });
 
 }());

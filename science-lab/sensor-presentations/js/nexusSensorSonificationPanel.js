@@ -10,47 +10,40 @@
             "fakeSensorPH": "gpii.sensorPlayer.pH",
             "phSensor": "gpii.sensorPlayer.pH"
         },
+        dynamicComponentContainerOptions: {
+            // fluid.stringTemplate
+            containerIndividualClassTemplate: "nexus-nexusSensorSonificationPanel-sensorDisplay-%sensorId"
+        },
         defaultSensorPresentationGrade: "gpii.sensorPlayer",
-        dynamicComponents: {
-            sensorPresenter: {
-                type: "@expand:gpii.nexusSensorPresentationPanel.getSensorPresenterType({that}, {arguments}.0)",
-                createOnEvent: "onSensorAppearance",
-                options: "@expand:gpii.nexusSensorSonificationPanel.getSensorPresenterOptions({arguments}.0, {arguments}.1)"
+        invokers: {
+            "generatePresenterOptionsBlock": {
+                funcName: "gpii.nexusSensorSonificationPanel.getSensorPresenterOptionsBlock",
+                args: ["{arguments}.0", "{arguments}.1", "{arguments}.2"]
             }
         }
     });
 
-    // expander function; used to generate sensor sonifiers as sensors
-    // are attached; dynamically configures model characteristics and
-    // container for display / controls based on the sensorId
-    gpii.nexusSensorSonificationPanel.getSensorPresenterOptions = function (sensorId, sensorName) {
-
-        var sensorModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
-
-        var sensorContainerClass = "nexus-nexusSensorSonificationPanel-sensorDisplay-" + sensorId;
-
-        var sensorPlayerListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorContainerClass, sensorName);
-
-        var sensorPlayerOptions =
+    gpii.nexusSensorSonificationPanel.getSensorPresenterOptionsBlock = function (sensorPresenterModelOptions, sensorPresenterListenerOptions, sensorPresenterContainerClass) {
+        var optionsBlock =
         {
             events: {
                 onSensorDisplayContainerAppended: null
             },
-            listeners: sensorPlayerListenerOptions,
+            listeners: sensorPresenterListenerOptions,
             components: {
                 sensor: {
                     options: {
-                        model: sensorModelOptions
+                        model: sensorPresenterModelOptions
                     }
                 },
                 sensorSonifierDisplay: {
                     type: "gpii.nexusSensorSonificationPanel.sensorSonifierDisplay",
-                    container: "." + sensorContainerClass,
+                    container: "." + sensorPresenterContainerClass,
                     createOnEvent: "{sensorPlayer}.events.onSensorDisplayContainerAppended"
                 }
             }
         };
-        return sensorPlayerOptions;
+        return optionsBlock;
     };
 
     fluid.defaults("gpii.nexusSensorSonificationPanel.sensorSonifierDisplay", {

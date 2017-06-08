@@ -12,7 +12,16 @@
         },
         dynamicComponentContainerOptions: {
             fadeOut: true,
-            containerGlobalClass: "nexus-nexusSensorPresentationPanel-sensorDisplay"
+            containerGlobalClass: "nexus-nexusSensorPresentationPanel-sensorDisplay",
+            // fluid.stringTemplate
+            containerIndividualClassTemplate: "nexus-nexusSensorPresentationPanel-sensorDisplay-%sensorId"
+        },
+        dynamicComponents: {
+            sensorPresenter: {
+                type: "@expand:gpii.nexusSensorPresentationPanel.getSensorPresenterType({that}, {arguments}.0)",
+                createOnEvent: "onSensorAppearance",
+                options: "@expand:gpii.nexusSensorPresentationPanel.getSensorPresenterOptions({arguments}.0, {arguments}.1, {arguments}.2)"
+            }
         },
         members: {
             nexusPeerComponentPath: "scienceLabCollector",
@@ -38,6 +47,20 @@
             }
         }
     });
+
+    // expander function; used to generate sensor sonifiers as sensors
+    // are attached; dynamically configures model characteristics and
+    // container for display / controls based on the sensorId
+    gpii.nexusSensorPresentationPanel.getSensorPresenterOptions = function (sensorId, sensorName, sensorPresentationPanel) {
+
+        var sensorPresenterModelOptions = gpii.nexusSensorPresentationPanel.getSensorModelOptions(sensorId);
+
+        var sensorPresenterContainerClass = fluid.stringTemplate(sensorPresentationPanel.options.dynamicComponentContainerOptions.containerIndividualClassTemplate, {sensorId: sensorId});
+
+        var sensorPresenterListenerOptions = gpii.nexusSensorPresentationPanel.getSensorPresenterListenerOptions(sensorId, sensorPresenterContainerClass, sensorName);
+
+        return sensorPresentationPanel.generatePresenterOptionsBlock (sensorPresenterModelOptions, sensorPresenterListenerOptions, sensorPresenterContainerClass);
+    };
 
     // Allows specific grades for specific sensors
     // See visualization or sonification panels for implementation structure
@@ -66,7 +89,7 @@
             var sensorId = sensor.sensorId,
                 sensorName = sensor.name;
             if(! that.attachedSensors[sensorId]) {
-                that.events.onSensorAppearance.fire(sensorId, sensorName);
+                that.events.onSensorAppearance.fire(sensorId, sensorName, that);
                 that.attachedSensors[sensorId] = true;
             }
         });
@@ -207,13 +230,8 @@
     // removed sensor IDs and invoke its own destroy function
     // if it matches a removed sensor ID
     gpii.nexusSensorPresentationPanel.checkForRemoval = function (sensorPresenter, sensor, removedSensorIds) {
-        console.log("gpii.nexusSensorPresentationPanel.checkForRemoval");
-        console.log(sensorPresenter, sensor, removedSensorIds);
-        console.log(sensorPresenter);
         if(fluid.contains(removedSensorIds,fluid.get(sensor.model, "sensorId"))) {
-            console.log("this sensorPresenter should be removed");
             sensorPresenter.destroy();
-            console.log(sensorPresenter);
         }
     };
 
