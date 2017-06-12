@@ -24,7 +24,7 @@
                 // container: ""
             }
         }
-    })
+    });
 
     gpii.tests.mockSensorVisualizerFactory = function (sensorVisualizerGrade, visualizerContainer) {
         return sensorVisualizerGrade({
@@ -34,17 +34,16 @@
                     container: visualizerContainer
                 }
             }
-        })
+        });
     };
 
     $(document).ready(function () {
 
         var realTimeScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.realTimeScale, "#visualizer-realTimeScale");
 
-        var circularPercentageScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.circleRadius, "#visualizer-circularPercentageScale")
+        var circularPercentageScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.circleRadius, "#visualizer-circularPercentageScale");
 
         var horizontalBarPercentageScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.horizontalBar, "#visualizer-horizontalBarPercentageScale");
-
     })
 
 }());

@@ -5,7 +5,7 @@
     // actually connect to the Nexus, but has the same
     // behaviours from the PoV of a grade using it
     //
-    // Having the Nexus "send" is a matter of updating the
+    // Having the Nexus "send" a change is a matter of updating the
     // appropriate model path intended to be attached via the
     // nexusBoundModelPath member
 
@@ -37,11 +37,11 @@
     }
 );
 
-gpii.nexusWebSocketBoundComponentMock.bindModel = function (that, shouldRegisterMessageListener, messageListener, onWebsocketConnectedEvent) {
+gpii.nexusWebSocketBoundComponentMock.bindModel = function () {
     return;
 };
 
-gpii.nexusWebSocketBoundComponentMock.registerModelListener = function (shouldRegisterModelChangeListener, applier, modelPath, modelChangeListener) {
+gpii.nexusWebSocketBoundComponentMock.registerModelListener = function () {
     return;
 };
 
