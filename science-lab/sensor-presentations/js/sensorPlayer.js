@@ -204,7 +204,21 @@
         }
     });
 
+    gpii.sensorPlayer.transforms.clampInput = function (input, inputScaleMax, inputScaleMin) {
+        if(input > inputScaleMax) {
+            input = inputScaleMax;
+        } else if (input < inputScaleMin) {
+            input = inputScaleMin;
+        }
+        return input;
+    };
+
     gpii.sensorPlayer.transforms.minMaxScale = function (input, extraInputs) {
+        var inputScaleMax = extraInputs.inputScaleMax(),
+            inputScaleMin = extraInputs.inputScaleMin();
+
+        input = gpii.sensorPlayer.transforms.clampInput(input, inputScaleMax, inputScaleMin);
+
         var scaledValue = ((extraInputs.outputScaleMax() - extraInputs.outputScaleMin()) * (input - extraInputs.inputScaleMin()) / (extraInputs.inputScaleMax() - extraInputs.inputScaleMin())) + extraInputs.outputScaleMin();
         return scaledValue;
     };
@@ -226,6 +240,8 @@
             inputScaleMin = extraInputs.inputScaleMin(),
             outputScaleMax = extraInputs.outputScaleMax(),
             outputScaleMin = extraInputs.outputScaleMin();
+
+            input = gpii.sensorPlayer.transforms.clampInput(input, inputScaleMax, inputScaleMin);
 
             // Get the input midpoint
             var inputMidpoint = (inputScaleMin + inputScaleMax) / 2;
@@ -382,7 +398,7 @@
         }
     });
 
-    gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSonifier) {        
+    gpii.sensorPlayer.sensorDisplayDebug.bindSynthControls = function (that, sensorSonifier) {
         var muteControl = that.locate("muteControl");
         var midpointToneControl = that.locate("midpointToneControl");
 
