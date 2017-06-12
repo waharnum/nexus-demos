@@ -20,6 +20,11 @@
     fluid.defaults("gpii.nexusSensorVisualizer.circleRadius", {
         gradeNames: ["gpii.nexusSensorVisualizerBase"],
         components: {
+            sensor: {
+                options: {
+                    gradeNames: ["gpii.nexusSensorVisualizer.sensorPercentage"]
+                }
+            },
             visualizer: {
                 type: "gpii.nexusSensorVisualizer.circleRadius.visualizer"
             }
@@ -27,12 +32,12 @@
     });
 
     fluid.defaults("gpii.nexusSensorVisualizer.circleRadius.visualizer", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "gpii.nexusSensorVisualizer.sensorPercentage", "fluid.viewComponent"],
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter",  "fluid.viewComponent"],
         selectors: {
             circle: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
         },
         modelListeners: {
-            "sensorPercentage": {
+            "{sensor}.model.sensorPercentage": {
                 funcName: "gpii.nexusSensorVisualizer.circleRadius.visualizer.updateVisualization",
                 args: ["{that}", "{change}"]
             }
@@ -59,6 +64,11 @@
     fluid.defaults("gpii.nexusSensorVisualizer.horizontalBar", {
         gradeNames: ["gpii.nexusSensorVisualizerBase"],
         components: {
+            sensor: {
+                options: {
+                    gradeNames: ["gpii.nexusSensorVisualizer.sensorPercentage"]
+                }
+            },
             visualizer: {
                 type: "gpii.nexusSensorVisualizer.horizontalBar.visualizer"
             }
@@ -66,12 +76,12 @@
     });
 
     fluid.defaults("gpii.nexusSensorVisualizer.horizontalBar.visualizer", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "gpii.nexusSensorVisualizer.sensorPercentage", "fluid.viewComponent"],
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "fluid.viewComponent"],
         selectors: {
             bar: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-bar"
         },
         modelListeners: {
-            "sensorPercentage": {
+            "{sensor}.model.sensorPercentage": {
                 funcName: "gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization",
                 args: ["{that}", "{change}"]
             }
