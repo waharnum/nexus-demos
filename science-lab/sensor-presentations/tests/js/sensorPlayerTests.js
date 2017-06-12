@@ -64,12 +64,24 @@
                 "gpii.sensorPlayer.transforms.minMaxScale": 200,
                 "gpii.sensorPlayer.transforms.polarityScale": 680
             }
+        },
+        {
+            message: "Negative and positive values, midpoint input",
+            inputValue: 0,
+            inputScaleMax: 25,
+            inputScaleMin: -25,
+            outputScaleMax: 100,
+            outputScaleMin: -100,
+            expectedOutputValues: {
+                "gpii.sensorPlayer.transforms.minMaxScale": 0,
+                "gpii.sensorPlayer.transforms.polarityScale": -100
+            }
         }
     ];
 
     var testTransforms = function (transformType, testSpecs) {
         jqUnit.test("Test transforms - " + transformType, function() {
-            jqUnit.expect(5);
+            jqUnit.expect(6);
             fluid.each(testSpecs, function (testSpec) {
 
                 var transformDef = {
