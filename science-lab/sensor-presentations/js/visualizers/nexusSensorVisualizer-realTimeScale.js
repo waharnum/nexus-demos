@@ -29,7 +29,7 @@
     });
 
     fluid.defaults("gpii.nexusSensorVisualizer.realTimeScale.visualizer", {
-        gradeNames: ["floe.svgDrawingArea"],
+        gradeNames: ["gpii.nexusVisualizerBase", "floe.svgDrawingArea"],
         model: {
             svgTitle: "An animated real-time scale.",
             svgDescription: "An animated real-time scale."
@@ -138,7 +138,11 @@
                 "y": function() {
                   return visualizer.yScale(change.value);
                 }
-                });
+                })
+            .each("end", function() {
+                console.log("end");
+                visualizer.events.onUpdateCompleted.fire();
+            });
 
     };
 

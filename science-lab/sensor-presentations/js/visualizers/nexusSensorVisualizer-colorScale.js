@@ -30,7 +30,7 @@
 
     // A generic color scale with an indicator, y-axis and labels
     fluid.defaults("gpii.nexusSensorVisualizer.colorScale.visualizer", {
-        gradeNames: ["floe.svgDrawingArea"],
+        gradeNames: ["gpii.nexusVisualizerBase", "floe.svgDrawingArea"],
         model: {
             svgTitle: "An animated scale.",
             svgDescription: "An animated scale."

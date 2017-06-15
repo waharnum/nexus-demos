@@ -26,24 +26,49 @@
         }
     });
 
-    gpii.tests.mockSensorVisualizerFactory = function (sensorVisualizerGrade, visualizerContainer) {
+    gpii.tests.mockSensorVisualizerFactory = function (sensorVisualizerGrade, visualizerContainer, visualizerOptions) {
+
         return sensorVisualizerGrade({
             gradeNames: ["gpii.tests.testVisualizerBase"],
             components: {
                 visualizer: {
-                    container: visualizerContainer
+                    container: visualizerContainer,
+                    options: visualizerOptions
                 }
             }
         });
     };
 
-    $(document).ready(function () {
+    gpii.tests.verifyIndicator = function (indicator, checkAttribute, expectedValue) {
+        console.log(indicator);
+        var message = fluid.stringTemplate("Attribute '%checkAttribute' is expected value of %expectedValue", {checkAttribute: checkAttribute, expectedValue: expectedValue});
+        jqUnit.assertEquals(message, expectedValue, indicator.attr(checkAttribute));
+    };
 
+    jqUnit.test("Test real-time scale", function() {
         var realTimeScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.realTimeScale, "#visualizer-realTimeScale");
 
-        var circularPercentageScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.circleRadius, "#visualizer-circularPercentageScale");
+        gpii.tests.verifyIndicator(realTimeScale.visualizer.locate("sensorValueIndicator"), "height", "230");
 
-        var horizontalBarPercentageScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.horizontalBar, "#visualizer-horizontalBarPercentageScale");
+        realTimeScale.sensor.applier.change("sensorValue", 100);
+
+        gpii.tests.verifyIndicator(realTimeScale.visualizer.locate("sensorValueIndicator"), "height", "460");
+
+    });
+
+    jqUnit.test("Test color scale", function() {
+        var colorScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.colorScale, "#visualizer-colorScale", {scaleOptions: {colors: ["#FF0000","#00FF00", "#0000FF"]}});
+
+        gpii.tests.verifyIndicator(colorScale.visualizer.locate("indicator"), "transform", "translate(40, 235)");
+    });
+
+    $(document).ready(function () {
+
+        // var circularPercentageScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.circleRadius, "#visualizer-circularPercentageScale");
+        //
+        // var horizontalBarPercentageScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.horizontalBar, "#visualizer-horizontalBarPercentageScale");
+        //
+        // var colorScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.colorScale, "#visualizer-colorScale", {scaleOptions: {colors: ["#FF0000","#00FF00", "#0000FF"]}});
     })
 
 }());

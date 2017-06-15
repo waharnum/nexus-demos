@@ -77,4 +77,10 @@
         }
     });
 
+    fluid.defaults("gpii.nexusVisualizerBase", {
+        events: {
+            onUpdateCompleted: null
+        }
+    });
+
 }());
