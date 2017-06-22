@@ -19,7 +19,7 @@
                     },
                     modelListeners: {
                         "{colorScale}.sensor.model.sensorValue": {
-                            funcName: "gpii.nexusSensorVisualizer.colorScale.visualizer.updateVisualization",
+                            funcName: "{that}.updateVisualizer",
                             args: ["{that}", "{change}"]
                         }
                     }
@@ -82,6 +82,9 @@
             createVisualizer: {
                 funcName: "gpii.nexusSensorVisualizer.colorScale.visualizer.createVisualizer",
                 args: ["{that}"]
+            },
+            updateVisualizer: {
+                funcName: "gpii.nexusSensorVisualizer.colorScale.visualizer.updateVisualization"
             }
         },
         listeners: {

@@ -42,7 +42,7 @@
         },
         modelListeners: {
             "{sensor}.model.sensorPercentage": {
-                funcName: "gpii.nexusSensorVisualizer.circleRadius.visualizer.updateVisualization",
+                funcName: "{that}.updateVisualizer",
                 args: ["{that}", "{change}"]
             }
         },
@@ -50,6 +50,9 @@
             createVisualizer: {
                 funcName: "gpii.nexusSensorVisualizer.circleRadius.visualizer.createVisualizer",
                 args: ["{that}", "{sensor}.model.sensorPercentage"]
+            },
+            updateVisualizer: {
+                funcName: "gpii.nexusSensorVisualizer.circleRadius.visualizer.updateVisualization"
             }
         }
     });
@@ -117,7 +120,7 @@
         },
         modelListeners: {
             "{sensor}.model.sensorPercentage": {
-                funcName: "gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization",
+                funcName: "{that}.updateVisualizer",
                 args: ["{that}", "{change}"]
             }
         },
@@ -125,6 +128,10 @@
             createVisualizer: {
                 funcName: "gpii.nexusSensorVisualizer.horizontalBar.visualizer.createVisualizer",
                 args: ["{that}", "{sensor}.model.sensorPercentage"]
+            },
+            updateVisualizer: {
+                funcName:
+                "gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization"
             }
         }
     });

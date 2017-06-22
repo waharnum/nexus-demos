@@ -85,6 +85,9 @@
         invokers: {
             "createVisualizer": {
                 funcName: "fluid.notImplemented"
+            },
+            "updateVisualizer": {
+                funcName: "fluid.notImplemented"
             }
         },
         visualizerOptions: {

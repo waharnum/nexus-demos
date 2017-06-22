@@ -19,7 +19,7 @@
                     },
                     modelListeners: {
                         "{realTimeScale}.sensor.model.sensorValue": {
-                            funcName: "gpii.nexusSensorVisualizer.realTimeScale.visualizer.updateVisualization",
+                            funcName: "{that}.updateVisualizer",
                             args: ["{that}", "{change}"]
                         }
                     }
@@ -55,6 +55,9 @@
             "createVisualizer": {
                 funcName: "gpii.nexusSensorVisualizer.realTimeScale.visualizer.createRealTimeVisualizer",
                 args: ["{that}"]
+            },
+            "updateVisualizer": {
+                funcName: "gpii.nexusSensorVisualizer.realTimeScale.visualizer.updateVisualization"
             }
         }
     });
