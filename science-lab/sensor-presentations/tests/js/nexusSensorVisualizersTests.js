@@ -287,10 +287,6 @@
         jqUnit.assertEquals(message, expectedValue, indicator.attr(checkAttribute));
     };
 
-    gpii.tests.verifyColorScale = function (colorScale) {
-        console.log(colorScale);
-    };
-
     gpii.tests.realTimeVisualizerTests();
     gpii.tests.circularPercentageScaleVisualizerTests();
     gpii.tests.horizontalBarPercentageScaleVisualizerTests();
