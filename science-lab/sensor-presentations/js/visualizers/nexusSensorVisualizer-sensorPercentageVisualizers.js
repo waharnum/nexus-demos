@@ -32,9 +32,9 @@
     });
 
     fluid.defaults("gpii.nexusSensorVisualizer.circleRadius.visualizer", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter",  "fluid.viewComponent"],
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter",  "gpii.nexusVisualizerBase"],
         selectors: {
-            circle: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
+            sensorValueIndicator: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
         },
         modelListeners: {
             "{sensor}.model.sensorPercentage": {
@@ -42,23 +42,47 @@
                 args: ["{that}", "{change}"]
             }
         },
-        listeners: {
-            "onCreate.appendCircle": {
-                "this": "{that}.container",
-                method: "html",
-                args: {
-                expander: {
-                        funcName: "fluid.stringTemplate",
-                        args: ["<h2>%description</h2> <br/> <svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circleOutline\" cx=\"100\" cy=\"100\" r=\"100\" fill=\"red\" /><circle class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-circle\" cx=\"100\" cy=\"100\" r=\"0\" /></svg>", "{sensor}.model"]
-                    }
-                }
+        invokers: {
+            createVisualizer: {
+                funcName: "gpii.nexusSensorVisualizer.circleRadius.visualizer.createVisualizer",
+                args: ["{that}", "{sensor}.model.sensorPercentage"]
             }
         }
     });
 
+    gpii.nexusSensorVisualizer.circleRadius.visualizer.createVisualizer = function (that, initialSensorValue) {
+        var svg = that.svg;
+
+        // Background circle
+        svg.append("circle")
+            .attr({
+                "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-circleOutline",
+                cx: "100",
+                cy: "100",
+                r: "100",
+                fill: "red"
+            });
+
+        // Indicator circle
+        that.sensorValueIndicator = svg.append("circle")
+            .attr({
+                "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-circle",
+                cx: "100",
+                cy: "100",
+                r: initialSensorValue,
+                fill: "black"
+            });
+    };
+
     gpii.nexusSensorVisualizer.circleRadius.visualizer.updateVisualization = function (visualizer, change) {
-        var circle = visualizer.locate("circle");
-        circle.animate({"r": change.value}, 500);
+        var circle = visualizer.sensorValueIndicator;
+        circle
+        .transition()
+        .duration(1000)
+        .attr("r", change.value)
+        .each("end", function() {
+            visualizer.events.onUpdateCompleted.fire();
+        });
     };
 
     fluid.defaults("gpii.nexusSensorVisualizer.horizontalBar", {
@@ -76,9 +100,9 @@
     });
 
     fluid.defaults("gpii.nexusSensorVisualizer.horizontalBar.visualizer", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "fluid.viewComponent"],
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "gpii.nexusVisualizerBase"],
         selectors: {
-            bar: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-bar"
+            sensorValueIndicator: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-bar"
         },
         modelListeners: {
             "{sensor}.model.sensorPercentage": {
@@ -86,22 +110,44 @@
                 args: ["{that}", "{change}"]
             }
         },
-        listeners: {
-            "onCreate.appendBar": {
-                "this": "{that}.container",
-                method: "html",
-                args: {
-                expander: {
-                        funcName: "fluid.stringTemplate",
-                        args: ["<h2>%description</h2> <br/> <svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"><rect class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-barBackground\" width=\"200\" height=\"100\" fill=\"red\" /><rect class=\"nexus-nexusSensorVisualizationPanel-sensorDisplay-bar\" width=\"0\" height=\"100\" fill=\"blue\" /></svg>", "{sensor}.model"]
-                    }
-                }
+        invokers: {
+            createVisualizer: {
+                funcName: "gpii.nexusSensorVisualizer.horizontalBar.visualizer.createVisualizer",
+                args: ["{that}", "{sensor}.model.sensorPercentage"]
             }
         }
     });
 
+    gpii.nexusSensorVisualizer.horizontalBar.visualizer.createVisualizer = function (that, initialValue) {
+        var svg = that.svg;
+
+        svg.append("rect")
+            .attr({
+                "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-barBackground",
+                width: "200",
+                height: "100",
+                fill: "red"
+            });
+
+        that.sensorValueIndicator = svg.append("rect")
+            .attr({
+                "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-bar",
+                width: initialValue * 2,
+                height: "100",
+                fill: "blue"
+            });
+    };
+
     gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization = function (visualizer, change) {
-        var circle = visualizer.locate("bar");
-        circle.animate({"width": change.value * 2}, 500);
+        console.log(change.value);
+        var bar = visualizer.sensorValueIndicator;
+
+        bar
+        .transition()
+        .duration(1000)
+        .attr("width", change.value * 2)
+        .each("end", function() {
+            visualizer.events.onUpdateCompleted.fire();
+        });
     };
 }());

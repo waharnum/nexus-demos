@@ -56,18 +56,6 @@
                 funcName: "gpii.nexusSensorVisualizer.realTimeScale.visualizer.createRealTimeVisualizer",
                 args: ["{that}"]
             }
-        },
-        listeners: {
-            "onCreate.prependSensorTitle": {
-                "this": "{that}.container",
-                method: "prepend",
-                args: {
-                    expander: {
-                        funcName: "fluid.stringTemplate",
-                        args: ["<h2>%description</h2>", "{sensor}.model"]
-                    }
-                }
-            }
         }
     });
 
