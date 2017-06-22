@@ -36,7 +36,7 @@
             svgDescription: "An animated scale."
         },
         selectors: {
-            indicator: ".nexusc-indicator"
+            sensorValueIndicator: ".nexusc-indicator"
         },
         scaleOptions: {
             min: 0,
@@ -279,7 +279,7 @@
         svg.append("path")
         .attr({
             "class" : "nexusc-indicator",
-            "transform": "translate(40, "+ pointLocation +")",
+            "transform": "translate(40,"+ pointLocation +")",
             "fill": function() {
                 return that.getIndicatorColor(startingValue);
             },
@@ -329,8 +329,11 @@
             .transition()
             .duration(1000)
             .attr({
-                "transform": "translate(40, "+ newIndicatorLocation +")",
+                "transform": "translate(40,"+ newIndicatorLocation +")",
                 "fill": newIndicatorColor
+            })
+            .each("end", function() {
+                that.events.onUpdateCompleted.fire();
             });
     };
 

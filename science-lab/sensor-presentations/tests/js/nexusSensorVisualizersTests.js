@@ -41,7 +41,7 @@
         }
     });
 
-    gpii.tests.generateVisualizerTestSequence = function(testSpec) {
+    gpii.tests.generateVisualizerIndicatorTestSequence = function(testSpec) {
         var sequence = [];
 
         fluid.each(testSpec.sequence, function (sequenceItem) {
@@ -112,7 +112,7 @@
             tests: [{
                 name: "Test indicator response to sensor model changes",
                 expect: 4,
-                sequence: gpii.tests.generateVisualizerTestSequence(gpii.tests.realTimeVisualizerTestSequence)
+                sequence: gpii.tests.generateVisualizerIndicatorTestSequence(gpii.tests.realTimeVisualizerTestSequence)
             }]
         }]
     });
@@ -165,7 +165,7 @@
             tests: [{
                 name: "Test indicator response to sensor model changes",
                 expect: 4,
-                sequence: gpii.tests.generateVisualizerTestSequence(gpii.tests.circularPercentageScaleVisualizerTestSequence)
+                sequence: gpii.tests.generateVisualizerIndicatorTestSequence(gpii.tests.circularPercentageScaleVisualizerTestSequence)
             }]
         }]
     });
@@ -218,7 +218,66 @@
             tests: [{
                 name: "Test indicator response to sensor model changes",
                 expect: 4,
-                sequence: gpii.tests.generateVisualizerTestSequence(gpii.tests.horizontalBarPercentageScaleVisualizerTestSequence)
+                sequence: gpii.tests.generateVisualizerIndicatorTestSequence(gpii.tests.horizontalBarPercentageScaleVisualizerTestSequence)
+            }]
+        }]
+    });
+
+    fluid.defaults("gpii.tests.colorScaleVisualizerTests", {
+        gradeNames: ["gpii.tests.visualizerTestsBase"],
+        components: {
+            visualizerTester: {
+                type: "gpii.tests.colorScaleVisualizerTester"
+            },
+            sensorVisualizer: {
+                type: "gpii.nexusSensorVisualizer.colorScale",
+                options: {
+                    components: {
+                        visualizer: {
+                            container: "#visualizer-colorScale",
+                            options: {
+                                scaleOptions: {
+                                    colors: ["#FF0000","#00FF00", "#0000FF"]
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    gpii.tests.colorScaleVisualizerTestSequence = {
+            checkAttribute: "transform",
+            sequence: [
+                {
+                    sensorValue: 50,
+                    attributeValue: "translate(40,235)"
+                },
+                {
+                    sensorValue: 25,
+                    attributeValue: "translate(40,350)"
+                },
+                {
+                    sensorValue: 75,
+                    attributeValue: "translate(40,120)"
+                },
+                {
+                    sensorValue: 100,
+                    attributeValue: "translate(40,5)"
+                }
+            ]
+    };
+
+    fluid.defaults("gpii.tests.colorScaleVisualizerTester", {
+        gradeNames: ["fluid.test.testCaseHolder"],
+        modules: [{
+            name: "Test color scale visualizer",
+            tests: [{
+                name: "Test indicator response to sensor model changes",
+                expect: 4,
+                sequence: gpii.tests.generateVisualizerIndicatorTestSequence(gpii.tests.colorScaleVisualizerTestSequence)
             }]
         }]
     });
@@ -228,8 +287,13 @@
         jqUnit.assertEquals(message, expectedValue, indicator.attr(checkAttribute));
     };
 
+    gpii.tests.verifyColorScale = function (colorScale) {
+        console.log(colorScale);
+    };
+
     gpii.tests.realTimeVisualizerTests();
     gpii.tests.circularPercentageScaleVisualizerTests();
     gpii.tests.horizontalBarPercentageScaleVisualizerTests();
+    gpii.tests.colorScaleVisualizerTests();
 
 }());
