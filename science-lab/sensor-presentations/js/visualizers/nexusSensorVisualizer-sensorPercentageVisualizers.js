@@ -138,8 +138,7 @@
             });
     };
 
-    gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization = function (visualizer, change) {
-        console.log(change.value);
+    gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization = function (visualizer, change) {        
         var bar = visualizer.sensorValueIndicator;
 
         bar
