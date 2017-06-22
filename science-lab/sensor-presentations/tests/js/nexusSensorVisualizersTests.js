@@ -9,6 +9,12 @@
         components: {
             visualizerTester: {
                 type: "gpii.tests.visualizerTester"
+            },
+            sensorVisualizer: {
+                createOnEvent: "{visualizerTester}.events.onTestCaseStart",
+                options: {
+                    gradeNames: ["gpii.tests.testVisualizerBase"]
+                }
             }
         }
     });
@@ -35,28 +41,6 @@
         }
     });
 
-    fluid.defaults("gpii.tests.realTimeVisualizerTests", {
-        gradeNames: ["gpii.tests.visualizerTestsBase"],
-        components: {
-            visualizerTester: {
-                type: "gpii.tests.realTimeVisualizerTester"
-            },
-            sensorVisualizer: {
-                type: "gpii.tests.testRealTimeVisualizer",
-                createOnEvent: "{visualizerTester}.events.onTestCaseStart"
-            }
-        }
-    });
-
-    fluid.defaults("gpii.tests.testRealTimeVisualizer", {
-        gradeNames: ["gpii.nexusSensorVisualizer.realTimeScale", "gpii.tests.testVisualizerBase"],
-        components: {
-            visualizer: {
-                container: "#visualizer-realTimeScale"
-            }
-        }
-    });
-
     gpii.tests.generateVisualizerTestSequence = function(testSpec) {
         var sequence = [];
 
@@ -76,6 +60,25 @@
         });
         return sequence;
     };
+
+    fluid.defaults("gpii.tests.realTimeVisualizerTests", {
+        gradeNames: ["gpii.tests.visualizerTestsBase"],
+        components: {
+            visualizerTester: {
+                type: "gpii.tests.realTimeVisualizerTester"
+            },
+            sensorVisualizer: {
+                type: "gpii.nexusSensorVisualizer.realTimeScale",
+                options: {
+                    components: {
+                        visualizer: {
+                            container: "#visualizer-realTimeScale"
+                        }
+                    }
+                }
+            }
+        }
+    });
 
     gpii.tests.realTimeVisualizerTestSequence = {
             checkAttribute: "height",
@@ -121,17 +124,14 @@
                 type: "gpii.tests.circularPercentageScaleVisualizerTester"
             },
             sensorVisualizer: {
-                type: "gpii.tests.testCircularPercentageScaleVisualizer",
-                createOnEvent: "{visualizerTester}.events.onTestCaseStart"
-            }
-        }
-    });
-
-    fluid.defaults("gpii.tests.testCircularPercentageScaleVisualizer", {
-        gradeNames: ["gpii.nexusSensorVisualizer.circleRadius", "gpii.tests.testVisualizerBase"],
-        components: {
-            visualizer: {
-                container: "#visualizer-circularPercentageScale"
+                type: "gpii.nexusSensorVisualizer.circleRadius",
+                options: {
+                    components: {
+                        visualizer: {
+                            container: "#visualizer-circularPercentageScale"
+                        }
+                    }
+                }
             }
         }
     });
@@ -177,17 +177,14 @@
                 type: "gpii.tests.horizontalBarPercentageScaleVisualizerTester"
             },
             sensorVisualizer: {
-                type: "gpii.tests.testHorizontalBarPercentageScaleVisualizer",
-                createOnEvent: "{visualizerTester}.events.onTestCaseStart"
-            }
-        }
-    });
-
-    fluid.defaults("gpii.tests.testHorizontalBarPercentageScaleVisualizer", {
-        gradeNames: ["gpii.nexusSensorVisualizer.horizontalBar", "gpii.tests.testVisualizerBase"],
-        components: {
-            visualizer: {
-                container: "#visualizer-horizontalBarPercentageScale"
+                type: "gpii.nexusSensorVisualizer.horizontalBar",
+                options: {
+                    components: {
+                        visualizer: {
+                            container: "#visualizer-horizontalBarPercentageScale"
+                        }
+                    }
+                }
             }
         }
     });
