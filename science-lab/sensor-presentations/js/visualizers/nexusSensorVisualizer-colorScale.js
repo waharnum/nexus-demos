@@ -78,6 +78,10 @@
             getIndicatorColor: {
                 funcName: "gpii.nexusSensorVisualizer.colorScale.visualizer.getIndicatorColor",
                 args: ["{that}", "{arguments}.0"]
+            },
+            createVisualizer: {
+                funcName: "gpii.nexusSensorVisualizer.colorScale.visualizer.createVisualizer",
+                args: ["{that}"]
             }
         },
         listeners: {
@@ -93,11 +97,6 @@
             },
             "onCreate.createBaseSVGDrawingArea": {
                 func: "{that}.createBaseSVGDrawingArea"
-            },
-            "onCreate.createVisualizer": {
-                funcName: "gpii.nexusSensorVisualizer.colorScale.visualizer.createVisualizer",
-                args: ["{that}"],
-                priority: "after:createBaseSVGDrawingArea"
             }
         }
     });

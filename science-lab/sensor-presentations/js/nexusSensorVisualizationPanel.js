@@ -59,7 +59,7 @@
         return optionsBlock;
     };
 
-    // Abstract grade used by visualizers
+    // Abstract grade used by sensor visualizer
     fluid.defaults("gpii.nexusSensorVisualizerBase", {
         gradeNames: ["fluid.component"],
         events: {
@@ -78,8 +78,23 @@
     });
 
     fluid.defaults("gpii.nexusVisualizerBase", {
+        gradeNames: ["floe.svgDrawingArea"],
         events: {
             onUpdateCompleted: null
+        },
+        invokers: {
+            "createVisualizer": {
+                funcName: "fluid.notImplemented"
+            }
+        },
+        listeners: {
+            "onCreate.createBaseSVGDrawingArea": {
+                func: "{that}.createBaseSVGDrawingArea"
+            },
+            "onCreate.createVisualizer": {
+                funcName: "{that}.createVisualizer",
+                priority: "after:createBaseSVGDrawingArea"
+            }
         }
     });
 

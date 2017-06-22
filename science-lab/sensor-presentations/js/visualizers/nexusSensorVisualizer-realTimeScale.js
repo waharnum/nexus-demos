@@ -29,7 +29,7 @@
     });
 
     fluid.defaults("gpii.nexusSensorVisualizer.realTimeScale.visualizer", {
-        gradeNames: ["gpii.nexusVisualizerBase", "floe.svgDrawingArea"],
+        gradeNames: ["gpii.nexusVisualizerBase"],
         model: {
             svgTitle: "An animated real-time scale.",
             svgDescription: "An animated real-time scale."
@@ -51,6 +51,12 @@
         indicatorOptions: {
             startingValue: 7
         },
+        invokers: {
+            "createVisualizer": {
+                funcName: "gpii.nexusSensorVisualizer.realTimeScale.visualizer.createRealTimeVisualizer",
+                args: ["{that}"]
+            }
+        },
         listeners: {
             "onCreate.prependSensorTitle": {
                 "this": "{that}.container",
@@ -61,14 +67,6 @@
                         args: ["<h2>%description</h2>", "{sensor}.model"]
                     }
                 }
-            },
-            "onCreate.createBaseSVGDrawingArea": {
-                func: "{that}.createBaseSVGDrawingArea"
-            },
-            "onCreate.createRealTimeVisualizer": {
-                funcName: "gpii.nexusSensorVisualizer.realTimeScale.visualizer.createRealTimeVisualizer",
-                args: ["{that}"],
-                priority: "after:createBaseSVGDrawingArea"
             }
         }
     });
