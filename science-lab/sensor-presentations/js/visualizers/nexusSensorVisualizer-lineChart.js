@@ -17,12 +17,6 @@
                         yScaleMaxTransform: {
                             "literalValue": "{sensor}.model.sensorMax"
                         }
-                    },
-                    modelListeners: {
-                        "{sensor}.model.sensorValue": {
-                            func: "gpii.nexusSensorVisualizer.lineChart.accumulateSensorValues",
-                            args: ["{sensorValueAccumulator}", "{visualizer}", "{change}"]
-                        }
                     }
                 }
             },
@@ -62,22 +56,27 @@
     };
 
     fluid.defaults("gpii.nexusSensorVisualizer.lineChart.visualizer", {
-        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "floe.chartAuthoring.lineChart.timeSeriesSingleDataSet"],
-        listeners: {
-            "onCreate.prependSensorTitle": {
-                "this": "{that}.container",
-                method: "prepend",
-                args: {
-                    expander: {
-                        funcName: "fluid.stringTemplate",
-                        args: ["<h2>%description</h2>", "{sensor}.model"]
-                    }
-                }
-            }
+        gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "floe.chartAuthoring.lineChart.timeSeriesSingleDataSet", "gpii.nexusVisualizerBase"],
+        events: {
+            onUpdateCompleted: null
         },
         invokers: {
             transitionChartLine: {
                 funcName: "floe.chartAuthoring.lineChart.timeSeries.line.updateChartLine.defaultTransition"
+            },
+            // Line chart component does this itself
+            createVisualizer: {
+                funcName: "fluid.identity"
+            },
+            updateVisualizer: {
+                funcName: "gpii.nexusSensorVisualizer.lineChart.accumulateSensorValues",
+                args: ["{sensorValueAccumulator}", "{arguments}.0", "{arguments}.1"]
+            }
+        },
+        // Line chart component does this itself
+        listeners: {
+            "onCreate.createBaseSVGDrawingArea": {
+                funcName: "fluid.identity"
             }
         }
     });

@@ -287,6 +287,92 @@
         }]
     });
 
+    fluid.defaults("gpii.tests.lineChartVisualizerTests", {
+        gradeNames: ["gpii.tests.visualizerTestsBase"],
+        components: {
+            visualizerTester: {
+                type: "gpii.tests.lineChartVisualizerTester"
+            },
+            sensorVisualizer: {
+                type: "gpii.nexusSensorVisualizer.lineChart",
+                options: {
+                    components: {
+                        visualizer: {
+                            container: "#visualizer-lineChart"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    gpii.tests.lineChartVisualizerTestSequence = {
+            checkAttribute: "transform",
+            sequence: [
+                {
+                    sensorValue: 50,
+                    attributeValue: "translate(40,235)"
+                },
+                {
+                    sensorValue: 25,
+                    attributeValue: "translate(40,350)"
+                },
+                {
+                    sensorValue: 75,
+                    attributeValue: "translate(40,120)"
+                },
+                {
+                    sensorValue: 100,
+                    attributeValue: "translate(40,5)"
+                }
+            ]
+    };
+
+    fluid.defaults("gpii.tests.lineChartVisualizerTester", {
+        gradeNames: ["fluid.test.testCaseHolder"],
+        modules: [{
+            name: "Test line chart visualizer",
+            tests: [{
+                name: "Test indicator response to sensor model changes",
+                expect: 0,
+                sequence: [
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 25]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 35]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 45]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 85]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 25]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 35]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 45]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 85]
+                    }
+                ]
+            }]
+        }]
+    });
+
     gpii.tests.verifyIndicator = function (indicator, checkAttribute, expectedValue) {
         var message = fluid.stringTemplate("Attribute '%checkAttribute' is expected value of %expectedValue", {checkAttribute: checkAttribute, expectedValue: expectedValue});
         jqUnit.assertEquals(message, expectedValue, indicator.attr(checkAttribute));
@@ -296,5 +382,6 @@
     gpii.tests.circularPercentageScaleVisualizerTests();
     gpii.tests.horizontalBarPercentageScaleVisualizerTests();
     gpii.tests.colorScaleVisualizerTests();
+    gpii.tests.lineChartVisualizerTests();
 
 }());
