@@ -39,7 +39,7 @@
         gradeNames: ["gpii.tests.visualizerTestsBase"],
         components: {
             visualizerTester: {
-                type: "gpii.tests.visualizerTester"
+                type: "gpii.tests.realTimeVisualizerTester"
             },
             sensorVisualizer: {
                 type: "gpii.tests.testRealTimeVisualizer",
@@ -48,17 +48,29 @@
         }
     });
 
-    fluid.defaults("gpii.tests.visualizerTester", {
+    fluid.defaults("gpii.tests.realTimeVisualizerTester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
             name: "Test real-time visualizer",
             tests: [{
-                name: "Test presentation panel sensor create and remove behaviour",
-                expect: 1,
-                sequence: [{
-                    func: "gpii.tests.verifyIndicator",
-                    args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "height", "230"]
-                }]
+                name: "Test indicator response to sensor model changes",
+                expect: 2,
+                sequence: [
+                    {
+                        func: "gpii.tests.verifyIndicator",
+                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "height", "230"]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 75]
+                    },
+                    {
+                        event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
+                        listener: "gpii.tests.verifyIndicator",
+                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "height", "345"]
+                    }
+
+                ]
             }]
         }]
     });
@@ -72,42 +84,11 @@
         }
     });
 
-    gpii.tests.mockSensorVisualizerFactory = function (sensorVisualizerGrade, visualizerContainer, visualizerOptions) {
-
-        return sensorVisualizerGrade({
-            gradeNames: ["gpii.tests.testVisualizerBase"],
-            components: {
-                visualizer: {
-                    container: visualizerContainer,
-                    options: visualizerOptions
-                }
-            }
-        });
-    };
-
     gpii.tests.verifyIndicator = function (indicator, checkAttribute, expectedValue) {
         var message = fluid.stringTemplate("Attribute '%checkAttribute' is expected value of %expectedValue", {checkAttribute: checkAttribute, expectedValue: expectedValue});
         jqUnit.assertEquals(message, expectedValue, indicator.attr(checkAttribute));
     };
 
     gpii.tests.realTimeVisualizerTests();
-
-    // jqUnit.test("Test real-time scale", function() {
-    //     var realTimeScale = gpii.tests.testRealTimeVisualizer();
-    //     console.log(realTimeScale);
-    //
-    //     gpii.tests.verifyIndicator(realTimeScale.visualizer.locate("sensorValueIndicator"), "height", "230");
-    //
-    //     realTimeScale.sensor.applier.change("sensorValue", 100);
-    //
-    //     gpii.tests.verifyIndicator(realTimeScale.visualizer.locate("sensorValueIndicator"), "height", "460");
-    //
-    // });
-    //
-    // jqUnit.test("Test color scale", function() {
-    //     var colorScale = gpii.tests.mockSensorVisualizerFactory(gpii.nexusSensorVisualizer.colorScale, "#visualizer-colorScale", {scaleOptions: {colors: ["#FF0000","#00FF00", "#0000FF"]}});
-    //
-    //     gpii.tests.verifyIndicator(colorScale.visualizer.locate("indicator"), "transform", "translate(40, 235)");
-    // });
 
 }());

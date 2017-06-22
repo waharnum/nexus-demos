@@ -140,7 +140,6 @@
                 }
                 })
             .each("end", function() {
-                console.log("end");
                 visualizer.events.onUpdateCompleted.fire();
             });
 
