@@ -114,9 +114,11 @@
         var h = visualizer.options.svgOptions.height,
             padding = visualizer.options.scaleOptions.padding;
 
+            var transitionDuration = visualizer.options.visualizerOptions.transitionDuration;
+
             visualizer.sensorValueIndicator
             .transition()
-            .duration(1000)
+            .duration(transitionDuration)
             .attr({
                 "height": function() {
                     return (h-padding) - visualizer.yScale(change.value);

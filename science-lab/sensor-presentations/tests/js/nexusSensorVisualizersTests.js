@@ -34,7 +34,12 @@
                 }
             },
             visualizer: {
-                createOnEvent: "{testVisualizerBase}.events.onCreate"
+                createOnEvent: "{testVisualizerBase}.events.onCreate",
+                options: {
+                    visualizerOptions: {
+                        transitionDuration: 100
+                    }
+                }
                 // Must be specified
                 // container: ""
             }

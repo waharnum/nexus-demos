@@ -87,6 +87,10 @@
                 funcName: "fluid.notImplemented"
             }
         },
+        visualizerOptions: {
+            // In milliseconds
+            transitionDuration: 1000
+        },
         model: {
             svgTitle: "A sensor visualizer.",
             svgDescription: "A sensor visualizer."

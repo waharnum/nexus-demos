@@ -79,10 +79,13 @@
     };
 
     gpii.nexusSensorVisualizer.circleRadius.visualizer.updateVisualization = function (visualizer, change) {
+
+        var transitionDuration = visualizer.options.visualizerOptions.transitionDuration;
+
         var circle = visualizer.sensorValueIndicator;
         circle
         .transition()
-        .duration(1000)
+        .duration(transitionDuration)
         .attr("r", change.value)
         .each("end", function() {
             visualizer.events.onUpdateCompleted.fire();
@@ -149,9 +152,11 @@
     gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization = function (visualizer, change) {
         var bar = visualizer.sensorValueIndicator;
 
+        var transitionDuration = visualizer.options.visualizerOptions.transitionDuration;
+
         bar
         .transition()
-        .duration(1000)
+        .duration(transitionDuration)
         .attr("width", change.value * 2)
         .each("end", function() {
             visualizer.events.onUpdateCompleted.fire();

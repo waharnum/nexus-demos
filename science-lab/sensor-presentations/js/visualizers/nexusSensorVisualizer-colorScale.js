@@ -324,10 +324,11 @@
     gpii.nexusSensorVisualizer.colorScale.visualizer.updateVisualization = function (that, change) {
             var newIndicatorLocation = that.yScale(change.value) - 15;
             var newIndicatorColor = that.getIndicatorColor(change.value);
+            var transitionDuration = that.options.visualizerOptions.transitionDuration;
 
             that.indicator
             .transition()
-            .duration(1000)
+            .duration(transitionDuration)
             .attr({
                 "transform": "translate(40,"+ newIndicatorLocation +")",
                 "fill": newIndicatorColor
