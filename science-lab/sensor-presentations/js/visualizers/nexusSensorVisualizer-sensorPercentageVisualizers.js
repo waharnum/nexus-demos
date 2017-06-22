@@ -40,12 +40,6 @@
             height: 200,
             width: 200
         },
-        modelListeners: {
-            "{sensor}.model.sensorPercentage": {
-                funcName: "{that}.updateVisualizer",
-                args: ["{that}", "{change}"]
-            }
-        },
         invokers: {
             createVisualizer: {
                 funcName: "gpii.nexusSensorVisualizer.circleRadius.visualizer.createVisualizer",
@@ -117,12 +111,6 @@
         svgOptions: {
             height: 200,
             width: 200
-        },
-        modelListeners: {
-            "{sensor}.model.sensorPercentage": {
-                funcName: "{that}.updateVisualizer",
-                args: ["{that}", "{change}"]
-            }
         },
         invokers: {
             createVisualizer: {

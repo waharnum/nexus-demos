@@ -70,6 +70,14 @@
                 type: "fluid.modelComponent"
             },
             visualizer: {
+                options: {
+                    modelListeners: {
+                        "{nexusSensorVisualizerBase}.sensor.model.sensorValue": {
+                            funcName: "{that}.updateVisualizer",
+                            args: ["{that}", "{change}"]
+                        }
+                    }
+                },
                 createOnEvent: "{nexusSensorVisualizerBase}.events.onSensorDisplayContainerAppended"
                 // Must be specified; handled by dynamicComponents behaviour
                 // container: ""

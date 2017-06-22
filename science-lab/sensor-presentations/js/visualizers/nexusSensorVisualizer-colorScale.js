@@ -16,12 +16,6 @@
                     },
                     indicatorOptions: {
                         startingValue: "{colorScale}.sensor.model.sensorValue"
-                    },
-                    modelListeners: {
-                        "{colorScale}.sensor.model.sensorValue": {
-                            funcName: "{that}.updateVisualizer",
-                            args: ["{that}", "{change}"]
-                        }
                     }
                 }
             }

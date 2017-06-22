@@ -16,12 +16,6 @@
                     },
                     indicatorOptions: {
                         startingValue: "{realTimeScale}.sensor.model.sensorValue"
-                    },
-                    modelListeners: {
-                        "{realTimeScale}.sensor.model.sensorValue": {
-                            funcName: "{that}.updateVisualizer",
-                            args: ["{that}", "{change}"]
-                        }
                     }
                 }
             }
