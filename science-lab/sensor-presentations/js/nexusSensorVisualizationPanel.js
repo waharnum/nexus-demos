@@ -87,6 +87,10 @@
                 funcName: "fluid.notImplemented"
             }
         },
+        model: {
+            svgTitle: "A sensor visualizer.",
+            svgDescription: "A sensor visualizer."
+        },
         listeners: {
             "onCreate.prependSensorTitle": {
                 "this": "{that}.container",

@@ -23,7 +23,7 @@
                         sensorValue: 50,
                         sensorMax: 100,
                         sensorMin: 0,
-                        description: "A sensor"
+                        description: "A fake sensor"
                     }
                 }
             },
@@ -57,29 +57,59 @@
         }
     });
 
+    gpii.tests.generateVisualizerTestSequence = function(testSpec) {
+        var sequence = [];
+
+        fluid.each(testSpec.sequence, function (sequenceItem) {
+            var applier = {
+                func: "{sensorVisualizer}.sensor.applier.change",
+                args: ["sensorValue", sequenceItem.sensorValue]
+            };
+
+            var listener = {
+                event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
+                listener: "gpii.tests.verifyIndicator",
+                args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", testSpec.checkAttribute, sequenceItem.attributeValue]
+            };
+
+            sequence.push(applier, listener);
+        });
+        return sequence;
+    };
+
+    gpii.tests.realTimeVisualizerTestSequence = {
+            checkAttribute: "height",
+            // Left: sensor value change (num)
+            // Right: expected corresponding change to
+            // indicator attribute (string)
+            sequence: [
+                {
+                    sensorValue: 50,
+                    attributeValue: "230"
+                },
+                {
+                    sensorValue: 75,
+                    attributeValue: "345"
+                },
+                {
+                    sensorValue: 25,
+                    attributeValue: "115"
+                },
+                {
+                    sensorValue: 100,
+                    attributeValue: "460"
+                }
+            ]
+    };
+
     fluid.defaults("gpii.tests.realTimeVisualizerTester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
             name: "Test real-time visualizer",
             tests: [{
                 name: "Test indicator response to sensor model changes",
-                expect: 2,
-                sequence: [
-                    {
-                        func: "gpii.tests.verifyIndicator",
-                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "height", "230"]
-                    },
-                    {
-                        func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 75]
-                    },
-                    {
-                        event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
-                        listener: "gpii.tests.verifyIndicator",
-                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "height", "345"]
-                    }
-
-                ]
+                expect: 4,
+                sequence: gpii.tests.generateVisualizerTestSequence(gpii.tests.realTimeVisualizerTestSequence)
             }]
         }]
     });
@@ -106,28 +136,36 @@
         }
     });
 
+    gpii.tests.circularPercentageScaleVisualizerTestSequence = {
+            checkAttribute: "r",
+            sequence: [
+                {
+                    sensorValue: 50,
+                    attributeValue: "50"
+                },
+                {
+                    sensorValue: 25,
+                    attributeValue: "25"
+                },
+                {
+                    sensorValue: 75,
+                    attributeValue: "75"
+                },
+                {
+                    sensorValue: 100,
+                    attributeValue: "100"
+                }
+            ]
+    };
+
     fluid.defaults("gpii.tests.circularPercentageScaleVisualizerTester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
             name: "Test circular percentage scale visualizer",
             tests: [{
                 name: "Test indicator response to sensor model changes",
-                expect: 2,
-                sequence: [
-                    {
-                        func: "gpii.tests.verifyIndicator",
-                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "r", "50"]
-                    },
-                    {
-                        func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 25]
-                    },
-                    {
-                        event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
-                        listener: "gpii.tests.verifyIndicator",
-                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "r", "25"]
-                    }
-                ]
+                expect: 4,
+                sequence: gpii.tests.generateVisualizerTestSequence(gpii.tests.circularPercentageScaleVisualizerTestSequence)
             }]
         }]
     });
@@ -154,28 +192,36 @@
         }
     });
 
+    gpii.tests.horizontalBarPercentageScaleVisualizerTestSequence = {
+            checkAttribute: "width",
+            sequence: [
+                {
+                    sensorValue: 50,
+                    attributeValue: "100"
+                },
+                {
+                    sensorValue: 25,
+                    attributeValue: "50"
+                },
+                {
+                    sensorValue: 75,
+                    attributeValue: "150"
+                },
+                {
+                    sensorValue: 100,
+                    attributeValue: "200"
+                }
+            ]
+    };
+
     fluid.defaults("gpii.tests.horizontalBarPercentageScaleVisualizerTester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
             name: "Test horizontal bar percentage scale visualizer",
             tests: [{
                 name: "Test indicator response to sensor model changes",
-                expect: 2,
-                sequence: [
-                    {
-                        func: "gpii.tests.verifyIndicator",
-                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "width", "100"]
-                    },
-                    {
-                        func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 25]
-                    },
-                    {
-                        event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
-                        listener: "gpii.tests.verifyIndicator",
-                        args: ["{sensorVisualizer}.visualizer.dom.sensorValueIndicator", "width", "50"]
-                    }
-                ]
+                expect: 4,
+                sequence: gpii.tests.generateVisualizerTestSequence(gpii.tests.horizontalBarPercentageScaleVisualizerTestSequence)
             }]
         }]
     });

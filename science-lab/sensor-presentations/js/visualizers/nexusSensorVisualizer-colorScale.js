@@ -94,9 +94,6 @@
                         args: ["<h2>%description</h2>", "{sensor}.model"]
                     }
                 }
-            },
-            "onCreate.createBaseSVGDrawingArea": {
-                func: "{that}.createBaseSVGDrawingArea"
             }
         }
     });

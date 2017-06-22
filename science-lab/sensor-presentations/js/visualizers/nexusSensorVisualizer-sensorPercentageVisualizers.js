@@ -36,6 +36,10 @@
         selectors: {
             sensorValueIndicator: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-circle"
         },
+        svgOptions: {
+            height: 200,
+            width: 200
+        },
         modelListeners: {
             "{sensor}.model.sensorPercentage": {
                 funcName: "gpii.nexusSensorVisualizer.circleRadius.visualizer.updateVisualization",
@@ -104,6 +108,10 @@
         selectors: {
             sensorValueIndicator: ".nexus-nexusSensorVisualizationPanel-sensorDisplay-bar"
         },
+        svgOptions: {
+            height: 200,
+            width: 200
+        },
         modelListeners: {
             "{sensor}.model.sensorPercentage": {
                 funcName: "gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization",
@@ -138,7 +146,7 @@
             });
     };
 
-    gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization = function (visualizer, change) {        
+    gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization = function (visualizer, change) {
         var bar = visualizer.sensorValueIndicator;
 
         bar
