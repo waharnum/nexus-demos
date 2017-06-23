@@ -57,9 +57,6 @@
 
     fluid.defaults("gpii.nexusSensorVisualizer.lineChart.visualizer", {
         gradeNames: ["gpii.nexusSensorPresentationPanel.fadeInPresenter", "floe.chartAuthoring.lineChart.timeSeriesSingleDataSet", "gpii.nexusVisualizerBase"],
-        events: {
-            onUpdateCompleted: null
-        },
         invokers: {
             transitionChartLine: {
                 funcName: "floe.chartAuthoring.lineChart.timeSeries.line.updateChartLine.defaultTransition"

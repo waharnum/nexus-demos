@@ -264,8 +264,7 @@
     gpii.nexusSensorVisualizer.colorScale.visualizer.createIndicator = function (that) {
         // Draw the PH indicator
 
-        var svg = that.svg,
-            valueToColorScale = that.valueToColorScale;
+        var svg = that.svg;
 
         var startingValue = that.options.indicatorOptions.startingValue;
 

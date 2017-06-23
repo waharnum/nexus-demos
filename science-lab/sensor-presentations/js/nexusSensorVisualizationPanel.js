@@ -106,6 +106,9 @@
             svgTitle: "A sensor visualizer.",
             svgDescription: "A sensor visualizer."
         },
+        strings: {
+            sensorTitleTemplate: "<h2>%description</h2>"
+        },
         listeners: {
             "onCreate.prependSensorTitle": {
                 "this": "{that}.container",
@@ -113,7 +116,7 @@
                 args: {
                     expander: {
                         funcName: "fluid.stringTemplate",
-                        args: ["<h2>%description</h2>", "{sensor}.model"]
+                        args: ["{that}.options.strings.sensorTitleTemplate", "{sensor}.model"]
                     }
                 }
             },
