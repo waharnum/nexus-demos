@@ -299,6 +299,13 @@
                     components: {
                         visualizer: {
                             container: "#visualizer-lineChart"
+                        },
+                        sensorValueAccumulator: {
+                            options: {
+                                model: {
+                                    maxValuesRetained: 5
+                                }
+                            }
                         }
                     }
                 }
@@ -328,50 +335,76 @@
             ]
     };
 
+    // First value is 50, it should get popped
+    // off after the final change because the
+    // maxValuesRetained is set to 5
+    gpii.tests.lineChartAccumulatorExpectedValues = [
+            [50, 25],
+            [50, 25, 35],
+            [50, 25, 35, 45],
+            [50, 25, 35, 45, 55],
+            [25, 35, 45, 55, 65]
+    ];
+
     fluid.defaults("gpii.tests.lineChartVisualizerTester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
             name: "Test line chart visualizer",
             tests: [{
-                name: "Test indicator response to sensor model changes",
-                expect: 0,
+                name: "Test line chart sensor value accumulator",
+                expect: 19,
                 sequence: [
                     {
                         func: "{sensorVisualizer}.sensor.applier.change",
                         args: ["sensorValue", 25]
                     },
                     {
-                        func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 35]
-                    },
-                    {
-                        func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 45]
-                    },
-                    {
-                        func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 85]
-                    },
-                    {
-                        func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 25]
+                        func: "gpii.tests.verifyLineChartSensorValueAccumulation",
+                        args: ["{sensorVisualizer}.sensorValueAccumulator", gpii.tests.lineChartAccumulatorExpectedValues[0]]
                     },
                     {
                         func: "{sensorVisualizer}.sensor.applier.change",
                         args: ["sensorValue", 35]
                     },
                     {
+                        func: "gpii.tests.verifyLineChartSensorValueAccumulation",
+                        args: ["{sensorVisualizer}.sensorValueAccumulator", gpii.tests.lineChartAccumulatorExpectedValues[1]]
+                    },
+                    {
                         func: "{sensorVisualizer}.sensor.applier.change",
                         args: ["sensorValue", 45]
                     },
                     {
+                        func: "gpii.tests.verifyLineChartSensorValueAccumulation",
+                        args: ["{sensorVisualizer}.sensorValueAccumulator", gpii.tests.lineChartAccumulatorExpectedValues[2]]
+                    },
+                    {
                         func: "{sensorVisualizer}.sensor.applier.change",
-                        args: ["sensorValue", 85]
+                        args: ["sensorValue", 55]
+                    },
+                    {
+                        func: "gpii.tests.verifyLineChartSensorValueAccumulation",
+                        args: ["{sensorVisualizer}.sensorValueAccumulator", gpii.tests.lineChartAccumulatorExpectedValues[3]]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 65]
+                    },
+                    {
+                        func: "gpii.tests.verifyLineChartSensorValueAccumulation",
+                        args: ["{sensorVisualizer}.sensorValueAccumulator", gpii.tests.lineChartAccumulatorExpectedValues[4]]
                     }
                 ]
             }]
         }]
     });
+
+    gpii.tests.verifyLineChartSensorValueAccumulation = function(accumulator, expected) {
+        fluid.each(expected, function (expectedValue, idx) {
+            var message = fluid.stringTemplate("Accumulator value at position %idx is expected value of %value", {idx: idx, value: accumulator.model.sensorValues[idx].value});
+            jqUnit.assertEquals(message, expectedValue, accumulator.model.sensorValues[idx].value);
+        });
+    };
 
     gpii.tests.verifyIndicator = function (indicator, checkAttribute, expectedValue) {
         var message = fluid.stringTemplate("Attribute '%checkAttribute' is expected value of %expectedValue", {checkAttribute: checkAttribute, expectedValue: expectedValue});
