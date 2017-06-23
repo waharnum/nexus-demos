@@ -242,7 +242,14 @@
                             container: "#visualizer-colorScale",
                             options: {
                                 scaleOptions: {
-                                    colors: ["#FF0000","#00FF00", "#0000FF"]
+                                    colors: ["#FF0000","#00FF00", "#0000FF"],
+                                    textOptions: {
+                                        positionedText: {
+                                            0: "0",
+                                            50: "50",
+                                            100: "100"
+                                        }
+                                    }
                                 }
 
                             }
@@ -292,9 +299,44 @@
                         args: ["{sensorVisualizer}"]
                     }
                 ]
-            }]
+            },
+            {
+                name: "Test indicator color change when moving through color scale",
+                expect: 3,
+                sequence: [
+                    {
+                        func: "gpii.tests.verifyIndicatorColor",
+                        args: ["{sensorVisualizer}", "#00FF00"]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 25]
+                    },
+                    {
+                        listener: "gpii.tests.verifyIndicatorColor",
+                        event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
+                        args: ["{sensorVisualizer}", "#FF0000"]
+                    },
+                    {
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 75]
+                    },
+                    {
+                        listener: "gpii.tests.verifyIndicatorColor",
+                        event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
+                        args: ["{sensorVisualizer}", "#0000FF"]
+                    }
+                ]
+            }
+            ]
         }]
     });
+
+    gpii.tests.verifyIndicatorColor = function (sensorVisualizer, expectedColor) {
+        var indicator = sensorVisualizer.visualizer.locate("sensorValueIndicator");
+        console.log(indicator);
+        jqUnit.assertEquals("message", expectedColor.toLowerCase(), indicator.attr("fill").toLowerCase());
+    };
 
     gpii.tests.verifyColorScaleGeneration = function (sensorVisualizer) {
         var colors = sensorVisualizer.visualizer.options.scaleOptions.colors;

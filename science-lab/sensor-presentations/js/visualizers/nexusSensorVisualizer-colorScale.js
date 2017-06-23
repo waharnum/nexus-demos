@@ -118,7 +118,7 @@
             scaleMin = that.options.scaleOptions.min,
             scaleMax = that.options.scaleOptions.max,
             svg = that.svg;
-            
+
         var colorScaleLength = colors.length;
 
         // Ordinal scale used for positioning color bands
