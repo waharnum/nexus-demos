@@ -283,9 +283,31 @@
                 name: "Test indicator response to sensor model changes",
                 expect: 4,
                 sequence: gpii.tests.generateVisualizerIndicatorTestSequence(gpii.tests.colorScaleVisualizerTestSequence)
+            },{
+                name: "Test color scale generation",
+                expect: 3,
+                sequence: [
+                    {
+                        func: "gpii.tests.verifyColorScaleGeneration",
+                        args: ["{sensorVisualizer}"]
+                    }
+                ]
             }]
         }]
     });
+
+    gpii.tests.verifyColorScaleGeneration = function (sensorVisualizer) {
+        var colors = sensorVisualizer.visualizer.options.scaleOptions.colors;
+        // ["#FF0000", "#00FF00", "#0000FF"]
+        var colorBars = sensorVisualizer.visualizer.locate("colorBars");
+
+        fluid.each(colors, function (currentColor, idx) {
+            var message = fluid.stringTemplate("Color bar at position %idx is expected value of %color", {color: currentColor, idx: idx});
+            var currentBar = colorBars[idx];
+            jqUnit.assertEquals(message, currentColor, $(currentBar).attr("fill"));
+        });
+
+    };
 
     fluid.defaults("gpii.tests.lineChartVisualizerTests", {
         gradeNames: ["gpii.tests.visualizerTestsBase"],
@@ -312,28 +334,6 @@
             }
         }
     });
-
-    gpii.tests.lineChartVisualizerTestSequence = {
-            checkAttribute: "transform",
-            sequence: [
-                {
-                    sensorValue: 50,
-                    attributeValue: "translate(40,235)"
-                },
-                {
-                    sensorValue: 25,
-                    attributeValue: "translate(40,350)"
-                },
-                {
-                    sensorValue: 75,
-                    attributeValue: "translate(40,120)"
-                },
-                {
-                    sensorValue: 100,
-                    attributeValue: "translate(40,5)"
-                }
-            ]
-    };
 
     // First value is 50, it should get popped
     // off after the final change because the

@@ -30,7 +30,8 @@
             svgDescription: "An animated scale."
         },
         selectors: {
-            sensorValueIndicator: ".nexusc-indicator"
+            sensorValueIndicator: ".nexusc-indicator",
+            colorBars: ".nexusc-colorScale-colorBar"
         },
         scaleOptions: {
             min: 0,
@@ -117,7 +118,7 @@
             scaleMin = that.options.scaleOptions.min,
             scaleMax = that.options.scaleOptions.max,
             svg = that.svg;
-
+            
         var colorScaleLength = colors.length;
 
         // Ordinal scale used for positioning color bands
@@ -142,6 +143,7 @@
         fluid.each(colors, function(color) {
             svg.append("rect")
                .attr({
+                  "class": "nexusc-colorScale-colorBar",
                   "x": leftPadding,
                   "y": function() {
                     return colorToPositionScale(color);
