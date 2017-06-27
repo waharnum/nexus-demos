@@ -282,6 +282,37 @@
             ]
     };
 
+
+    gpii.tests.expectedColorBarLabelValues = [
+        {
+            text: "0.00 – 33.33",
+            y: "406.6666666666667"
+        },
+        {
+            text: "33.33 – 66.67",
+            y: "253.33333333333334"
+        },
+        {
+            text: "66.67 – 100.00",
+            y: "100"
+        }
+    ];
+
+    gpii.tests.expectedColorBarPositionedValues = [
+        {
+            text: "0",
+            y: "480"
+        },
+        {
+            text: "50",
+            y: "250"
+        },
+        {
+            text: "100",
+            y: "20"
+        }
+    ];
+
     fluid.defaults("gpii.tests.colorScaleVisualizerTester", {
         gradeNames: ["fluid.test.testCaseHolder"],
         modules: [{
@@ -333,12 +364,16 @@
                     }
                 ]
             },{
-                name: "Test bar labels",
-                expect: 6,
+                name: "Test labels",
+                expect: 12,
                 sequence: [
                     {
-                        func: "gpii.tests.verifyBarLabels",
-                        args: ["{sensorVisualizer}"]
+                        func: "gpii.tests.verifyColorBarLabels",
+                        args: ["{sensorVisualizer}", "colorBarLabels", gpii.tests.expectedColorBarLabelValues]
+                    },
+                    {
+                        func: "gpii.tests.verifyColorBarLabels",
+                        args: ["{sensorVisualizer}", "positionedText", gpii.tests.expectedColorBarPositionedValues]
                     }
                 ]
             }
@@ -346,29 +381,14 @@
         }]
     });
 
-    gpii.tests.verifyBarLabels = function (sensorVisualizer) {
+    gpii.tests.verifyColorBarLabels = function (sensorVisualizer, labelSelector, expectedValues) {
 
-        var expectedValues = [
-            {
-                text: "0.00 – 33.33",
-                y: "406.6666666666667"
-            },
-            {
-                text: "33.33 – 66.67",
-                y: "253.33333333333334"
-            },
-            {
-                text: "66.67 – 100.00",
-                y: "100"
-            }
-        ];
-
-        var barLabels = sensorVisualizer.visualizer.locate("colorBarLabels");
+        var barLabels = sensorVisualizer.visualizer.locate(labelSelector);
         fluid.each(barLabels, function (barLabel, idx) {
             var valueSet = expectedValues[idx];
             fluid.each(valueSet, function (expectedValue, key) {
 
-                var message = fluid.stringTemplate("Bar %expectedAttribute is expected value of %expectedValue", {expectedAttribute: key, expectedValue: expectedValue});
+                var message = fluid.stringTemplate("Bar label %expectedAttribute is expected value of %expectedValue", {expectedAttribute: key, expectedValue: expectedValue});
 
                 var value = (key === "text") ? $(barLabel).text() : $(barLabel).attr(key);
 

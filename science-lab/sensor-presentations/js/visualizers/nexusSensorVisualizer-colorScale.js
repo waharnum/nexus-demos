@@ -32,7 +32,8 @@
         selectors: {
             sensorValueIndicator: ".nexusc-indicator",
             colorBars: ".nexusc-colorScale-colorBar",
-            colorBarLabels: ".nexusc-colorScale-colorBarLabels"
+            colorBarLabels: ".nexusc-colorScale-colorBarLabels",
+            positionedText: ".nexusc-colorScale-positionedText"
         },
         scaleOptions: {
             min: 0,
