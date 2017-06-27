@@ -305,7 +305,12 @@
                 expect: 3,
                 sequence: [
                     {
-                        func: "gpii.tests.verifyIndicatorColor",
+                        func: "{sensorVisualizer}.sensor.applier.change",
+                        args: ["sensorValue", 55]
+                    },
+                    {
+                        listener: "gpii.tests.verifyIndicatorColor",
+                        event: "{sensorVisualizer}.visualizer.events.onUpdateCompleted",
                         args: ["{sensorVisualizer}", "#00FF00"]
                     },
                     {
@@ -334,7 +339,7 @@
 
     gpii.tests.verifyIndicatorColor = function (sensorVisualizer, expectedColor) {
         var indicator = sensorVisualizer.visualizer.locate("sensorValueIndicator");
-        console.log(indicator);
+
         jqUnit.assertEquals("message", expectedColor.toLowerCase(), indicator.attr("fill").toLowerCase());
     };
 
