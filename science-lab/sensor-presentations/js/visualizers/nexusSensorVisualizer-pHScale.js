@@ -13,7 +13,7 @@
                 options: {
                     selectors: {
                         "displayExamplesCheckbox": ".gpiic-visualizer-displayExamples",
-                        "pHScaleExamples": ".positionedText"
+                        "pHScaleExamples": ".nexusc-colorScale-positionedText"
                     },
                     listeners: {
                         "onCreate.appendControls": {

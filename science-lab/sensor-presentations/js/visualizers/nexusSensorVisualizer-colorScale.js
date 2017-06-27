@@ -31,7 +31,8 @@
         },
         selectors: {
             sensorValueIndicator: ".nexusc-indicator",
-            colorBars: ".nexusc-colorScale-colorBar"
+            colorBars: ".nexusc-colorScale-colorBar",
+            colorBarLabels: ".nexusc-colorScale-colorBarLabels"
         },
         scaleOptions: {
             min: 0,
@@ -47,7 +48,7 @@
             textOptions: {
                 // Creates labels for each point of the scale
                 labels: {
-                    template: "Value %bandStart – %bandEnd",
+                    template: "%bandStart – %bandEnd",
                     // Scales the font size relative to the
                     // bar height - this may need tweaking
                     // dependent on the number of bars and
@@ -184,6 +185,7 @@
             svg.append("text")
               .text(gpii.nexusSensorVisualizer.colorScale.visualizer.getColorScaleLabelText(index, textOptions, colorLabelScaleRange))
               .attr({
+                "class": "nexusc-colorScale-colorBarLabels",
                 "text-anchor": "middle",
                 "transform": "translate(" + leftPadding + ")",
                 "fill": "white",
@@ -248,7 +250,7 @@
             .text(text)
             .attr({
                 "text-anchor": "end",
-                "class": "positionedText",
+                "class": "nexusc-colorScale-positionedText",
                 "transform": "translate(" + leftPadding + ")",
                 "fill": "white",
                 "filter": "url(#solid)",

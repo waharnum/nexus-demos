@@ -332,15 +332,55 @@
                         args: ["{sensorVisualizer}", "#0000FF"]
                     }
                 ]
+            },{
+                name: "Test bar labels",
+                expect: 6,
+                sequence: [
+                    {
+                        func: "gpii.tests.verifyBarLabels",
+                        args: ["{sensorVisualizer}"]
+                    }
+                ]
             }
             ]
         }]
     });
 
+    gpii.tests.verifyBarLabels = function (sensorVisualizer) {
+
+        var expectedValues = [
+            {
+                text: "0.00 – 33.33",
+                y: "406.6666666666667"
+            },
+            {
+                text: "33.33 – 66.67",
+                y: "253.33333333333334"
+            },
+            {
+                text: "66.67 – 100.00",
+                y: "100"
+            }
+        ];
+
+        var barLabels = sensorVisualizer.visualizer.locate("colorBarLabels");
+        fluid.each(barLabels, function (barLabel, idx) {
+            var valueSet = expectedValues[idx];
+            fluid.each(valueSet, function (expectedValue, key) {
+
+                var message = fluid.stringTemplate("Bar %expectedAttribute is expected value of %expectedValue", {expectedAttribute: key, expectedValue: expectedValue});
+
+                var value = (key === "text") ? $(barLabel).text() : $(barLabel).attr(key);
+
+                jqUnit.assertEquals(message, expectedValue, value);
+            });
+        });
+    };
+
     gpii.tests.verifyIndicatorColor = function (sensorVisualizer, expectedColor) {
         var indicator = sensorVisualizer.visualizer.locate("sensorValueIndicator");
 
-        jqUnit.assertEquals("message", expectedColor.toLowerCase(), indicator.attr("fill").toLowerCase());
+        jqUnit.assertEquals("Indicator fill color is expected value of " + expectedColor, expectedColor.toLowerCase(), indicator.attr("fill").toLowerCase());
     };
 
     gpii.tests.verifyColorScaleGeneration = function (sensorVisualizer) {
