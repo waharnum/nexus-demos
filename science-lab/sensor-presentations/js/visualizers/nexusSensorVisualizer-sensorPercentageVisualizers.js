@@ -52,15 +52,17 @@
     });
 
     gpii.nexusSensorVisualizer.circleRadius.visualizer.createVisualizer = function (that, initialSensorValue) {
-        var svg = that.svg;
+        var svg = that.svg,
+            height = that.options.svgOptions.height,
+            width = that.options.svgOptions.width;
 
         // Background circle
         svg.append("circle")
             .attr({
                 "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-circleOutline",
-                cx: "100",
-                cy: "100",
-                r: "100",
+                cx: width / 2,
+                cy: height / 2,
+                r: height / 2,
                 fill: "red"
             });
 
@@ -68,14 +70,16 @@
         that.sensorValueIndicator = svg.append("circle")
             .attr({
                 "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-circle",
-                cx: "100",
-                cy: "100",
-                r: initialSensorValue,
+                cx: width / 2,
+                cy: height / 2,
+                r: initialSensorValue / (height / 2),
                 fill: "black"
             });
     };
 
     gpii.nexusSensorVisualizer.circleRadius.visualizer.updateVisualization = function (visualizer, change) {
+
+        var height = visualizer.options.svgOptions.height;
 
         var transitionDuration = visualizer.options.visualizerOptions.transitionDuration;
 
@@ -83,7 +87,7 @@
         circle
         .transition()
         .duration(transitionDuration)
-        .attr("r", change.value)
+        .attr("r", change.value * (height / 2 / 100))
         .each("end", function() {
             visualizer.events.onUpdateCompleted.fire();
         });
@@ -125,34 +129,37 @@
     });
 
     gpii.nexusSensorVisualizer.horizontalBar.visualizer.createVisualizer = function (that, initialValue) {
-        var svg = that.svg;
+        var svg = that.svg,
+            width = that.options.svgOptions.width,
+            height = that.options.svgOptions.height;
 
         svg.append("rect")
             .attr({
                 "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-barBackground",
-                width: "200",
-                height: "100",
+                width: width,
+                height: height / 2,
                 fill: "red"
             });
 
         that.sensorValueIndicator = svg.append("rect")
             .attr({
                 "class": "nexus-nexusSensorVisualizationPanel-sensorDisplay-bar",
-                width: initialValue * 2,
-                height: "100",
+                width: initialValue * (width / 2),
+                height: height / 2,
                 fill: "blue"
             });
     };
 
     gpii.nexusSensorVisualizer.horizontalBar.visualizer.updateVisualization = function (visualizer, change) {
-        var bar = visualizer.sensorValueIndicator;
+        var bar = visualizer.sensorValueIndicator,
+            width = visualizer.options.svgOptions.width;
 
         var transitionDuration = visualizer.options.visualizerOptions.transitionDuration;
 
         bar
         .transition()
         .duration(transitionDuration)
-        .attr("width", change.value * 2)
+        .attr("width", change.value * (width / 100))
         .each("end", function() {
             visualizer.events.onUpdateCompleted.fire();
         });
